@@ -1,0 +1,21 @@
+---
+import CardFilials from '../components/CardFilials.astro';
+---
+
+<section class="w-full min-h-[80vh] px-10 bg-blue-200 text-yellow-50">
+    <div class="relative z-10 pb-16 px-4">
+        <div class="container mx-auto">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+                <CardFilials filialNameSrc="capital" filialName="Capital" />
+                <CardFilials filialNameSrc="seguros" filialName="Seguros" />
+                <CardFilials filialNameSrc="finanzas" filialName="Finanzas" />
+                <CardFilials filialNameSrc="academy" filialName="Academy" />
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-4 max-w-3xl mx-auto">
+                <CardFilials filialNameSrc="marketing" filialName="Marketing" />
+                <CardFilials filialNameSrc="talento" filialName="Talento" />
+                <CardFilials filialNameSrc="impacto" filialName="Impacto" />
+            </div>
+        </div>
+    </div>
+</section>

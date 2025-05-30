@@ -1,0 +1,87 @@
+---
+import Favicon from "../components/icons/Favicon.astro"
+import BottomArrow from "../components/icons/BottomArrow.astro"
+import OpenMenuNavbar from "./OpenMenuNavbar.astro"
+---
+<header class="w-full relative">
+  <nav class="container mx-auto px-4 py-6 flex items-center justify-between">
+    <!-- Logo -->
+    <div class="flex items-center gap-1 text-white font-bold text-xl">
+      <a href="/">
+        <Favicon size="64" />
+      </a>
+      <span class="text-[26px]">GRUPO LEONES</span>
+    </div>
+
+    <!-- Desktop Navigation -->
+    <div class="hidden md:flex space-x-8 items-center">
+      <a href="/nosotros" class="text-white text-[18px] hover:border-b transition-colors">Nosotros</a>
+
+      <div class="relative group">
+        <button class="flex items-center text-white text-[18px] transition-colors">
+          Filiales
+          <BottomArrow size="26" />
+        </button>
+        <div class="absolute left-0 top-[1em] mt-2 hidden group-hover:flex flex-col gap-1 bg-[#e5c2c2] p-4 text-black font-bold rounded-2xl shadow-lg z-50">
+          <OpenMenuNavbar />
+        </div>
+      </div>
+
+      <a href="/contacto" class="text-white text-[18px] hover:border-b transition-colors">Contacto</a>
+    </div>
+
+    <!-- Mobile Menu Button -->
+    <button id="hamburguerBtn" class="md:hidden hover:cursor-pointer flex flex-col gap-2.5 w-10 h-10 justify-center items-center z-50">
+      <div class="bg-white h-[3px] w-full rounded transition-all origin-left"></div>
+      <div class="bg-white h-[3px] w-full rounded transition-all"></div>
+      <div class="bg-white h-[3px] w-full rounded transition-all origin-left"></div>
+    </button>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <div id="mobileMenu" class="md:hidden hidden flex-col gap-6 absolute top-0 left-0 w-[60%] h-[100vh] bg-[#161616] text-white font-bold px-6 py-8 z-40">
+    <div class="flex items-center gap-1 text-white font-bold text-xl border-b border-gray-600 pb-4">
+      <a href="/">
+        <Favicon size="64" />
+      </a>
+      <span class="text-[26px]">Grupo Leones</span>
+    </div>
+    <div class="flex flex-col gap-4 mt-5">
+      <a href="/nosotros" class="text-[#d7d7d6] text-[18px] font-medium">Nosotros</a>
+    <details>
+      <summary class="hover:cursor-pointer text-[#d7d7d6] text-[18px] font-medium">Filiales</summary>
+      <div class="pl-4 mt-2">
+        <OpenMenuNavbar color="white" />
+      </div>
+    </details>
+    <a href="#contacto" class="text-[#d7d7d6] text-[18px] font-medium">Contacto</a>
+    </div>
+  </div>
+
+  <script>
+import { swapBodyElement } from "astro/virtual-modules/transitions-swap-functions.js";
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const btn = document.getElementById("hamburguerBtn");
+      const menu = document.getElementById("mobileMenu");
+      const lines = btn.querySelectorAll("div");
+      let open = false;
+
+      btn.addEventListener("click", () => {
+        open = !open;
+        menu.classList.toggle("hidden");
+
+        if (open) {
+          lines[0].style.transform = "rotate(45deg)";
+          lines[1].style.opacity = "0";
+          lines[2].style.transform = "rotate(-45deg)";
+
+        } else {
+          lines[0].style.transform = "rotate(0)";
+          lines[1].style.opacity = "1";
+          lines[2].style.transform = "rotate(0)";
+        }
+      });
+    });
+  </script>
+</header>
