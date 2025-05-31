@@ -1,0 +1,56 @@
+---
+import Favicon from "../icons/Favicon.astro";
+
+import Header from "../sections/Header.astro";
+---
+
+<section class="relative w-[100vw] min-h-[85vh] pb-10 md:pb-0 mb-0 flex flex-col rounded-bl-[50px] rounded-br-[50px] overflow-hidden selection:bg-red-800">
+
+  <div class="absolute inset-0 z-0">
+    <img 
+      src="/images/heropg.webp" 
+      alt="Background" 
+      class="w-full h-full object-cover"
+    />
+    <!-- Red Gradient Overlay -->
+    <div class="absolute inset-0 bg-[#D13239]/90"></div>
+  </div>
+  
+  <!-- Content -->
+  <div class="relative z-10 flex-1 flex flex-col">
+
+    <slot />
+
+    <!-- Hero Content -->
+    <div class="flex-1 flex items-center justify-center flex-col px-4">
+        <div class="mb-7">
+    	<Favicon size="200" />
+        </div>
+      <div class="text-center text-white max-w-4xl mx-auto">
+        <h1 class="text-4xl md:text-6xl font-bold mb-6">
+          ¡IMPULSA TU NEGOCIO YA!
+        </h1>
+        <p class="text-lg md:text-xl mb-8 max-w-2xl mx-auto">
+          Con Grupo Leones <b>SÍ</b> puedes crecer, emprender<br />
+          y dejar tu huella imborrable en el mundo.
+        </p>
+        
+        <!-- Buttons -->
+        <div class="flex flex-col sm:flex-row gap-4 justify-center select-none">
+          <a 
+            href="/filiales" 
+            class="bg-white/20 hover:bg-white/30 text-white px-8 py-3 rounded-full border border-white/30 transition-all duration-300"
+          >
+            Ver filiales
+          </a>
+          <a 
+            href="/contacto" 
+            class="bg-transparent hover:bg-white/10 text-white px-6 py-3 rounded-full border border-white/80 transition-all duration-300"
+          >
+            Contáctanos
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
