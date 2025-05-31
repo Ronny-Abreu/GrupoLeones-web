@@ -1,0 +1,17 @@
+---
+const { color = "black" } = Astro.props;
+---
+
+<div class=`w-[180px] flex flex-col justify-around gap-1 text-${color}/85 text-[18px] font-normal rounded-4xl`>
+  <div class="flex flex-col">
+    <a href="/filiales/capital" class=`hover:text-blue-100 md:hover:text-amber-800 md:font-medium`>Leones Capital</a>
+    <a href="/filiales/seguros" class=`hover:text-blue-100 md:hover:text-amber-800 md:font-medium`>Leones Seguros</a>
+    <a href="/filiales/finanzas" class=`hover:text-blue-100 md:hover:text-amber-800 md:font-medium`>Leones Finanzas</a>
+    <a href="/filiales/academy" class=`hover:text-blue-100 md:hover:text-amber-800 md:font-medium`>Leones Academy</a>
+  </div>
+  <div class="flex flex-col">
+    <a href="/filiales/marketing" class=`hover:text-blue-100 md:hover:text-amber-800 md:font-medium`>Leones Marketing</a>
+    <a href="/filiales/talento" class=`hover:text-blue-100 md:hover:text-amber-800 md:font-medium`>Leones Talento</a>
+    <a href="/filiales/impacto" class=`hover:text-blue-100 md:hover:text-amber-800 md:font-medium`>Leones Impacto</a>
+  </div>
+</div>
