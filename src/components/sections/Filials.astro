@@ -1,0 +1,91 @@
+<section class="relative h-[60vh] flex flex-col bg-[#f5f4f6] lg:pt-20">
+
+  <div class="w-full flex justify-center items-center mx-auto pb-[50px] xl:pt-10 px-4 z-10 bg-[#f5f4f6]">
+    <div class="w-auto">
+      <div class="w-full py-5 2xl:pb-10 flex justify-center items-center">
+          <h2 class="animated-gradient-text max-w-xl bg-gradient-to-tr from-gray-400 to-red-400 bg-clip-text text-[40px] flex flex-col xl:gap-3 2xl:gap-3 sm:gap-3 md:gap-3 sm:flex-row md:flex-row xl:flex-row 2xl:flex-row text-center sm:text-5xl md:text-5xl xl:text-5xl 2xl:text-[52px] font-black leading-[42px] text-transparent selection:bg-yellow-300/30">
+          <span>NUESTROS</span>
+          <span>FILIALES</span>
+        </h2>
+      </div>
+      <div class="grid gap-6 mb-6 justify-items-center
+            grid-cols-1
+            sm:grid-cols-2
+            md:grid-cols-2
+            xl:grid-cols-3
+            2xl:grid-cols-6">
+      {[
+        {
+          title: "LEONES CAPITAL",
+          image: "/images/leones-capital.webp",
+          page: "/filiales/capital"
+        },
+        {
+          title: "LEONES SEGUROS",
+          image: "/images/leones-capital.webp",
+          page: "/filiales/seguros" 
+        },
+        {
+          title: "LEONES FINANZAS",
+          image: "/images/leones-capital.webp",
+          page: "/filiales/finanzas"
+        },
+                {
+          title: "LEONES MARKETING",
+          image: "/images/leones-capital.webp",
+          page: "/filiales/marketing"
+        },
+        {
+          title: "LEONES TALENTO",
+          image: "/images/leones-capital.webp",
+          page: "/filiales/talento"
+        },
+        {
+          title: "LEONES IMPACTO",
+          image: "/images/leones-capital.webp",
+          page: "/filiales/impacto"
+        }
+        // {
+        //   title: "LEONES ACADEMY",
+        //   image: "/images/leones-capital.webp",
+        //   page: "/filiales/academy"
+        // }
+      ].map((card) => (
+        <a href="/filiales/capital" class="card-link w-full max-w-[280px] selection:bg-gray-600">
+          <div class="card-container bg-black/20 backdrop-blur-sm rounded-lg overflow-hidden border border-white/20 transition-all duration-200 lg:w-[290px] w-[290px] h-[300px] relative group">
+            <div class="image-container overflow-hidden h-full">
+              <img 
+                src={card.image} 
+                alt={card.title} 
+                class="w-full h-full object-cover transition-transform duration-200 group-hover:scale-110 select-none"
+              />
+            </div>
+            <div class="card-content absolute inset-0 flex flex-col items-center justify-center gap-5 text-white p-4 bg-black/40 group-hover:bg-gradient-to-b group-hover:from-white/30 group-hover:to-black/50 transition-all duration-200">
+              <h3 class="mt-32 text-center font-bold text-[28px] leading-tight">{card.title}</h3>
+              <span class="border border-white px-4 py-1 text-sm">Más información</span>
+            </div>
+          </div>
+        </a>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  @keyframes gradientMove {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+
+  .animated-gradient-text {
+    background-size: 200% 200%;
+    animation: gradientMove 2s ease infinite;
+  }
+</style>
