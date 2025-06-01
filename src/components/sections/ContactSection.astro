@@ -149,6 +149,17 @@
           </div>
           <p class="text-green-700 text-sm mt-1">Te responderemos en un plazo máximo de 24 horas.</p>
         </div>
+
+        <!-- Error Message -->
+        <div id="errorMessage" class="hidden mt-6 p-4 bg-red-50 border border-red-200 rounded-xl">
+          <div class="flex items-center gap-2 text-red-800">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            <span class="font-medium">Error al enviar el mensaje</span>
+          </div>
+          <p class="text-red-700 text-sm mt-1" id="errorText">Por favor, inténtalo de nuevo.</p>
+        </div>
       </div>
     </div>
   </div>
@@ -156,8 +167,15 @@
 
 <script>
   document.addEventListener('DOMContentLoaded', () => {
-    const form = document.getElementById('contactForm');
+    const form = document.getElementById('contactForm') as HTMLFormElement;
     const successMessage = document.getElementById('successMessage');
+    const errorMessage = document.getElementById('errorMessage');
+    const errorText = document.getElementById('errorText');
+
+    if (!form || !successMessage || !errorMessage || !errorText) {
+      console.error('Elementos del formulario no encontrados');
+      return;
+    }
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -167,12 +185,21 @@
       
       // Validación del lado del cliente
       if (!data.nombre || !data.email || !data.asunto || !data.mensaje) {
-        alert('Por favor, completa todos los campos obligatorios.');
+        showError('Por favor, completa todos los campos obligatorios.');
+        return;
+      }
+
+      // Validar email
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(data.email as string)) {
+        showError('Por favor, ingresa un email válido.');
         return;
       }
 
       // Show loading state
-      const submitBtn = form.querySelector('button[type="submit"]');
+      const submitBtn = form.querySelector('button[type="submit"]') as HTMLButtonElement;
+      if (!submitBtn) return;
+      
       const originalContent = submitBtn.innerHTML;
       submitBtn.innerHTML = `
         <span class="flex items-center justify-center gap-2">
@@ -185,7 +212,7 @@
       submitBtn.disabled = true;
 
       try {
-        console.log('Enviando datos:', data); // Para debug
+        console.log('Enviando datos:', data);
 
         const response = await fetch('/api/send-email', {
           method: 'POST',
@@ -195,8 +222,8 @@
           body: JSON.stringify(data),
         });
 
-        console.log('Response status:', response.status); // Para debug
-        console.log('Response headers:', response.headers.get('content-type')); // Para debug
+        console.log('Response status:', response.status);
+        console.log('Response headers:', response.headers.get('content-type'));
 
         // Verificar si la respuesta es JSON
         const contentType = response.headers.get('content-type');
@@ -207,24 +234,38 @@
         }
 
         const result = await response.json();
-        console.log('Resultado:', result); // Para debug
+        console.log('Resultado:', result);
 
         if (response.ok && result.success) {
           form.reset();
-          successMessage.classList.remove('hidden');
-          setTimeout(() => {
-            successMessage.classList.add('hidden');
-          }, 8000);
+          showSuccess();
         } else {
           throw new Error(result.message || 'Error al enviar el mensaje');
         }
       } catch (error) {
         console.error('Error completo:', error);
-        alert(`Hubo un error al enviar tu mensaje: ${error.message}. Por favor, inténtalo de nuevo.`);
+        showError(`Hubo un error al enviar tu mensaje: ${error instanceof Error ? error.message : 'Error desconocido'}. Por favor, inténtalo de nuevo.`);
       } finally {
         submitBtn.innerHTML = originalContent;
         submitBtn.disabled = false;
       }
     });
+
+    function showSuccess() {
+      successMessage.classList.remove('hidden');
+      errorMessage.classList.add('hidden');
+      setTimeout(() => {
+        successMessage.classList.add('hidden');
+      }, 8000);
+    }
+
+    function showError(message: string) {
+      errorText.textContent = message;
+      errorMessage.classList.remove('hidden');
+      successMessage.classList.add('hidden');
+      setTimeout(() => {
+        errorMessage.classList.add('hidden');
+      }, 8000);
+    }
   });
 </script>
