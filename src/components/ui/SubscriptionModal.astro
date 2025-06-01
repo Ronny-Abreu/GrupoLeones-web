@@ -1,24 +1,11 @@
 ---
-import { Icon } from 'astro-icon';
 import { Image } from 'astro:assets';
-import confetti from 'canvas-confetti';
-
-interface Props {
-  id: string;
-  title: string;
-  subtitle: string;
-  image: {
-    src: ImageMetadata;
-    alt: string;
-  };
-  terms: string;
-}
 
 const { id, title, subtitle, image, terms } = Astro.props;
 ---
 
 <div
-  id={id}
+  id="subscriptionModal"
   class="fixed top-0 left-0 z-[999] flex h-full w-full items-center justify-center bg-black/20 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300"
 >
   <div
@@ -28,7 +15,10 @@ const { id, title, subtitle, image, terms } = Astro.props;
       class="absolute top-4 right-4 rounded-full p-1 text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-700"
       id="closeModalBtn"
     >
-      <Icon name="radix-icons:cross-2" class="h-5 w-5" />
+      <!-- X Icon usando SVG inline -->
+      <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+      </svg>
       <span class="sr-only">Close Modal</span>
     </button>
 
@@ -55,7 +45,7 @@ const { id, title, subtitle, image, terms } = Astro.props;
           <input
             type="email"
             id="email"
-            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+            class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm"
             placeholder="you@example.com"
             required
           />
@@ -68,7 +58,7 @@ const { id, title, subtitle, image, terms } = Astro.props;
           <input
             type="text"
             id="name"
-            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+            class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm"
             placeholder="Your Name"
             required
           />
@@ -102,7 +92,10 @@ const { id, title, subtitle, image, terms } = Astro.props;
       id="successMessage"
       class="hidden flex flex-col items-center gap-4 text-center"
     >
-      <Icon name="radix-icons:check" class="h-12 w-12 text-green-500" />
+      <!-- Check Icon usando SVG inline -->
+      <svg class="h-12 w-12 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+      </svg>
       <h4 class="text-xl font-bold">Thank you!</h4>
       <p class="text-gray-500">
         You have successfully subscribed to our newsletter.
@@ -112,128 +105,144 @@ const { id, title, subtitle, image, terms } = Astro.props;
 </div>
 
 <script>
-  let modal = document.getElementById('subscriptionModal');
-  let closeModalBtn = document.getElementById('closeModalBtn');
-  let subscribeBtn = document.getElementById('subscribeBtn');
-  let subscriptionForm = document.getElementById('subscriptionForm');
-  let successMessage = document.getElementById('successMessage');
-  let modalContent = document.getElementById('modalContent');
-
-  function checkModalDisplay() {
-    const modalLastClosed = localStorage.getItem('modalLastClosed');
-    const userSubscribed = localStorage.getItem('userSubscribed');
-
-    if (userSubscribed) {
-      return;
+  // Agregar declaración de tipos para propiedades personalizadas de window
+  declare global {
+    interface Window {
+      resetSubscription: () => void;
+      checkSubscriptionStatus: () => void;
     }
+  }
 
-    if (modalLastClosed) {
-      const timeSinceLastClosed = Date.now() - parseInt(modalLastClosed);
-      const fourDays = 4 * 24 * 60 * 60 * 1000; // 4 days in milliseconds
+  // Función global para resetear la suscripción (disponible en consola)
+  window.resetSubscription = function() {
+    localStorage.removeItem('userSubscribed');
+    localStorage.removeItem('modalLastClosed');
+    console.log('✅ Suscripción reseteada. Recarga la página para ver el modal.');
+    console.log('📊 Estado actual:');
+    console.log('- userSubscribed:', localStorage.getItem('userSubscribed'));
+    console.log('- modalLastClosed:', localStorage.getItem('modalLastClosed'));
+  };
 
-      if (timeSinceLastClosed > fourDays) {
-        showModal();
-      } else {
-        console.log('⏳ Modal no mostrado: Espera 4 días.');
+  // Función global para verificar el estado actual
+  window.checkSubscriptionStatus = function() {
+    const hasSubscribed = localStorage.getItem('userSubscribed');
+    const lastClosedTime = localStorage.getItem('modalLastClosed');
+    const fourHours = 4 * 60 * 60 * 1000; // 4 horas en milisegundos
+    
+    console.log('📊 Estado de suscripción:');
+    console.log('- Usuario suscrito:', hasSubscribed === 'true' ? 'Sí' : 'No');
+    console.log('- Última vez cerrado:', lastClosedTime ? new Date(parseInt(lastClosedTime)).toLocaleString() : 'Nunca');
+    
+    if (lastClosedTime) {
+      const timeDifference = Date.now() - parseInt(lastClosedTime);
+      console.log('⏰ Tiempo transcurrido:', (timeDifference / (1000 * 60 * 60)).toFixed(2) + ' horas');
+      
+      if (timeDifference < fourHours) {
+        console.log('❌ Modal no se muestra: No han pasado 4 horas');
+        return;
       }
-    } else {
-      showModal();
     }
-  }
+    
+    console.log('✅ Mostrando modal de suscripción');
 
-  function showModal() {
-    if (modal) {
-      modal.classList.remove('opacity-0', 'pointer-events-none');
+    const modalElement = document.getElementById("subscriptionModal");
+    if (modalElement) {
+      modalElement.classList.add('active');
     }
-  }
-
-  function hideModal() {
-    if (modal) {
-      modal.classList.add('opacity-0');
+    
+    function closeModal() {
+      const modal = document.getElementById("subscriptionModal");
+      if (modal) {
+        modal.classList.add('opacity-0');
+        setTimeout(() => {
+          if (modal) {
+            modal.style.display = 'none';
+          }
+        }, 300);
+      }
+      
+      if (!localStorage.getItem('userSubscribed')) {
+        localStorage.setItem('modalLastClosed', Date.now().toString());
+        console.log('💾 Guardado timestamp de cierre:', new Date().toLocaleString());
+      }
+    }
+    
+    function showSuccessMessage() {
+      const modalContent = document.getElementById('modalContent');
+      const subscriptionForm = document.getElementById('subscriptionForm');
+      const successMessage = document.getElementById('successMessage');
+      
+      if (modalContent) modalContent.style.display = 'none';
+      if (subscriptionForm) subscriptionForm.style.display = 'none';
+      if (successMessage) successMessage.classList.remove('hidden');
+      
       setTimeout(() => {
-        if (modal) {
-          modal.style.display = 'none';
-        }
-      }, 300);
+        closeModal();
+      }, 2000);
     }
-  }
-
-  document.addEventListener('DOMContentLoaded', () => {
-    checkModalDisplay();
-
-    if (closeModalBtn) {
-      closeModalBtn.addEventListener('click', closeModal);
-    }
-
-    if (subscribeBtn) {
-      subscribeBtn.addEventListener('click', function (event) {
-        event.preventDefault();
-        subscribe();
+    
+    const closeButton = document.getElementById('closeModalBtn');
+    if (closeButton) {
+      closeButton.addEventListener('click', (e) => {
+        e.preventDefault();
+        console.log('🚫 Modal cerrado por el usuario (botón X)');
+        closeModal();
       });
     }
-  });
-
-  function subscribe() {
-    // Simulate successful subscription
-    localStorage.setItem('userSubscribed', 'true');
-    console.log('✅ Subscripción exitosa.');
-
-    // Confetti effect
-    fireConfetti();
-
-    // Show success message
-    showSuccessMessage();
-  }
-
-  function fireConfetti() {
-    confetti({
-      particleCount: 100,
-      spread: 70,
-      origin: { y: 0.6 },
-    });
-  }
-
-  function closeModal() {
-    if (modal) {
-      modal.classList.add('opacity-0');
-      setTimeout(() => {
-        if (modal) {
-          modal.style.display = 'none';
+    
+    const modalElement2 = document.getElementById("subscriptionModal");
+    if (modalElement2) {
+      modalElement2.addEventListener('click', (e) => {
+        if (e.target === modalElement2) {
+          console.log('🚫 Modal cerrado por el usuario (clic fuera)');
+          closeModal();
         }
-      }, 300);
+      });
     }
     
-    if (!localStorage.getItem('userSubscribed')) {
-      localStorage.setItem('modalLastClosed', Date.now().toString());
-      console.log('💾 Guardado timestamp de cierre:', new Date().toLocaleString());
+    const form = document.getElementById('subscriptionForm');
+    if (form) {
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const emailInput = document.getElementById('email') as HTMLInputElement | null;
+        const email = emailInput ? emailInput.value : '';
+        
+        console.log('📧 Email para suscripción:', email);
+        
+        localStorage.setItem('userSubscribed', 'true');
+        localStorage.removeItem('modalLastClosed');
+        console.log('✅ Usuario suscrito exitosamente');
+        
+        showSuccessMessage();
+      });
     }
   }
-
-  function showSuccessMessage() {
-    if (modalContent) modalContent.style.display = 'none';
-    if (subscriptionForm) subscriptionForm.style.display = 'none';
-    if (successMessage) successMessage.classList.remove('hidden');
-    
-    setTimeout(() => {
-      closeModal();
-    }, 2000);
-  }
-
-  if (modal) {
-    modal.addEventListener('click', (event) => {
-      if (event.target === modal) {
-        hideModal();
-      }
-    });
-  }
-
-  window.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape') {
-      hideModal();
-    }
-  });
-
-function confetti(arg0: { particleCount: number; spread: number; origin: { y: number; }; }) {
-throw new Error("Function not implemented.");
-}
 </script>
+
+<style>
+  #subscriptionModal {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+  }
+  
+  #subscriptionModal.active {
+    opacity: 1;
+    visibility: visible;
+  }
+  
+  #successMessage {
+    animation: fadeInScale 0.5s ease-out;
+  }
+  
+  @keyframes fadeInScale {
+    from {
+      opacity: 0;
+      transform: scale(0.9);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+</style>

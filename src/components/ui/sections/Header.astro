@@ -1,11 +1,11 @@
 ---
-import Favicon from "../icons/Favicon.astro"
-import BottomArrow from "../icons/BottomArrow.astro"
-import OpenMenuNavbar from "../ui/OpenMenuNavbar.astro"
+import Favicon from "../Favicon.astro"
+import BottomArrow from "../BottomArrow.astro"
+import OpenMenuNavbar from "../OpenMenuNavbar.astro"
 
 const { showHomeAcess = false } = Astro.props;
 ---
-<header class="w-full relative animate-fade-in-down">
+<header class="w-full relative animate-fade-in-down z-[70]">
   <nav class="container mx-auto px-4 py-6 flex items-center justify-between">
     <!-- Logo -->
     <div class="flex items-center gap-1 text-white font-bold text-xl group animate-fade-in-left">
@@ -49,7 +49,7 @@ const { showHomeAcess = false } = Astro.props;
     </div>
 
     <!-- Mobile Menu Button -->
-    <button id="hamburguerBtn" class="md:hidden hover:cursor-pointer flex flex-col gap-2.5 w-10 h-10 justify-center items-center z-[60] animate-fade-in-right">
+    <button id="hamburguerBtn" class="md:hidden hover:cursor-pointer flex flex-col gap-2.5 w-10 h-10 justify-center items-center z-[80] animate-fade-in-right relative">
       <div class="bg-white h-[2px] w-full rounded transition-all origin-left"></div>
       <div class="bg-white h-[2px] w-full rounded transition-all"></div>
       <div class="bg-white h-[2px] w-full rounded transition-all origin-left"></div>
@@ -57,7 +57,7 @@ const { showHomeAcess = false } = Astro.props;
   </nav>
 
   <!-- Mobile Menu -->
-  <div id="mobileMenu" class="md:hidden hidden flex-col gap-6 fixed top-0 left-0 w-[60%] min-h-[100vh] bg-[#161616] text-white font-bold px-6 py-8 z-[50]">
+  <div id="mobileMenu" class="md:hidden hidden flex-col gap-6 fixed top-0 left-0 w-[60%] min-h-[100vh] bg-[#161616] text-white font-bold px-6 py-8 z-[75]">
     <div class="flex items-center gap-1 text-white font-bold text-xl border-b border-gray-600 pb-4 group">
       <a href="/" class="transition-transform duration-300 group-hover:translate-x-2">
         <Favicon size="64" />
@@ -81,31 +81,59 @@ const { showHomeAcess = false } = Astro.props;
     </div>
   </div>
 
+  <!-- Mobile Menu Overlay -->
+  <div id="mobileOverlay" class="md:hidden hidden fixed inset-0 bg-black/50 z-[65]"></div>
+
 <script>
   document.addEventListener("DOMContentLoaded", () => {
     const btn = document.getElementById("hamburguerBtn");
     const menu = document.getElementById("mobileMenu");
+    const overlay = document.getElementById("mobileOverlay");
     const filialesBtn = document.getElementById("filialesDropdown");
     const filialesMenu = document.getElementById("filialesMenu");
 
     // Mobile menu functionality
-    if (btn && menu) {
+    if (btn && menu && overlay) {
       const lines = btn.querySelectorAll("div");
       let open = false;
 
-      btn.addEventListener("click", () => {
+      const toggleMenu = () => {
         open = !open;
         menu.classList.toggle("hidden");
+        overlay.classList.toggle("hidden");
 
         if (open) {
           lines[0].style.transform = "rotate(45deg)";
           lines[1].style.opacity = "0";
           lines[2].style.transform = "rotate(-45deg)";
+          // Prevent body scroll when menu is open
+          document.body.style.overflow = "hidden";
         } else {
           lines[0].style.transform = "rotate(0)";
           lines[1].style.opacity = "1";
           lines[2].style.transform = "rotate(0)";
+          // Restore body scroll when menu is closed
+          document.body.style.overflow = "auto";
         }
+      };
+
+      btn.addEventListener("click", toggleMenu);
+      
+      // Close menu when clicking overlay
+      overlay.addEventListener("click", () => {
+        if (open) {
+          toggleMenu();
+        }
+      });
+
+      // Close menu when clicking on menu links
+      const menuLinks = menu.querySelectorAll("a");
+      menuLinks.forEach(link => {
+        link.addEventListener("click", () => {
+          if (open) {
+            toggleMenu();
+          }
+        });
       });
     }
 
