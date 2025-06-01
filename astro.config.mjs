@@ -3,7 +3,7 @@ import tailwindcss from "@tailwindcss/vite";
 import vercel from "@astrojs/vercel/serverless";
 
 export default defineConfig({
-  output: 'server', // Cambia a 'server' en lugar de 'hybrid'
+  output: 'hybrid', //
   adapter: vercel({
     webAnalytics: { enabled: true }
   }),
