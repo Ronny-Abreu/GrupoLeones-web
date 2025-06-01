@@ -1,13 +1,14 @@
-import { Resend } from "resend"
+import { Resend } from "resend";
+// src/pages/api/send-email.ts
+import type { APIRoute } from 'astro';
 
-export const prerender = false
+export const prerender = false; // Esto fuerza SSR para esta ruta específica
 
-// Inicializar Resend con API key
-const resend = new Resend(import.meta.env.RESEND_API_KEY)
+const resend = new Resend(import.meta.env.RESEND_API_KEY);
 
-export async function POST({ request }: { request: Request }) {
+export const POST: APIRoute = async ({ request }) => {
   try {
-    const contentType = request.headers.get("content-type")
+    const contentType = request.headers.get("content-type");
     if (!contentType || !contentType.includes("application/json")) {
       return new Response(
         JSON.stringify({
@@ -16,53 +17,15 @@ export async function POST({ request }: { request: Request }) {
         }),
         {
           status: 400,
-          headers: {
-            "Content-Type": "application/json",
-          },
+          headers: { "Content-Type": "application/json" },
         },
-      )
+      );
     }
 
-    const text = await request.text()
-    console.log("📝 Raw request body:", text)
+    const data = await request.json();
+    const { nombre, email, telefono, asunto, mensaje } = data;
 
-    if (!text) {
-      return new Response(
-        JSON.stringify({
-          success: false,
-          message: "El cuerpo de la petición está vacío",
-        }),
-        {
-          status: 400,
-          headers: {
-            "Content-Type": "application/json",
-          },
-        },
-      )
-    }
-
-    let data
-    try {
-      data = JSON.parse(text)
-    } catch (parseError) {
-      console.error("❌ Error parsing JSON:", parseError)
-      return new Response(
-        JSON.stringify({
-          success: false,
-          message: "Error al parsear JSON",
-        }),
-        {
-          status: 400,
-          headers: {
-            "Content-Type": "application/json",
-          },
-        },
-      )
-    }
-
-    const { nombre, email, telefono, asunto, mensaje } = data
-
-    console.log("📝 Datos recibidos:", { nombre, email, telefono, asunto, mensaje })
+    console.log("📝 Datos recibidos:", { nombre, email, telefono, asunto, mensaje });
 
     // Validación básica
     if (!nombre || !email || !asunto || !mensaje) {
@@ -73,14 +36,12 @@ export async function POST({ request }: { request: Request }) {
         }),
         {
           status: 400,
-          headers: {
-            "Content-Type": "application/json",
-          },
+          headers: { "Content-Type": "application/json" },
         },
-      )
+      );
     }
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       return new Response(
         JSON.stringify({
@@ -89,16 +50,14 @@ export async function POST({ request }: { request: Request }) {
         }),
         {
           status: 400,
-          headers: {
-            "Content-Type": "application/json",
-          },
+          headers: { "Content-Type": "application/json" },
         },
-      )
+      );
     }
 
     // Verificar API key
     if (!import.meta.env.RESEND_API_KEY) {
-      console.error("❌ RESEND_API_KEY no está configurada")
+      console.error("❌ RESEND_API_KEY no está configurada");
       return new Response(
         JSON.stringify({
           success: false,
@@ -106,11 +65,9 @@ export async function POST({ request }: { request: Request }) {
         }),
         {
           status: 500,
-          headers: {
-            "Content-Type": "application/json",
-          },
+          headers: { "Content-Type": "application/json" },
         },
-      )
+      );
     }
 
     const adminEmailContent = `
@@ -189,7 +146,7 @@ export async function POST({ request }: { request: Request }) {
         </div>
       </body>
       </html>
-    `
+    `;
 
     // Template de confirmación que se enviará al admin para que lo reenvíe manualmente al usuario
     const userConfirmationTemplate = `
@@ -257,20 +214,20 @@ export async function POST({ request }: { request: Request }) {
         </div>
       </body>
       </html>
-    `
+    `;
 
-    console.log("🚀 Iniciando envío de emails...")
+    console.log("🚀 Iniciando envío de emails...");
 
-    // Enviar email al administrador (easybookingvalidation@gmail.com)
+    // Enviar email al administrador
     const adminEmailResult = await resend.emails.send({
       from: "onboarding@resend.dev",
       to: "easybookingvalidation@gmail.com",
       subject: `🦁 Nueva consulta: ${asunto} - ${nombre}`,
       html: adminEmailContent,
       replyTo: email,
-    })
+    });
 
-    console.log("📧 Resultado email admin:", adminEmailResult)
+    console.log("📧 Resultado email admin:", adminEmailResult);
 
     // Enviar template de confirmación al admin para que lo reenvíe al usuario
     const confirmationTemplateResult = await resend.emails.send({
@@ -278,16 +235,16 @@ export async function POST({ request }: { request: Request }) {
       to: "easybookingvalidation@gmail.com",
       subject: `📧 Template de confirmación para ${nombre} (${email})`,
       html: userConfirmationTemplate,
-    })
+    });
 
-    console.log("📧 Resultado template confirmación:", confirmationTemplateResult)
+    console.log("📧 Resultado template confirmación:", confirmationTemplateResult);
 
     if (adminEmailResult.error) {
-      console.error("❌ Error enviando email al admin:", adminEmailResult.error)
-      throw new Error(`Error enviando email al administrador: ${adminEmailResult.error.message}`)
+      console.error("❌ Error enviando email al admin:", adminEmailResult.error);
+      throw new Error(`Error enviando email al administrador: ${adminEmailResult.error.message}`);
     }
 
-    console.log("✅ Emails enviados exitosamente!")
+    console.log("✅ Emails enviados exitosamente!");
 
     return new Response(
       JSON.stringify({
@@ -298,13 +255,12 @@ export async function POST({ request }: { request: Request }) {
       }),
       {
         status: 200,
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
       },
-    )
+    );
+
   } catch (error) {
-    console.error("❌ Error en API send-email:", error)
+    console.error("❌ Error en API send-email:", error);
 
     return new Response(
       JSON.stringify({
@@ -314,10 +270,8 @@ export async function POST({ request }: { request: Request }) {
       }),
       {
         status: 500,
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
       },
-    )
+    );
   }
-}
+};
