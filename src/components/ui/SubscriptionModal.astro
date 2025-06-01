@@ -1,243 +1,239 @@
 ---
-// SubscriptionModal.astro
+import { Icon } from 'astro-icon';
+import { Image } from 'astro:assets';
+import confetti from 'canvas-confetti';
+
+interface Props {
+  id: string;
+  title: string;
+  subtitle: string;
+  image: {
+    src: ImageMetadata;
+    alt: string;
+  };
+  terms: string;
+}
+
+const { id, title, subtitle, image, terms } = Astro.props;
 ---
 
-<div id="subscriptionModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30 transition-opacity">
-  <div class="bg-white rounded-lg shadow-xl w-full max-w-md mx-4 overflow-hidden">
-    <div class="relative p-6">
-      <!-- Botón de cerrar -->
-      <button id="closeModal" class="absolute top-4 right-4 text-gray-500 hover:text-gray-700">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-        </svg>
-      </button>
-      
-      <!-- Contenido del modal -->
-      <div id="modalContent" class="text-center mb-6">
-        <h2 class="text-2xl font-bold text-gray-800 mb-2">¡Mantente informado!</h2>
-        <p class="text-gray-600">Suscríbete para recibir las últimas novedades, promociones y actualizaciones de Grupo Leones.</p>
+<div
+  id={id}
+  class="fixed top-0 left-0 z-[999] flex h-full w-full items-center justify-center bg-black/20 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300"
+>
+  <div
+    class="relative flex w-full max-w-2xl flex-col rounded-xl bg-white p-8 shadow-xl transition-transform duration-300"
+  >
+    <button
+      class="absolute top-4 right-4 rounded-full p-1 text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-700"
+      id="closeModalBtn"
+    >
+      <Icon name="radix-icons:cross-2" class="h-5 w-5" />
+      <span class="sr-only">Close Modal</span>
+    </button>
+
+    <div id="modalContent">
+      <div class="flex flex-col items-center gap-4">
+        <div class="relative h-24 w-24">
+          <Image
+            src={image.src || "/placeholder.svg"}
+            alt={image.alt}
+            class="rounded-full object-cover"
+            width={96}
+            height={96}
+          />
+        </div>
+        <h3 class="text-2xl font-bold">{title}</h3>
+        <p class="text-center text-gray-500">{subtitle}</p>
       </div>
-      
-      <!-- Formulario de suscripción -->
-      <form id="subscriptionForm" class="space-y-4">
+
+      <form id="subscriptionForm" class="mt-8 flex flex-col gap-4">
         <div>
-          <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Correo electrónico</label>
-          <input 
-            type="email" 
-            id="email" 
-            name="email" 
-            required 
-            placeholder="tucorreo@ejemplo.com" 
-            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          <label for="email" class="block text-sm font-medium text-gray-700"
+            >Email</label
+          >
+          <input
+            type="email"
+            id="email"
+            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+            placeholder="you@example.com"
+            required
+          />
+        </div>
+
+        <div>
+          <label for="name" class="block text-sm font-medium text-gray-700"
+            >Name</label
+          >
+          <input
+            type="text"
+            id="name"
+            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+            placeholder="Your Name"
+            required
+          />
+        </div>
+
+        <div class="flex items-center">
+          <input
+            type="checkbox"
+            id="terms"
+            class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+            required
+          />
+          <label for="terms" class="ml-2 block text-sm text-gray-900"
+            >{terms}</label
           >
         </div>
-        
-        <button 
-          type="submit" 
-          class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors font-medium"
-        >
-          Suscribirme
-        </button>
-        
-        <p class="text-xs text-gray-500 text-center">
-          Al suscribirte, aceptas recibir correos electrónicos de Grupo Leones. Puedes darte de baja en cualquier momento.
-        </p>
-      </form>
-      
-      <!-- Mensaje de éxito -->
-      <div id="successMessage" class="hidden text-center py-8">
-        <div class="flex justify-center mb-4">
-          <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center">
-            <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-            </svg>
-          </div>
+
+        <div>
+          <button
+            type="submit"
+            class="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+            id="subscribeBtn"
+          >
+            Subscribe
+          </button>
         </div>
-        <h3 class="text-xl font-bold text-gray-800 mb-2">¡Suscripción exitosa!</h3>
-        <p class="text-gray-600">Gracias por suscribirte. Pronto recibirás nuestras novedades.</p>
-      </div>
+      </form>
+    </div>
+
+    <div
+      id="successMessage"
+      class="hidden flex flex-col items-center gap-4 text-center"
+    >
+      <Icon name="radix-icons:check" class="h-12 w-12 text-green-500" />
+      <h4 class="text-xl font-bold">Thank you!</h4>
+      <p class="text-gray-500">
+        You have successfully subscribed to our newsletter.
+      </p>
     </div>
   </div>
 </div>
 
 <script>
-  // Agregar declaración de tipos para propiedades personalizadas de window
-  declare global {
-    interface Window {
-      resetSubscription: () => void;
-      checkSubscriptionStatus: () => void;
+  let modal = document.getElementById('subscriptionModal');
+  let closeModalBtn = document.getElementById('closeModalBtn');
+  let subscribeBtn = document.getElementById('subscribeBtn');
+  let subscriptionForm = document.getElementById('subscriptionForm');
+  let successMessage = document.getElementById('successMessage');
+  let modalContent = document.getElementById('modalContent');
+
+  function checkModalDisplay() {
+    const modalLastClosed = localStorage.getItem('modalLastClosed');
+    const userSubscribed = localStorage.getItem('userSubscribed');
+
+    if (userSubscribed) {
+      return;
+    }
+
+    if (modalLastClosed) {
+      const timeSinceLastClosed = Date.now() - parseInt(modalLastClosed);
+      const fourDays = 4 * 24 * 60 * 60 * 1000; // 4 days in milliseconds
+
+      if (timeSinceLastClosed > fourDays) {
+        showModal();
+      } else {
+        console.log('⏳ Modal no mostrado: Espera 4 días.');
+      }
+    } else {
+      showModal();
     }
   }
 
-  // Función global para resetear la suscripción (disponible en consola)
-  window.resetSubscription = function() {
-    localStorage.removeItem('userSubscribed');
-    localStorage.removeItem('modalLastClosed');
-    console.log('✅ Suscripción reseteada. Recarga la página para ver el modal.');
-    console.log('📊 Estado actual:');
-    console.log('- userSubscribed:', localStorage.getItem('userSubscribed'));
-    console.log('- modalLastClosed:', localStorage.getItem('modalLastClosed'));
-  };
-
-  // Función global para verificar el estado actual
-  window.checkSubscriptionStatus = function() {
-    const hasSubscribed = localStorage.getItem('userSubscribed');
-    const lastClosedTime = localStorage.getItem('modalLastClosed');
-    const fourHours = 4 * 60 * 60 * 1000;
-    
-    console.log('📊 Estado de suscripción:');
-    console.log('- Usuario suscrito:', hasSubscribed === 'true' ? 'Sí' : 'No');
-    console.log('- Última vez cerrado:', lastClosedTime ? new Date(parseInt(lastClosedTime)).toLocaleString() : 'Nunca');
-    
-    if (lastClosedTime) {
-      const timeDifference = Date.now() - parseInt(lastClosedTime);
-      const hoursLeft = Math.max(0, (fourHours - timeDifference) / (1000 * 60 * 60));
-      console.log('- Tiempo restante para mostrar modal:', hoursLeft.toFixed(2) + ' horas');
-    }
-  };
-
-  document.addEventListener('DOMContentLoaded', () => {
-    const modal = document.getElementById('subscriptionModal');
-    const closeButton = document.getElementById('closeModal');
-    const form = document.getElementById('subscriptionForm');
-    const modalContent = document.getElementById('modalContent');
-    const subscriptionForm = document.getElementById('subscriptionForm');
-    const successMessage = document.getElementById('successMessage');
-    
-    // FUNCIONALIDAD DE 4 HORAS - ACTIVA
-    // Verificar si el usuario ya se suscribió
-    const hasSubscribed = localStorage.getItem('userSubscribed');
-    const lastClosedTime = localStorage.getItem('modalLastClosed');
-    const fourHours = 4 * 60 * 60 * 1000; // 4 horas en milisegundos
-    
-    console.log('🔍 Verificando estado del modal...');
-    console.log('- Usuario suscrito:', hasSubscribed);
-    console.log('- Última vez cerrado:', lastClosedTime);
-    
-    // Si el usuario ya se suscribió, no mostrar el modal
-    if (hasSubscribed === 'true') {
-      console.log('❌ Modal no se muestra: Usuario ya suscrito');
-      if (modal) {
-        if (modal) {
-          if (modal) {
-            if (modal) {
-              if (modal) {
-                modal.style.display = 'none';
-              }
-            }
-          }
-        }
-      }
-      return;
-    }
-    
-    if (lastClosedTime) {
-      const timeDifference = Date.now() - parseInt(lastClosedTime);
-      console.log('⏰ Tiempo transcurrido:', (timeDifference / (1000 * 60 * 60)).toFixed(2) + ' horas');
-      
-      // Si no han pasado 4 horas, no mostrar el modal
-      if (timeDifference < fourHours) {
-        console.log('❌ Modal no se muestra: No han pasado 4 horas');
-        modal.style.display = 'none';
-        return;
-      }
-    }
-    
-    console.log('✅ Mostrando modal de suscripción');
-
+  function showModal() {
     if (modal) {
-      modal.classList.add('active');
+      modal.classList.remove('opacity-0', 'pointer-events-none');
     }
-    
-    function closeModal() {
-      if (modal) {
-        modal.classList.add('opacity-0');
-      }
+  }
+
+  function hideModal() {
+    if (modal) {
+      modal.classList.add('opacity-0');
       setTimeout(() => {
         if (modal) {
           modal.style.display = 'none';
         }
       }, 300);
-      
-      // Guardar el timestamp de cuando se cerró el modal (solo si no se suscribió)
-      if (!localStorage.getItem('userSubscribed')) {
-        localStorage.setItem('modalLastClosed', Date.now().toString());
-        console.log('💾 Guardado timestamp de cierre:', new Date().toLocaleString());
-      }
     }
-    
-    function showSuccessMessage() {
-      if (modalContent) modalContent.style.display = 'none';
-      if (subscriptionForm) subscriptionForm.style.display = 'none';
-      if (successMessage) successMessage.classList.remove('hidden');
-      
-      setTimeout(() => {
-        closeModal();
-      }, 2000);
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    checkModalDisplay();
+
+    if (closeModalBtn) {
+      closeModalBtn.addEventListener('click', closeModal);
     }
-    
-    if (closeButton) {
-      closeButton.addEventListener('click', (e) => {
-        e.preventDefault();
-        console.log('🚫 Modal cerrado por el usuario (botón X)');
-        closeModal();
-      });
-    }
-    
-    if (modal) {
-      modal.addEventListener('click', (e) => {
-        if (e.target === modal) {
-          console.log('🚫 Modal cerrado por el usuario (clic fuera)');
-          closeModal();
-        }
-      });
-    }
-    
-    // Manejo envío del formulario
-    if (form) {
-      form.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const emailInput = document.getElementById('email') as HTMLInputElement | null;
-        const email = emailInput ? emailInput.value : '';
-        
-        // Aquí agregar la lógica para enviar el correo al backend
-        console.log('📧 Email para suscripción:', email);
-        
-        // Marcar que el usuario se suscribió para no mostrar el modal de nuevo
-        localStorage.setItem('userSubscribed', 'true');
-        localStorage.removeItem('modalLastClosed');
-        console.log('✅ Usuario suscrito exitosamente');
-        
-        showSuccessMessage();
+
+    if (subscribeBtn) {
+      subscribeBtn.addEventListener('click', function (event) {
+        event.preventDefault();
+        subscribe();
       });
     }
   });
-</script>
 
-<style>
-  #subscriptionModal {
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.3s ease, visibility 0.3s ease;
+  function subscribe() {
+    // Simulate successful subscription
+    localStorage.setItem('userSubscribed', 'true');
+    console.log('✅ Subscripción exitosa.');
+
+    // Confetti effect
+    fireConfetti();
+
+    // Show success message
+    showSuccessMessage();
   }
-  
-  #subscriptionModal.active {
-    opacity: 1;
-    visibility: visible;
+
+  function fireConfetti() {
+    confetti({
+      particleCount: 100,
+      spread: 70,
+      origin: { y: 0.6 },
+    });
   }
-  
-  #successMessage {
-    animation: fadeInScale 0.5s ease-out;
-  }
-  
-  @keyframes fadeInScale {
-    from {
-      opacity: 0;
-      transform: scale(0.9);
+
+  function closeModal() {
+    if (modal) {
+      modal.classList.add('opacity-0');
+      setTimeout(() => {
+        if (modal) {
+          modal.style.display = 'none';
+        }
+      }, 300);
     }
-    to {
-      opacity: 1;
-      transform: scale(1);
+    
+    if (!localStorage.getItem('userSubscribed')) {
+      localStorage.setItem('modalLastClosed', Date.now().toString());
+      console.log('💾 Guardado timestamp de cierre:', new Date().toLocaleString());
     }
   }
-</style>
+
+  function showSuccessMessage() {
+    if (modalContent) modalContent.style.display = 'none';
+    if (subscriptionForm) subscriptionForm.style.display = 'none';
+    if (successMessage) successMessage.classList.remove('hidden');
+    
+    setTimeout(() => {
+      closeModal();
+    }, 2000);
+  }
+
+  if (modal) {
+    modal.addEventListener('click', (event) => {
+      if (event.target === modal) {
+        hideModal();
+      }
+    });
+  }
+
+  window.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') {
+      hideModal();
+    }
+  });
+
+function confetti(arg0: { particleCount: number; spread: number; origin: { y: number; }; }) {
+throw new Error("Function not implemented.");
+}
+</script>
