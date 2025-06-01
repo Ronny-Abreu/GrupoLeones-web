@@ -20,64 +20,12 @@
 			"dest": "_render"
 		},
 		{
-			"src": "^/404/?$",
-			"dest": "_render"
-		},
-		{
 			"src": "^/api/send-email/?$",
 			"dest": "_render"
 		},
 		{
-			"src": "^/dashboard/?$",
-			"dest": "_render"
-		},
-		{
-			"src": "^/filiales/academy/?$",
-			"dest": "_render"
-		},
-		{
-			"src": "^/filiales/capital/?$",
-			"dest": "_render"
-		},
-		{
-			"src": "^/filiales/finanzas/?$",
-			"dest": "_render"
-		},
-		{
-			"src": "^/filiales/impacto/?$",
-			"dest": "_render"
-		},
-		{
-			"src": "^/filiales/marketing/?$",
-			"dest": "_render"
-		},
-		{
-			"src": "^/filiales/seguros/?$",
-			"dest": "_render"
-		},
-		{
-			"src": "^/filiales/talento/?$",
-			"dest": "_render"
-		},
-		{
-			"src": "^/formEmail/?$",
-			"dest": "_render"
-		},
-		{
-			"src": "^/login/?$",
-			"dest": "_render"
-		},
-		{
-			"src": "^/nosotros/?$",
-			"dest": "_render"
-		},
-		{
-			"src": "^/$",
-			"dest": "_render"
-		},
-		{
 			"src": "^/.*$",
-			"dest": "_render",
+			"dest": "/404.html",
 			"status": 404
 		}
 	]

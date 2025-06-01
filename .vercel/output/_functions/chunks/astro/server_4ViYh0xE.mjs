@@ -4,7 +4,7 @@ import { escape } from 'html-escaper';
 import { decodeBase64, encodeHexUpperCase, encodeBase64, decodeHex } from '@oslojs/encoding';
 import 'cssesc';
 
-const ASTRO_VERSION = "5.8.0";
+const ASTRO_VERSION = "5.8.1";
 const REROUTE_DIRECTIVE_HEADER = "X-Astro-Reroute";
 const REWRITE_DIRECTIVE_HEADER_KEY = "X-Astro-Rewrite";
 const REWRITE_DIRECTIVE_HEADER_VALUE = "yes";
@@ -593,6 +593,17 @@ function isVNode(vnode) {
   return vnode && typeof vnode === "object" && vnode[AstroJSX];
 }
 
+function isAstroComponentFactory(obj) {
+  return obj == null ? false : obj.isAstroComponentFactory === true;
+}
+function isAPropagatingComponent(result, factory) {
+  let hint = factory.propagation || "none";
+  if (factory.moduleId && result.componentMetadata.has(factory.moduleId) && hint === "none") {
+    hint = result.componentMetadata.get(factory.moduleId).propagation;
+  }
+  return hint === "in-tree" || hint === "self";
+}
+
 const RenderInstructionSymbol = Symbol.for("astro:render");
 function createRenderInstruction(instruction) {
   return Object.defineProperty(instruction, RenderInstructionSymbol, {
@@ -881,17 +892,6 @@ function shorthash(text) {
   return sign + result;
 }
 
-function isAstroComponentFactory(obj) {
-  return obj == null ? false : obj.isAstroComponentFactory === true;
-}
-function isAPropagatingComponent(result, factory) {
-  let hint = factory.propagation || "none";
-  if (factory.moduleId && result.componentMetadata.has(factory.moduleId) && hint === "none") {
-    hint = result.componentMetadata.get(factory.moduleId).propagation;
-  }
-  return hint === "in-tree" || hint === "self";
-}
-
 const headAndContentSym = Symbol.for("astro.headAndContent");
 function isHeadAndContent(obj) {
   return typeof obj === "object" && obj !== null && !!obj[headAndContentSym];
@@ -1003,6 +1003,9 @@ Make sure to use the static attribute syntax (\`${key}={value}\`) instead of the
   }
   if (value === "") {
     return markHTMLString(` ${key}`);
+  }
+  if (key === "popover" && typeof value === "boolean") {
+    return markHTMLString(value ? ` popover` : "");
   }
   return markHTMLString(` ${key}="${toAttributeString(value, shouldEscape)}"`);
 }
@@ -1631,10 +1634,11 @@ class AstroComponentInstance {
     }
   }
 }
-function validateComponentProps(props, displayName) {
+function validateComponentProps(props, clientDirectives, displayName) {
   if (props != null) {
+    const directives = [...clientDirectives.keys()].map((directive) => `client:${directive}`);
     for (const prop of Object.keys(props)) {
-      if (prop.startsWith("client:")) {
+      if (directives.includes(prop)) {
         console.warn(
           `You are attempting to render <${displayName} ${prop} />, but ${displayName} is an Astro component. Astro components do not render in the client and should not have a hydration directive. Please use a framework component for client rendering.`
         );
@@ -1643,7 +1647,7 @@ function validateComponentProps(props, displayName) {
   }
 }
 function createAstroComponentInstance(result, displayName, factory, props, slots = {}) {
-  validateComponentProps(props, displayName);
+  validateComponentProps(props, result.clientDirectives, displayName);
   const instance = new AstroComponentInstance(result, props, slots, factory);
   if (isAPropagatingComponent(result, factory)) {
     result._metadata.propagators.add(instance);
@@ -2338,7 +2342,7 @@ Did you forget to import the component or is it possible there is a typo?`);
       }
       case vnode.type === Symbol.for("astro:fragment"):
         return renderJSX(result, vnode.props.children);
-      case vnode.type.isAstroComponentFactory: {
+      case isAstroComponentFactory(vnode.type): {
         let props = {};
         let slots = {};
         for (const [key, value] of Object.entries(vnode.props ?? {})) {
@@ -2348,10 +2352,13 @@ Did you forget to import the component or is it possible there is a typo?`);
             props[key] = value;
           }
         }
-        const str = await renderToString(result, vnode.type, props, slots);
-        if (str instanceof Response) {
-          throw str;
-        }
+        const str = await renderComponentToString(
+          result,
+          vnode.type.name,
+          vnode.type,
+          props,
+          slots
+        );
         const html = markHTMLString(str);
         return html;
       }
