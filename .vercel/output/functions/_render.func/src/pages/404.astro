@@ -1,0 +1,23 @@
+---
+import Layout from '../layouts/Layout.astro'
+import Header from "../components/sections/Header.astro";
+---
+
+<Layout title="Página no encontrada | Grupo Leones">
+    <main class="w-full bg-black text-white flex flex-col justify-center items-center gap-60">
+    <Header showHomeAcess={true} />
+        <div class="flex flex-col items-center text-center">
+            <h1 class="text-[80px] select-none font-bold">404</h1>
+            <span id="error">La página a la que intentas acceder no fué encontrada...</span>
+            <a href="/" class="py-1 px-2 bg-amber-200 hover:bg-amber-100 text-black rounded-2xl w-[15em] mt-6">Volver al inicio</a>
+        </div>
+    </main>
+</Layout>
+
+<style>
+	@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+    #error {
+        font-family: 'Poppins', sans-serif;
+    }
+</style>
