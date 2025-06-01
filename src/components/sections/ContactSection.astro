@@ -252,19 +252,25 @@
     });
 
     function showSuccess() {
+      if (!successMessage || !errorMessage) return;
       successMessage.classList.remove('hidden');
       errorMessage.classList.add('hidden');
       setTimeout(() => {
-        successMessage.classList.add('hidden');
+        if (successMessage) {
+          successMessage.classList.add('hidden');
+        }
       }, 8000);
     }
 
     function showError(message: string) {
+      if (!errorText || !errorMessage || !successMessage) return;
       errorText.textContent = message;
       errorMessage.classList.remove('hidden');
       successMessage.classList.add('hidden');
       setTimeout(() => {
-        errorMessage.classList.add('hidden');
+        if (errorMessage) {
+          errorMessage.classList.add('hidden');
+        }
       }, 8000);
     }
   });
