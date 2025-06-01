@@ -49,7 +49,7 @@ const { showHomeAcess = false } = Astro.props;
     </div>
 
     <!-- Mobile Menu Button -->
-    <button id="hamburguerBtn" class="md:hidden hover:cursor-pointer flex flex-col gap-2.5 w-10 h-10 justify-center items-center z-50 animate-fade-in-right">
+    <button id="hamburguerBtn" class="md:hidden hover:cursor-pointer flex flex-col gap-2.5 w-10 h-10 justify-center items-center z-[60] animate-fade-in-right">
       <div class="bg-white h-[2px] w-full rounded transition-all origin-left"></div>
       <div class="bg-white h-[2px] w-full rounded transition-all"></div>
       <div class="bg-white h-[2px] w-full rounded transition-all origin-left"></div>
@@ -57,7 +57,7 @@ const { showHomeAcess = false } = Astro.props;
   </nav>
 
   <!-- Mobile Menu -->
-  <div id="mobileMenu" class="md:hidden hidden flex-col gap-6 absolute top-0 left-0 w-[60%] min-h-[100vh] bg-[#161616] text-white font-bold px-6 py-8 z-40">
+  <div id="mobileMenu" class="md:hidden hidden flex-col gap-6 fixed top-0 left-0 w-[60%] min-h-[100vh] bg-[#161616] text-white font-bold px-6 py-8 z-[50]">
     <div class="flex items-center gap-1 text-white font-bold text-xl border-b border-gray-600 pb-4 group">
       <a href="/" class="transition-transform duration-300 group-hover:translate-x-2">
         <Favicon size="64" />

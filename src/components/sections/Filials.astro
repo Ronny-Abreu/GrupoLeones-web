@@ -13,45 +13,51 @@
       {[
         {
           title: "LEONES CAPITAL",
-          description: "Soluciones financieras y de inversión para hacer crecer tu capital",
+          description: "Prestamos rápidos, responsables y con Asesoría",
           image: "/images/leones-capital.webp",
           page: "/filiales/capital",
-          color: "from-blue-500 to-blue-700"
+          color: "from-blue-500 to-blue-700",
+          icon: "💰"
         },
         {
           title: "LEONES SEGUROS",
-          description: "Protección integral para tu negocio y patrimonio personal",
+          description: "Seguros accesibles para ti y tu emprendimiento",
           image: "/images/leones-capital.webp",
           page: "/filiales/seguros",
-          color: "from-green-500 to-green-700"
+          color: "from-green-500 to-green-700",
+          icon: "🛡️"
         },
         {
           title: "LEONES FINANZAS",
-          description: "Asesoría financiera especializada para optimizar tus recursos",
+          description: "Contabilidad, control de gastos y educación financiera",
           image: "/images/leones-capital.webp",
           page: "/filiales/finanzas",
-          color: "from-purple-500 to-purple-700"
+          color: "from-purple-500 to-purple-700",
+          icon: "📊"
         },
         {
           title: "LEONES MARKETING",
           description: "Estrategias de marketing digital para potenciar tu marca",
           image: "/images/leones-capital.webp",
           page: "/filiales/marketing",
-          color: "from-orange-500 to-orange-700"
+          color: "from-orange-500 to-orange-700",
+          icon: "📈"
         },
         {
           title: "LEONES TALENTO",
-          description: "Gestión de talento humano y desarrollo organizacional",
+          description: "Marca, redes sociales y estrategia digital para crecer",
           image: "/images/leones-capital.webp",
           page: "/filiales/talento",
-          color: "from-pink-500 to-pink-700"
+          color: "from-pink-500 to-pink-700",
+          icon: "👥"
         },
         {
           title: "LEONES IMPACTO",
-          description: "Responsabilidad social y sostenibilidad empresarial",
+          description: "Responsabilidad social y proyectos que transforman",
           image: "/images/leones-capital.webp",
           page: "/filiales/impacto",
-          color: "from-teal-500 to-teal-700"
+          color: "from-teal-500 to-teal-700",
+          icon: "🌍"
         }
       ].map((card, index) => (
         <div class="w-full max-w-sm group">
@@ -65,7 +71,10 @@
                 />
                 <div class={`absolute inset-0 bg-gradient-to-t ${card.color} opacity-80 group-hover:opacity-90 transition-opacity duration-300`}></div>
                 <div class="absolute inset-0 flex items-center justify-center">
-                  <h3 class="text-white text-xl font-bold text-center px-4">{card.title}</h3>
+                  <div class="text-center">
+                    <div class="text-4xl mb-2">{card.icon}</div>
+                    <h3 class="text-white text-xl font-bold px-4">{card.title}</h3>
+                  </div>
                 </div>
               </div>
               <div class="p-6">

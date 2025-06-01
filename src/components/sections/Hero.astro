@@ -57,7 +57,7 @@ import Header from "../sections/Header.astro";
 <!-- WhatsApp Button -->
 <div id="whatsappBtn" class="fixed bottom-20 right-6 z-50 opacity-0 transform translate-y-10 transition-all duration-500">
   <a 
-    href="https://wa.me/+1 (829) 671-0425" 
+    href="https://wa.me/+18296710425" 
     target="_blank"
     class="bg-green-500 hover:bg-green-600 text-white p-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 flex items-center justify-center"
   >
@@ -70,18 +70,24 @@ import Header from "../sections/Header.astro";
 <script>
   document.addEventListener('DOMContentLoaded', () => {
     const whatsappBtn = document.getElementById('whatsappBtn');
+    const footer = document.getElementById('footer');
     let hasScrolled = false;
 
     window.addEventListener('scroll', () => {
       const scrollPosition = window.scrollY;
       const heroHeight = window.innerHeight;
+      
+      if (!whatsappBtn || !footer) return;
 
-      if (!whatsappBtn) return;
-      if (scrollPosition > heroHeight * 0.8 && !hasScrolled) {
+      // Verificar si estamos en la sección del footer
+      const footerRect = footer.getBoundingClientRect();
+      const isInFooter = footerRect.top <= window.innerHeight;
+
+      if (scrollPosition > heroHeight * 0.8 && !hasScrolled && !isInFooter) {
         hasScrolled = true;
         whatsappBtn.style.opacity = '1';
         whatsappBtn.style.transform = 'translateY(0)';
-      } else if (scrollPosition <= heroHeight * 0.8 && hasScrolled) {
+      } else if (scrollPosition <= heroHeight * 0.8 || isInFooter) {
         hasScrolled = false;
         whatsappBtn.style.opacity = '0';
         whatsappBtn.style.transform = 'translateY(10px)';
