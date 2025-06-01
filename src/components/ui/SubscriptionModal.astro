@@ -1,7 +1,13 @@
 ---
 import { Image } from 'astro:assets';
 
-const { id, title, subtitle, image, terms } = Astro.props;
+const { 
+  id = '', 
+  title = '', 
+  subtitle = '', 
+  image = { src: '/placeholder.svg', alt: 'Avatar' }, 
+  terms = '' 
+} = Astro.props;
 ---
 
 <div
