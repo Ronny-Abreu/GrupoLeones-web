@@ -185,6 +185,8 @@
       submitBtn.disabled = true;
 
       try {
+        console.log('Enviando datos:', data); // Para debug
+
         const response = await fetch('/api/send-email', {
           method: 'POST',
           headers: {
@@ -193,7 +195,19 @@
           body: JSON.stringify(data),
         });
 
+        console.log('Response status:', response.status); // Para debug
+        console.log('Response headers:', response.headers.get('content-type')); // Para debug
+
+        // Verificar si la respuesta es JSON
+        const contentType = response.headers.get('content-type');
+        if (!contentType || !contentType.includes('application/json')) {
+          const textResponse = await response.text();
+          console.error('Respuesta no es JSON:', textResponse);
+          throw new Error('El servidor no devolvió una respuesta JSON válida');
+        }
+
         const result = await response.json();
+        console.log('Resultado:', result); // Para debug
 
         if (response.ok && result.success) {
           form.reset();
@@ -205,7 +219,7 @@
           throw new Error(result.message || 'Error al enviar el mensaje');
         }
       } catch (error) {
-        console.error('Error:', error);
+        console.error('Error completo:', error);
         alert(`Hubo un error al enviar tu mensaje: ${error.message}. Por favor, inténtalo de nuevo.`);
       } finally {
         submitBtn.innerHTML = originalContent;
