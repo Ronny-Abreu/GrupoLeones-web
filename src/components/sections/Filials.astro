@@ -1,71 +1,85 @@
-<section class="relative h-[60vh] flex flex-col bg-[#f5f4f6] lg:pt-20">
-
-  <div class="w-full flex justify-center items-center mx-auto pb-[50px] xl:pt-10 px-4 z-10 bg-[#f5f4f6]">
-    <div class="w-auto">
-      <div class="w-full py-5 2xl:pb-10 flex justify-center items-center">
-          <h2 class="animated-gradient-text max-w-xl bg-gradient-to-tr from-gray-400 to-red-400 bg-clip-text text-[40px] flex flex-col xl:gap-3 2xl:gap-3 sm:gap-3 md:gap-3 sm:flex-row md:flex-row xl:flex-row 2xl:flex-row text-center sm:text-5xl md:text-5xl xl:text-5xl 2xl:text-[52px] font-black leading-[42px] text-transparent selection:bg-yellow-300/30">
-          <span>NUESTROS</span>
-          <span>FILIALES</span>
-        </h2>
-      </div>
-      <div class="grid gap-6 mb-6 justify-items-center
-            grid-cols-1
-            sm:grid-cols-2
-            md:grid-cols-2
-            xl:grid-cols-3
-            2xl:grid-cols-6">
+<section id="filiales" class="relative py-20 bg-gradient-to-b from-[#f8f9fa] to-[#e9ecef]">
+  <div class="container mx-auto px-4 max-w-7xl">
+    <div class="text-center mb-16">
+      <h2 class="animated-gradient-text bg-gradient-to-r from-gray-600 to-red-500 bg-clip-text text-4xl md:text-5xl lg:text-6xl font-black text-transparent mb-4">
+        NUESTRAS FILIALES
+      </h2>
+      <p class="text-gray-600 text-lg md:text-xl max-w-3xl mx-auto">
+        Descubre nuestro ecosistema empresarial diseñado para impulsar tu crecimiento en cada área de negocio
+      </p>
+    </div>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center">
       {[
         {
           title: "LEONES CAPITAL",
+          description: "Soluciones financieras y de inversión para hacer crecer tu capital",
           image: "/images/leones-capital.webp",
-          page: "/filiales/capital"
+          page: "/filiales/capital",
+          color: "from-blue-500 to-blue-700"
         },
         {
           title: "LEONES SEGUROS",
+          description: "Protección integral para tu negocio y patrimonio personal",
           image: "/images/leones-capital.webp",
-          page: "/filiales/seguros" 
+          page: "/filiales/seguros",
+          color: "from-green-500 to-green-700"
         },
         {
           title: "LEONES FINANZAS",
+          description: "Asesoría financiera especializada para optimizar tus recursos",
           image: "/images/leones-capital.webp",
-          page: "/filiales/finanzas"
+          page: "/filiales/finanzas",
+          color: "from-purple-500 to-purple-700"
         },
-                {
+        {
           title: "LEONES MARKETING",
+          description: "Estrategias de marketing digital para potenciar tu marca",
           image: "/images/leones-capital.webp",
-          page: "/filiales/marketing"
+          page: "/filiales/marketing",
+          color: "from-orange-500 to-orange-700"
         },
         {
           title: "LEONES TALENTO",
+          description: "Gestión de talento humano y desarrollo organizacional",
           image: "/images/leones-capital.webp",
-          page: "/filiales/talento"
+          page: "/filiales/talento",
+          color: "from-pink-500 to-pink-700"
         },
         {
           title: "LEONES IMPACTO",
+          description: "Responsabilidad social y sostenibilidad empresarial",
           image: "/images/leones-capital.webp",
-          page: "/filiales/impacto"
+          page: "/filiales/impacto",
+          color: "from-teal-500 to-teal-700"
         }
-        // {
-        //   title: "LEONES ACADEMY",
-        //   image: "/images/leones-capital.webp",
-        //   page: "/filiales/academy"
-        // }
-      ].map((card) => (
-        <a href="/filiales/capital" class="card-link w-full max-w-[280px] selection:bg-gray-600">
-          <div class="card-container bg-black/20 backdrop-blur-sm rounded-lg overflow-hidden border border-white/20 transition-all duration-200 lg:w-[290px] w-[290px] h-[300px] relative group">
-            <div class="image-container overflow-hidden h-full">
-              <img 
-                src={card.image} 
-                alt={card.title} 
-                class="w-full h-full object-cover transition-transform duration-200 group-hover:scale-110 select-none"
-              />
+      ].map((card, index) => (
+        <div class="w-full max-w-sm group">
+          <a href={card.page} class="block">
+            <div class="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden border border-gray-100 hover:border-gray-200 transform hover:-translate-y-2">
+              <div class="relative h-48 overflow-hidden">
+                <img 
+                  src={card.image || "/placeholder.svg?height=200&width=400"} 
+                  alt={card.title} 
+                  class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                />
+                <div class={`absolute inset-0 bg-gradient-to-t ${card.color} opacity-80 group-hover:opacity-90 transition-opacity duration-300`}></div>
+                <div class="absolute inset-0 flex items-center justify-center">
+                  <h3 class="text-white text-xl font-bold text-center px-4">{card.title}</h3>
+                </div>
+              </div>
+              <div class="p-6">
+                <p class="text-gray-600 text-sm leading-relaxed mb-4">{card.description}</p>
+                <div class="flex items-center text-red-600 font-semibold group-hover:text-red-700 transition-colors">
+                  <span>Conocer más</span>
+                  <svg class="w-4 h-4 ml-2 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                  </svg>
+                </div>
+              </div>
             </div>
-            <div class="card-content absolute inset-0 flex flex-col items-center justify-center gap-5 text-white p-4 bg-black/40 group-hover:bg-gradient-to-b group-hover:from-white/30 group-hover:to-black/50 transition-all duration-200">
-              <h3 class="mt-32 text-center font-bold text-[28px] leading-tight">{card.title}</h3>
-              <span class="border border-white px-4 py-1 text-sm">Más información</span>
-            </div>
-          </div>
-        </a>
+          </a>
+        </div>
       ))}
     </div>
   </div>
@@ -86,6 +100,6 @@
 
   .animated-gradient-text {
     background-size: 200% 200%;
-    animation: gradientMove 2s ease infinite;
+    animation: gradientMove 3s ease infinite;
   }
 </style>

@@ -5,41 +5,51 @@ import OpenMenuNavbar from "../ui/OpenMenuNavbar.astro"
 
 const { showHomeAcess = false } = Astro.props;
 ---
-<header class="w-full relative pr-10">
+<header class="w-full relative animate-fade-in-down">
   <nav class="container mx-auto px-4 py-6 flex items-center justify-between">
     <!-- Logo -->
-    <div class="flex items-center gap-1 text-white font-bold text-xl group">
+    <div class="flex items-center gap-1 text-white font-bold text-xl group animate-fade-in-left">
       <a href="/" class="transition-transform duration-300 group-hover:translate-x-2">
         <Favicon size="64" />
       </a>
-      <span class="text-[20px] md:26px transition-transform duration-300 group-hover:translate-x-4 hover:cursor-context-menu">GRUPO LEONES</span>
+      <span class="text-[20px] md:text-[26px] transition-transform duration-300 group-hover:translate-x-4 hover:cursor-context-menu">GRUPO LEONES</span>
     </div>
 
     <!-- Desktop Navigation -->
-    <div class="hidden md:flex space-x-8 items-center">
-
-      {showHomeAcess && (
-    <a href="/" class="text-white text-[18px] hover:border-b transition-colors">
-      Inicio
-    </a>
-  )}
-      <a href="/nosotros" class="text-white text-[18px] hover:border-b transition-colors">Nosotros</a>
-
-      <div class="relative group">
-        <button class="flex items-center text-white text-[18px] transition-colors">
+    <div class="hidden md:flex space-x-8 items-center animate-fade-in-right ml-auto pr-4">
+      <div class="relative">
+        <button id="filialesDropdown" class="flex items-center text-white text-[18px] transition-colors">
           Filiales
           <BottomArrow size="26" />
         </button>
-        <div class="absolute left-0 top-[1em] mt-2 hidden group-hover:flex flex-col gap-1 bg-[#e5c2c2] p-4 text-black font-bold rounded-2xl shadow-lg z-50">
-          <OpenMenuNavbar />
+        <div id="filialesMenu" class="absolute right-0 top-full mt-2 hidden bg-[#e5c2c2] p-6 text-black font-bold rounded-2xl shadow-lg z-50 w-[520px]">
+          <div class="grid grid-cols-2 gap-8">
+            <div class="flex flex-col gap-4">
+              <a href="/filiales/capital" class="hover:text-red-600 transition-colors whitespace-nowrap text-[16px]">Leones Capital</a>
+              <a href="/filiales/seguros" class="hover:text-red-600 transition-colors whitespace-nowrap text-[16px]">Leones Seguros</a>
+              <a href="/filiales/finanzas" class="hover:text-red-600 transition-colors whitespace-nowrap text-[16px]">Leones Finanzas</a>
+              <a href="/filiales/marketing" class="hover:text-red-600 transition-colors whitespace-nowrap text-[16px]">Leones Marketing</a>
+            </div>
+            <div class="flex flex-col gap-4">
+              <a href="/filiales/talento" class="hover:text-red-600 transition-colors whitespace-nowrap text-[16px]">Leones Talento</a>
+              <a href="/filiales/impacto" class="hover:text-red-600 transition-colors whitespace-nowrap text-[16px]">Leones Impacto</a>
+              <a href="/filiales/academy" class="hover:text-red-600 transition-colors whitespace-nowrap text-[16px]">Leones Academy</a>
+            </div>
+          </div>
         </div>
       </div>
 
+      {showHomeAcess && (
+        <a href="/" class="text-white text-[18px] hover:border-b transition-colors">
+          Inicio
+        </a>
+      )}
+      <a href="/nosotros" class="text-white text-[18px] hover:border-b transition-colors">Nosotros</a>
       <a href="/contacto" class="text-white text-[18px] hover:border-b transition-colors">Contacto</a>
     </div>
 
     <!-- Mobile Menu Button -->
-    <button id="hamburguerBtn" class="md:hidden hover:cursor-pointer flex flex-col gap-2.5 w-10 h-10 justify-center items-center z-50">
+    <button id="hamburguerBtn" class="md:hidden hover:cursor-pointer flex flex-col gap-2.5 w-10 h-10 justify-center items-center z-50 animate-fade-in-right">
       <div class="bg-white h-[2px] w-full rounded transition-all origin-left"></div>
       <div class="bg-white h-[2px] w-full rounded transition-all"></div>
       <div class="bg-white h-[2px] w-full rounded transition-all origin-left"></div>
@@ -55,19 +65,19 @@ const { showHomeAcess = false } = Astro.props;
       <span class="text-[26px] transition-transform duration-300 group-hover:translate-x-4">Grupo Leones</span>
     </div>
     <div class="flex flex-col gap-4 mt-5">
+      <details>
+        <summary class="hover:cursor-pointer text-[#d7d7d6] text-[18px] font-medium">Filiales</summary>
+        <div class="pl-4 mt-2">
+          <OpenMenuNavbar color="white" />
+        </div>
+      </details>
       {showHomeAcess && (
-    <a href="/" class="text-[#d7d7d6] text-[18px] font-medium">
-      Inicio
-    </a>
-  )}
+        <a href="/" class="text-[#d7d7d6] text-[18px] font-medium">
+          Inicio
+        </a>
+      )}
       <a href="/nosotros" class="text-[#d7d7d6] text-[18px] font-medium">Nosotros</a>
-    <details>
-      <summary class="hover:cursor-pointer text-[#d7d7d6] text-[18px] font-medium">Filiales</summary>
-      <div class="pl-4 mt-2">
-        <OpenMenuNavbar color="white" />
-      </div>
-    </details>
-    <a href="#contacto" class="text-[#d7d7d6] text-[18px] font-medium">Contacto</a>
+      <a href="/contacto" class="text-[#d7d7d6] text-[18px] font-medium">Contacto</a>
     </div>
   </div>
 
@@ -75,27 +85,48 @@ const { showHomeAcess = false } = Astro.props;
   document.addEventListener("DOMContentLoaded", () => {
     const btn = document.getElementById("hamburguerBtn");
     const menu = document.getElementById("mobileMenu");
+    const filialesBtn = document.getElementById("filialesDropdown");
+    const filialesMenu = document.getElementById("filialesMenu");
 
-    if (!btn || !menu) return;
+    // Mobile menu functionality
+    if (btn && menu) {
+      const lines = btn.querySelectorAll("div");
+      let open = false;
 
-    const lines = btn.querySelectorAll("div");
-    let open = false;
+      btn.addEventListener("click", () => {
+        open = !open;
+        menu.classList.toggle("hidden");
 
-    btn.addEventListener("click", () => {
-      open = !open;
-      menu.classList.toggle("hidden");
+        if (open) {
+          lines[0].style.transform = "rotate(45deg)";
+          lines[1].style.opacity = "0";
+          lines[2].style.transform = "rotate(-45deg)";
+        } else {
+          lines[0].style.transform = "rotate(0)";
+          lines[1].style.opacity = "1";
+          lines[2].style.transform = "rotate(0)";
+        }
+      });
+    }
 
-      if (open) {
-        lines[0].style.transform = "rotate(45deg)";
-        lines[1].style.opacity = "0";
-        lines[2].style.transform = "rotate(-45deg)";
-      } else {
-        lines[0].style.transform = "rotate(0)";
-        lines[1].style.opacity = "1";
-        lines[2].style.transform = "rotate(0)";
-      }
-    });
+    // Filiales dropdown functionality
+    if (filialesBtn && filialesMenu) {
+      let isOpen = false;
+
+      filialesBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        isOpen = !isOpen;
+        filialesMenu.classList.toggle("hidden", !isOpen);
+      });
+
+      // Close dropdown when clicking outside
+      document.addEventListener("click", (e) => {
+        if (!filialesBtn.contains(e.target as Node) && !filialesMenu.contains(e.target as Node)) {
+          isOpen = false;
+          filialesMenu.classList.add("hidden");
+        }
+      });
+    }
   });
 </script>
-
 </header>
