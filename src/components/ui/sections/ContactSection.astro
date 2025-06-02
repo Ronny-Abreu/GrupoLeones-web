@@ -61,10 +61,10 @@
         <form id="contactForm" class="space-y-6">
           <div class="grid md:grid-cols-2 gap-6">
             <div>
-              <label for="nombre" class="block text-sm font-medium text-gray-700 mb-2">Nombre completo</label>
+              <label for="contactNombre" class="block text-sm font-medium text-gray-700 mb-2">Nombre completo</label>
               <input 
                 type="text" 
-                id="nombre" 
+                id="contactNombre" 
                 name="nombre" 
                 required
                 class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all duration-300 text-black"
@@ -72,10 +72,10 @@
               />
             </div>
             <div>
-              <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Correo electrónico</label>
+              <label for="contactEmail" class="block text-sm font-medium text-gray-700 mb-2">Correo electrónico</label>
               <input 
                 type="email" 
-                id="email" 
+                id="contactEmail" 
                 name="email" 
                 required
                 class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all duration-300 text-black"
@@ -85,10 +85,10 @@
           </div>
 
           <div>
-            <label for="telefono" class="block text-sm font-medium text-gray-700 mb-2">Teléfono (opcional)</label>
+            <label for="contactTelefono" class="block text-sm font-medium text-gray-700 mb-2">Teléfono (opcional)</label>
             <input 
               type="tel" 
-              id="telefono" 
+              id="contactTelefono" 
               name="telefono"
               class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all duration-300 text-black"
               placeholder="+1 809 999 0000"
@@ -96,9 +96,9 @@
           </div>
 
           <div>
-            <label for="asunto" class="block text-sm font-medium text-gray-700 mb-2">Asunto</label>
+            <label for="contactAsunto" class="block text-sm font-medium text-gray-700 mb-2">Asunto</label>
             <select 
-              id="asunto" 
+              id="contactAsunto" 
               name="asunto" 
               required
               class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all duration-300 text-black"
@@ -115,9 +115,9 @@
           </div>
 
           <div>
-            <label for="mensaje" class="block text-sm font-medium text-gray-700 mb-2">Mensaje</label>
+            <label for="contactMensaje" class="block text-sm font-medium text-gray-700 mb-2">Mensaje</label>
             <textarea 
-              id="mensaje" 
+              id="contactMensaje" 
               name="mensaje" 
               rows="5" 
               required
@@ -128,6 +128,7 @@
 
           <button 
             type="submit" 
+            id="contactSubmitBtn"
             class="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-4 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
           >
             <span class="flex items-center justify-center gap-2">
@@ -137,29 +138,49 @@
               Enviar mensaje
             </span>
           </button>
+
+          <!-- SUCCESS MESSAGE -->
+          <div id="contactSuccessMessage" class="hidden">
+            <div class="bg-green-50 border-2 border-green-200 rounded-xl p-6 text-center">
+              <div class="flex justify-center mb-4">
+                <div class="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center">
+                  <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                  </svg>
+                </div>
+              </div>
+              <h4 class="text-xl font-bold text-green-800 mb-2">¡Mensaje enviado exitosamente! 🎉</h4>
+              <p class="text-green-700 mb-4">
+                Tu consulta ha sido recibida correctamente. Te responderemos en un plazo máximo de 24 horas.
+              </p>
+              <div class="bg-green-100 rounded-lg p-3">
+                <p class="text-green-800 text-sm">
+                  <strong>Tip:</strong> Revisa tu bandeja de entrada y spam por si acaso.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- ERROR MESSAGE -->
+          <div id="contactErrorMessage" class="hidden">
+            <div class="bg-red-50 border-2 border-red-200 rounded-xl p-6 text-center">
+              <div class="flex justify-center mb-4">
+                <div class="w-16 h-16 bg-red-500 rounded-full flex items-center justify-center">
+                  <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                  </svg>
+                </div>
+              </div>
+              <h4 class="text-xl font-bold text-red-800 mb-2">Error al enviar el mensaje ❌</h4>
+              <p class="text-red-700 mb-4" id="contactErrorText">Por favor, inténtalo de nuevo.</p>
+              <div class="bg-red-100 rounded-lg p-3">
+                <p class="text-red-800 text-sm">
+                  Si el problema persiste, contacta directamente con nosotros.
+                </p>
+              </div>
+            </div>
+          </div>
         </form>
-
-        <!-- Success Message -->
-        <div id="successMessage" class="hidden mt-6 p-4 bg-green-50 border border-green-200 rounded-xl">
-          <div class="flex items-center gap-2 text-green-800">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-            </svg>
-            <span class="font-medium">¡Mensaje enviado exitosamente!</span>
-          </div>
-          <p class="text-green-700 text-sm mt-1">Te responderemos en un plazo máximo de 24 horas.</p>
-        </div>
-
-        <!-- Error Message -->
-        <div id="errorMessage" class="hidden mt-6 p-4 bg-red-50 border border-red-200 rounded-xl">
-          <div class="flex items-center gap-2 text-red-800">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-            </svg>
-            <span class="font-medium">Error al enviar el mensaje</span>
-          </div>
-          <p class="text-red-700 text-sm mt-1" id="errorText">Por favor, inténtalo de nuevo.</p>
-        </div>
       </div>
     </div>
   </div>
@@ -168,22 +189,29 @@
 <script>
   document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('contactForm') as HTMLFormElement;
-    const successMessage = document.getElementById('successMessage');
-    const errorMessage = document.getElementById('errorMessage');
-    const errorText = document.getElementById('errorText');
+    const successMessage = document.getElementById('contactSuccessMessage') as HTMLElement;
+    const errorMessage = document.getElementById('contactErrorMessage') as HTMLElement;
+    const errorText = document.getElementById('contactErrorText') as HTMLElement;
+    const submitBtn = document.getElementById('contactSubmitBtn') as HTMLButtonElement;
 
-    if (!form || !successMessage || !errorMessage || !errorText) {
-      console.error('Elementos del formulario no encontrados');
+    if (!form || !successMessage || !errorMessage || !errorText || !submitBtn) {
+      console.error('❌ Elementos del formulario de contacto no encontrados');
       return;
     }
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
       
+      console.log('📝 Formulario de contacto enviado');
+      
+      successMessage.classList.add('hidden');
+      errorMessage.classList.add('hidden');
+      
       const formData = new FormData(form);
       const data = Object.fromEntries(formData);
       
-      // Validación del lado del cliente
+      console.log('📝 Datos del contacto:', data);
+      
       if (!data.nombre || !data.email || !data.asunto || !data.mensaje) {
         showError('Por favor, completa todos los campos obligatorios.');
         return;
@@ -196,10 +224,6 @@
         return;
       }
 
-      // Show loading state
-      const submitBtn = form.querySelector('button[type="submit"]') as HTMLButtonElement;
-      if (!submitBtn) return;
-      
       const originalContent = submitBtn.innerHTML;
       submitBtn.innerHTML = `
         <span class="flex items-center justify-center gap-2">
@@ -212,8 +236,6 @@
       submitBtn.disabled = true;
 
       try {
-        console.log('Enviando datos:', data);
-
         const response = await fetch('/api/send-email', {
           method: 'POST',
           headers: {
@@ -222,55 +244,52 @@
           body: JSON.stringify(data),
         });
 
-        console.log('Response status:', response.status);
-        console.log('Response headers:', response.headers.get('content-type'));
-
-        // Verificar si la respuesta es JSON
         const contentType = response.headers.get('content-type');
         if (!contentType || !contentType.includes('application/json')) {
-          const textResponse = await response.text();
-          console.error('Respuesta no es JSON:', textResponse);
           throw new Error('El servidor no devolvió una respuesta JSON válida');
         }
 
         const result = await response.json();
-        console.log('Resultado:', result);
-
         if (response.ok && result.success) {
+          console.log('🎉 ¡Éxito! Mostrando mensaje de éxito del contacto...');
           form.reset();
           showSuccess();
         } else {
           throw new Error(result.message || 'Error al enviar el mensaje');
         }
       } catch (error) {
-        console.error('Error completo:', error);
-        showError(`Hubo un error al enviar tu mensaje: ${error instanceof Error ? error.message : 'Error desconocido'}. Por favor, inténtalo de nuevo.`);
+        console.error('💥 Error en contacto:', error);
+        showError(`Error: ${error instanceof Error ? error.message : 'Error desconocido'}`);
       } finally {
+        // Restaurar botón
         submitBtn.innerHTML = originalContent;
         submitBtn.disabled = false;
       }
     });
 
     function showSuccess() {
-      if (!successMessage || !errorMessage) return;
-      successMessage.classList.remove('hidden');
+
       errorMessage.classList.add('hidden');
+      successMessage.classList.remove('hidden');
+      
+      successMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      
       setTimeout(() => {
-        if (successMessage) {
-          successMessage.classList.add('hidden');
-        }
-      }, 8000);
+        successMessage.classList.add('hidden');
+      }, 10000);
     }
 
     function showError(message: string) {
-      if (!errorText || !errorMessage || !successMessage) return;
+      console.log('❌ Mostrando mensaje de error del contacto:', message);
+
       errorText.textContent = message;
-      errorMessage.classList.remove('hidden');
       successMessage.classList.add('hidden');
+      errorMessage.classList.remove('hidden');
+      
+      errorMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      
       setTimeout(() => {
-        if (errorMessage) {
-          errorMessage.classList.add('hidden');
-        }
+        errorMessage.classList.add('hidden');
       }, 8000);
     }
   });
