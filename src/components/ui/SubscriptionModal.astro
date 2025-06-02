@@ -1,111 +1,97 @@
 ---
-import { Image } from 'astro:assets';
-
 const { 
   id = '', 
-  title = '', 
-  subtitle = '', 
-  image = { src: '/placeholder.svg', alt: 'Avatar' }, 
-  terms = '' 
+  title = 'Suscríbete a nuestro boletín', 
+  subtitle = 'Mantente al día con las últimas noticias y actualizaciones', 
+  terms = 'Acepto los términos y condiciones' 
 } = Astro.props;
 ---
 
 <div
   id="subscriptionModal"
-  class="fixed top-0 left-0 z-[999] flex h-full w-full items-center justify-center bg-black/20 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300"
+  class="fixed top-0 left-0 z-[999] flex h-full w-full items-center justify-center bg-black/40 backdrop-blur-sm opacity-0 pointer-events-none transition-all duration-500"
 >
   <div
-    class="relative flex w-full max-w-2xl flex-col rounded-xl bg-white p-8 shadow-xl transition-transform duration-300"
+    class="relative flex w-full max-w-md flex-col rounded-2xl bg-gray-900/95 backdrop-blur-md p-8 shadow-2xl transition-all duration-500 transform scale-95 border border-gray-700/50"
   >
     <button
-      class="absolute top-4 right-4 rounded-full p-1 text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-700"
+      class="absolute top-4 right-4 rounded-full p-2 text-gray-400 transition-all duration-300 hover:bg-gray-800/50 hover:text-white hover:rotate-90"
       id="closeModalBtn"
     >
-      <!-- X Icon usando SVG inline -->
       <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
       </svg>
-      <span class="sr-only">Close Modal</span>
+      <span class="sr-only">Cerrar Modal</span>
     </button>
 
     <div id="modalContent">
-      <div class="flex flex-col items-center gap-4">
-        <div class="relative h-24 w-24">
-          <Image
-            src={image.src || "/placeholder.svg"}
-            alt={image.alt}
-            class="rounded-full object-cover"
-            width={96}
-            height={96}
-          />
+      <div class="flex flex-col items-center gap-6 mb-8">
+        <div class="w-16 h-16 bg-gradient-to-br from-red-600 to-red-800 rounded-full flex items-center justify-center shadow-lg">
+          <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+          </svg>
         </div>
-        <h3 class="text-2xl font-bold">{title}</h3>
-        <p class="text-center text-gray-500">{subtitle}</p>
+        <div class="text-center">
+          <h3 class="text-2xl font-bold text-white mb-2">{title}</h3>
+          <p class="text-gray-300 text-sm leading-relaxed">{subtitle}</p>
+        </div>
       </div>
 
-      <form id="subscriptionForm" class="mt-8 flex flex-col gap-4">
-        <div>
-          <label for="email" class="block text-sm font-medium text-gray-700"
-            >Email</label
-          >
+      <form id="subscriptionForm" class="flex flex-col gap-6">
+        <div class="relative">
           <input
             type="email"
             id="email"
-            class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm"
-            placeholder="you@example.com"
+            class="w-full bg-gray-800/50 border border-gray-600/50 rounded-xl px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500/50 focus:border-red-500/50 transition-all duration-300 backdrop-blur-sm"
+            placeholder="tu@ejemplo.com"
             required
+            style="color: #fff !important;"
           />
+          <div class="absolute inset-0 rounded-xl bg-gradient-to-r from-red-600/10 to-red-800/10 opacity-0 transition-opacity duration-300 pointer-events-none" id="inputGlow"></div>
         </div>
 
-        <div>
-          <label for="name" class="block text-sm font-medium text-gray-700"
-            >Name</label
-          >
-          <input
-            type="text"
-            id="name"
-            class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm"
-            placeholder="Your Name"
-            required
-          />
-        </div>
-
-        <div class="flex items-center">
+        <div class="flex items-center gap-3">
           <input
             type="checkbox"
             id="terms"
-            class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+            class="w-4 h-4 rounded border-gray-600 bg-gray-800/50 text-red-600 focus:ring-red-500/50 focus:ring-2"
             required
           />
-          <label for="terms" class="ml-2 block text-sm text-gray-900"
-            >{terms}</label
-          >
+          <label for="terms" class="text-sm text-gray-300 leading-relaxed">
+            {terms}
+          </label>
         </div>
 
-        <div>
-          <button
-            type="submit"
-            class="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-            id="subscribeBtn"
-          >
-            Subscribe
-          </button>
-        </div>
+        <button
+          type="submit"
+          class="relative w-full bg-black border border-gray-700 rounded-xl py-3 px-6 text-white font-semibold transition-all duration-300 hover:border-red-600/50 group overflow-hidden"
+          id="subscribeBtn"
+        >
+          <div class="absolute inset-0 bg-gradient-to-r from-red-900/0 via-red-800/0 to-red-900/0 group-hover:from-red-900/20 group-hover:via-red-800/30 group-hover:to-red-900/20 transition-all duration-500"></div>
+          <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+            <div class="absolute inset-0 bg-red-800/10 blur-xl"></div>
+          </div>
+          <span class="relative z-10">Suscribirse</span>
+        </button>
       </form>
     </div>
 
     <div
       id="successMessage"
-      class="hidden flex flex-col items-center gap-4 text-center"
+      class="hidden flex flex-col items-center gap-6 text-center"
     >
-      <!-- Check Icon usando SVG inline -->
-      <svg class="h-12 w-12 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-      </svg>
-      <h4 class="text-xl font-bold">Thank you!</h4>
-      <p class="text-gray-500">
-        You have successfully subscribed to our newsletter.
-      </p>
+      <div class="w-20 h-20 bg-gradient-to-br from-green-500 to-green-600 rounded-full flex items-center justify-center shadow-lg animate-pulse">
+        <svg class="h-10 w-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
+        </svg>
+      </div>
+      <div>
+        <h4 class="text-2xl font-bold text-white mb-3">¡Perfecto!</h4>
+        <p class="text-gray-300 leading-relaxed">
+          Te has suscrito exitosamente a nuestro boletín.<br>
+          <span class="text-green-400 text-sm">Pronto recibirás noticias increíbles</span>
+        </p>
+      </div>
     </div>
   </div>
 </div>
@@ -130,48 +116,43 @@ const {
   };
 
   // Función global para verificar el estado actual
-  window.checkSubscriptionStatus = function() {
-    const hasSubscribed = localStorage.getItem('userSubscribed');
-    const lastClosedTime = localStorage.getItem('modalLastClosed');
-    const fourHours = 4 * 60 * 60 * 1000; // 4 horas en milisegundos
-    
-    console.log('📊 Estado de suscripción:');
-    console.log('- Usuario suscrito:', hasSubscribed === 'true' ? 'Sí' : 'No');
-    console.log('- Última vez cerrado:', lastClosedTime ? new Date(parseInt(lastClosedTime)).toLocaleString() : 'Nunca');
-    
-    if (lastClosedTime) {
-      const timeDifference = Date.now() - parseInt(lastClosedTime);
-      console.log('⏰ Tiempo transcurrido:', (timeDifference / (1000 * 60 * 60)).toFixed(2) + ' horas');
-      
-      if (timeDifference < fourHours) {
-        console.log('❌ Modal no se muestra: No han pasado 4 horas');
-        return;
-      }
-    }
-    
-    console.log('✅ Mostrando modal de suscripción');
+window.checkSubscriptionStatus = function() {
+  const hasSubscribed = localStorage.getItem('userSubscribed');
+  const lastClosedTime = localStorage.getItem('modalLastClosed');
+  const fourHours = 4 * 60 * 60 * 1000;
 
-    const modalElement = document.getElementById("subscriptionModal");
-    if (modalElement) {
-      modalElement.classList.add('active');
-    }
+  // Si ya está suscrito, nunca mostrar el modal
+  if (hasSubscribed === 'true') return;
+
+  // Si cerró el modal hace menos de 4 horas, no mostrarlo
+  if (lastClosedTime) {
+    const timeDifference = Date.now() - parseInt(lastClosedTime);
+    if (timeDifference < fourHours) return;
+  }
+
+  // Mostrar el modal
+  const modalElement = document.getElementById("subscriptionModal");
+  if (modalElement) {
+    modalElement.classList.add('active');
+    modalElement.classList.remove('pointer-events-none');
+    modalElement.classList.add('pointer-events-auto');
+  }
     
     function closeModal() {
-      const modal = document.getElementById("subscriptionModal");
-      if (modal) {
-        modal.classList.add('opacity-0');
-        setTimeout(() => {
-          if (modal) {
-            modal.style.display = 'none';
-          }
-        }, 300);
-      }
-      
-      if (!localStorage.getItem('userSubscribed')) {
-        localStorage.setItem('modalLastClosed', Date.now().toString());
-        console.log('💾 Guardado timestamp de cierre:', new Date().toLocaleString());
-      }
+    const modal = document.getElementById("subscriptionModal");
+    if (modal) {
+      modal.classList.add('opacity-0');
+      modal.classList.remove('pointer-events-auto');
+      modal.classList.add('pointer-events-none');
+      setTimeout(() => {
+        if (modal) modal.style.display = 'none';
+      }, 300);
     }
+    // Guardar timestamp SOLO si el usuario NO está suscrito
+    if (!localStorage.getItem('userSubscribed')) {
+      localStorage.setItem('modalLastClosed', Date.now().toString());
+    }
+  }
     
     function showSuccessMessage() {
       const modalContent = document.getElementById('modalContent');
@@ -184,7 +165,7 @@ const {
       
       setTimeout(() => {
         closeModal();
-      }, 2000);
+      }, 3000);
     }
     
     const closeButton = document.getElementById('closeModalBtn');
@@ -222,14 +203,34 @@ const {
         showSuccessMessage();
       });
     }
+
+    // Efecto de glow en el input cuando se enfoca
+    const emailInput = document.getElementById('email');
+    const inputGlow = document.getElementById('inputGlow');
+    
+    if (emailInput && inputGlow) {
+      emailInput.addEventListener('focus', () => {
+        inputGlow.style.opacity = '1';
+      });
+      
+      emailInput.addEventListener('blur', () => {
+        inputGlow.style.opacity = '0';
+      });
+    }
   }
+
+  document.addEventListener('DOMContentLoaded', () => {
+      if (typeof window.checkSubscriptionStatus === 'function') {
+        window.checkSubscriptionStatus();
+      }
+    });
 </script>
 
 <style>
   #subscriptionModal {
     opacity: 0;
     visibility: hidden;
-    transition: opacity 0.3s ease, visibility 0.3s ease;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   }
   
   #subscriptionModal.active {
@@ -237,18 +238,53 @@ const {
     visibility: visible;
   }
   
-  #successMessage {
-    animation: fadeInScale 0.5s ease-out;
+  #subscriptionModal.active > div {
+    transform: scale(1);
   }
   
-  @keyframes fadeInScale {
-    from {
+  #successMessage {
+    animation: successFadeIn 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  @keyframes successFadeIn {
+    0% {
       opacity: 0;
-      transform: scale(0.9);
+      transform: scale(0.8) translateY(20px);
     }
-    to {
+    50% {
+      transform: scale(1.05) translateY(-5px);
+    }
+    100% {
       opacity: 1;
-      transform: scale(1);
+      transform: scale(1) translateY(0);
     }
+  }
+  
+  /* Efecto de glow para el botón */
+  #subscribeBtn:hover {
+    box-shadow: 0 0 20px rgba(185, 28, 28, 0.3);
+  }
+  
+  /* Animación sutil para el ícono del email */
+  .email-icon {
+    animation: float 3s ease-in-out infinite;
+  }
+  
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-5px); }
+  }
+  
+  /* Mejora del input para texto negro */
+  #email {
+    color: #000000 !important;
+  }
+  
+  #email::placeholder {
+    color: #6b7280;
+  }
+  
+  #email:focus {
+    color: #000000 !important;
   }
 </style>
