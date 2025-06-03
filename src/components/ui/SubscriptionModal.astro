@@ -58,7 +58,9 @@ const {
             required
           />
           <label for="terms" class="text-sm text-gray-300 leading-relaxed">
-            {terms}
+            <span id="termsText" class="cursor-pointer transition-all duration-300 hover:font-bold">
+              {terms}
+            </span>
           </label>
         </div>
 
@@ -96,13 +98,91 @@ const {
   </div>
 </div>
 
+<!-- Modal de Términos y Condiciones -->
+<div
+  id="termsModal"
+  class="fixed top-0 left-0 z-[1000] flex h-full w-full items-center justify-center bg-black/40 backdrop-blur-sm opacity-0 pointer-events-none transition-all duration-500 p-4"
+>
+  <div
+    id="termsModalContent"
+    class="relative w-full max-w-lg bg-gray-900/95 backdrop-blur-md rounded-2xl shadow-2xl transition-all duration-500 transform scale-95 border border-gray-700/50 flex flex-col"
+  >
+    <button
+      class="absolute top-4 right-4 rounded-full p-2 text-gray-400 transition-all duration-300 hover:bg-gray-800/50 hover:text-white hover:rotate-90 z-10"
+      id="closeTermsModalBtn"
+    >
+      <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+      </svg>
+      <span class="sr-only">Cerrar Modal</span>
+    </button>
+
+    <!-- Header fijo -->
+    <div class="text-center p-8 pb-4">
+      <h3 class="text-2xl font-bold text-white mb-2">Términos y Condiciones</h3>
+      <div class="w-16 h-1 bg-red-600 mx-auto rounded-full"></div>
+    </div>
+
+    <!-- Contenido con scroll -->
+    <div class="px-8 overflow-y-auto hide-scrollbar" style="max-height: calc(70vh - 180px);">
+      <div class="text-gray-300 text-sm space-y-4 pb-4">
+        <p>
+          Al suscribirte a nuestro boletín, aceptas los siguientes términos y condiciones:
+        </p>
+        
+        <h4 class="text-white font-semibold text-lg">1. Uso de la información</h4>
+        <p>
+          La información proporcionada será utilizada exclusivamente para enviar noticias, actualizaciones y contenido relacionado con nuestros servicios. No compartiremos tu correo electrónico con terceros sin tu consentimiento explícito.
+        </p>
+        
+        <h4 class="text-white font-semibold text-lg">2. Frecuencia de comunicaciones</h4>
+        <p>
+          Recibirás comunicaciones periódicas que pueden incluir boletines informativos, ofertas especiales y actualizaciones de productos o servicios. La frecuencia de estos correos electrónicos puede variar.
+        </p>
+        
+        <h4 class="text-white font-semibold text-lg">3. Cancelación de suscripción</h4>
+        <p>
+          Puedes cancelar tu suscripción en cualquier momento utilizando el enlace de cancelación que se incluye en cada correo electrónico que recibas.
+        </p>
+        
+        <h4 class="text-white font-semibold text-lg">4. Protección de datos</h4>
+        <p>
+          Tus datos personales serán tratados de acuerdo con nuestra política de privacidad y la legislación vigente sobre protección de datos.
+        </p>
+      </div>
+    </div>
+
+    <!-- Footer fijo con botón -->
+    <div class="p-8 pt-4">
+      <button
+        id="closeTermsBtn"
+        class="relative w-full bg-black border border-gray-700 rounded-xl py-4 px-6 text-white font-semibold transition-all duration-300 hover:border-red-600/50 group overflow-hidden"
+      >
+        <div class="absolute inset-0 bg-gradient-to-r from-red-900/0 via-red-800/0 to-red-900/0 group-hover:from-red-900/20 group-hover:via-red-800/30 group-hover:to-red-900/20 transition-all duration-500"></div>
+        <span class="relative z-10">Cerrar</span>
+      </button>
+    </div>
+  </div>
+</div>
+
 <script>
-  // Agregar declaración de tipos para propiedades personalizadas de window
   declare global {
     interface Window {
       resetSubscription: () => void;
       checkSubscriptionStatus: () => void;
     }
+  }
+
+  function lockBodyScroll() {
+    document.body.classList.add('overflow-hidden', 'fixed', 'inset-0');
+    document.body.style.width = '100%';
+    document.body.style.height = '100%';
+  }
+
+  function unlockBodyScroll() {
+    document.body.classList.remove('overflow-hidden', 'fixed', 'inset-0');
+    document.body.style.width = '';
+    document.body.style.height = '';
   }
 
   // Función global para resetear la suscripción (disponible en consola)
@@ -136,6 +216,10 @@ window.checkSubscriptionStatus = function() {
     modalElement.classList.add('active');
     modalElement.classList.remove('pointer-events-none');
     modalElement.classList.add('pointer-events-auto');
+    modalElement.style.display = 'flex';
+    
+    // Bloquear scroll del body
+    lockBodyScroll();
   }
     
     function closeModal() {
@@ -144,6 +228,10 @@ window.checkSubscriptionStatus = function() {
       modal.classList.add('opacity-0');
       modal.classList.remove('pointer-events-auto');
       modal.classList.add('pointer-events-none');
+      
+      // Desbloquear scroll del body
+      unlockBodyScroll();
+      
       setTimeout(() => {
         if (modal) modal.style.display = 'none';
       }, 300);
@@ -224,6 +312,97 @@ window.checkSubscriptionStatus = function() {
         window.checkSubscriptionStatus();
       }
     });
+
+// Manejo del modal de términos y condiciones
+const termsText = document.getElementById('termsText');
+const termsModal = document.getElementById('termsModal');
+const termsModalContent = document.getElementById('termsModalContent');
+const subscriptionModal = document.getElementById("subscriptionModal");
+const closeTermsModalBtn = document.getElementById('closeTermsModalBtn');
+const closeTermsBtn = document.getElementById('closeTermsBtn');
+
+if (termsText) {
+  termsText.addEventListener('click', (e) => {
+    e.preventDefault();
+    if (termsModal && subscriptionModal) {
+      // Ocultar modal de suscripción con animación
+      subscriptionModal.classList.add('opacity-0');
+      subscriptionModal.classList.remove('pointer-events-auto');
+      subscriptionModal.classList.add('pointer-events-none');
+      
+      termsModal.style.display = 'flex';
+      setTimeout(() => {
+        termsModal.classList.remove('opacity-0');
+        termsModal.classList.remove('pointer-events-none');
+        termsModal.classList.add('pointer-events-auto');
+        termsModal.classList.add('opacity-1');
+        
+        if (termsModalContent) {
+          termsModalContent.classList.add('scale-100');
+          termsModalContent.classList.remove('scale-95');
+        }
+      }, 50);
+      
+    }
+  });
+}
+
+function closeTermsModal() {
+  if (termsModal && termsModalContent) {
+
+    termsModalContent.classList.remove('scale-100');
+    termsModalContent.classList.add('scale-95');
+    
+    termsModal.classList.add('opacity-0');
+    termsModal.classList.remove('pointer-events-auto');
+    termsModal.classList.add('pointer-events-none');
+    
+    setTimeout(() => {
+      if (termsModal) termsModal.style.display = 'none';
+    }, 500);
+  }
+}
+
+function showSubscriptionModal() {
+  if (subscriptionModal) {
+
+    subscriptionModal.style.display = 'flex';
+    setTimeout(() => {
+      subscriptionModal.classList.remove('opacity-0');
+      subscriptionModal.classList.add('active');
+      subscriptionModal.classList.remove('pointer-events-none');
+      subscriptionModal.classList.add('pointer-events-auto');
+    }, 50);
+  }
+}
+
+function closeTermsAndShowSubscription() {
+  closeTermsModal();
+  
+  setTimeout(() => {
+    showSubscriptionModal();
+  }, 300);
+}
+
+if (closeTermsModalBtn) {
+  closeTermsModalBtn.addEventListener('click', () => {
+    closeTermsAndShowSubscription();
+  });
+}
+
+if (closeTermsBtn) {
+  closeTermsBtn.addEventListener('click', () => {
+    closeTermsAndShowSubscription();
+  });
+}
+
+if (termsModal) {
+  termsModal.addEventListener('click', (e) => {
+    if (e.target === termsModal) {
+      closeTermsAndShowSubscription();
+    }
+  });
+}
 </script>
 
 <style>
@@ -260,12 +439,10 @@ window.checkSubscriptionStatus = function() {
     }
   }
   
-  /* Efecto de glow para el botón */
   #subscribeBtn:hover {
     box-shadow: 0 0 20px rgba(185, 28, 28, 0.3);
   }
   
-  /* Animación sutil para el ícono del email */
   .email-icon {
     animation: float 3s ease-in-out infinite;
   }
@@ -275,7 +452,6 @@ window.checkSubscriptionStatus = function() {
     50% { transform: translateY(-5px); }
   }
   
-  /* Mejora del input para texto negro */
   #email {
     color: #000000 !important;
   }
@@ -287,4 +463,82 @@ window.checkSubscriptionStatus = function() {
   #email:focus {
     color: #000000 !important;
   }
+
+#termsModal {
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#termsModal.opacity-1 {
+  opacity: 1;
+  visibility: visible;
+}
+
+#termsModalContent {
+  transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+#termsModal.opacity-1 #termsModalContent {
+  transform: scale(1);
+}
+
+#termsText {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+  text-decoration-color: rgba(156, 163, 175, 0.5);
+}
+
+#termsText:hover {
+  text-decoration-color: rgba(239, 68, 68, 0.7);
+}
+
+/* Estilo para bloquear el scroll del body */
+body.overflow-hidden {
+  overflow: hidden !important;
+}
+
+/* Ocultar scrollbar en todos los dispositivos */
+.hide-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+/* Animaciones para los modales */
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes modalFadeOut {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+}
+
+.scale-100 {
+  transform: scale(1);
+}
+
+.scale-95 {
+  transform: scale(0.95);
+}
 </style>
