@@ -1,10 +1,8 @@
 ---
 import "../styles/global.css";
-
-import Header from '../components/ui/sections/Header.astro';
 import Footer from '../components/ui/sections/Footer.astro';
 
-const { title = "Grupo Leones", showFooter = true } = Astro.props;
+const { title = "Grupo Leones", showFooter = true, descriptionOnPage = "Hola" } = Astro.props;
 ---
 
 <!doctype html>
@@ -14,6 +12,92 @@ const { title = "Grupo Leones", showFooter = true } = Astro.props;
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<title>{title}</title>
+		<meta name="description" content={descriptionOnPage} />
+		<meta property="og:url" content="https://www.grupoleones.com.do" />
+		<meta property="og:type" content="website" />
+		<meta property="og:title" content="Grupo Leones Website" />
+		<meta property="og:description" content="Grupo Leones impulsa el crecimiento de tu negocio..." />
+		<meta name="author" content="Jendry Abreu y Ronny De León" />
+		<meta property="og:image" content="https://www.grupoleones.com.do/og.jpg" />
+		<meta property="og:locale" content="es_ES" />
+		<meta property="og:site_name" content="Grupo Leones" />
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:site" content="@GrupoLeones" />
+		<meta name="twitter:creator" content="@tuerredev" />
+		<meta name="twitter:title" content="Grupo Leones Enterprise" />
+		<meta name="twitter:description" content="Impulsa tu PYME con Grupo Leones..." />
+		<meta name="twitter:image" content="https://www.grupoleones.com.do/og.jpg" />
+
+		<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Grupo Leones",
+  "url": "https://www.grupoleones.com.do",
+  "logo": "https://www.grupoleones.com.do/images/favicon.svg",
+  "description": "Grupo Leones es una empresa dedicada a impulsar el crecimiento de negocios con soluciones integrales en finanzas, seguros, marketing digital, gestión de talento y responsabilidad social.",
+  "sameAs": [
+    "https://www.instagram.com/grupo._leones/"
+  ],
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Santo Domingo",
+    "addressRegion": "Distrito Nacional",
+    "postalCode": "11011 ",
+    "addressCountry": "DO"
+  },
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "telephone": "+1 829-671-0425",
+    "contactType": "customer service",
+    "email": "info@grupoleones.com"
+  },
+  "makesOffer": [
+    {
+      "@type": "Service",
+      "name": "Leones Capital - Préstamos rápidos y asesoría",
+      "description": "Préstamos rápidos y responsables con asesoría financiera para impulsar tu negocio.",
+      "serviceType": "FinancialService",
+      "url": "https://www.grupoleones.com.do/filiales/capital"
+    },
+    {
+      "@type": "Service",
+      "name": "Leones Seguros - Seguros accesibles",
+      "description": "Seguros accesibles para ti y tu emprendimiento, protegiendo tus activos y futuro.",
+      "serviceType": "FinancialService",
+      "url": "https://www.grupoleones.com.do/filiales/seguros"
+    },
+    {
+      "@type": "Service",
+      "name": "Leones Finanzas - Contabilidad y educación financiera",
+      "description": "Servicios de contabilidad, control de gastos y educación financiera para una gestión sólida.",
+      "serviceType": "FinancialService",
+      "url": "https://www.grupoleones.com.do/filiales/finanzas"
+    },
+    {
+      "@type": "Service",
+      "name": "Leones Marketing - Estrategias de marketing digital",
+      "description": "Estrategias de marketing digital para potenciar tu marca, visibilidad y ventas online.",
+      "serviceType": "MarketingService",
+      "url": "https://www.grupoleones.com.do/filiales/marketing"
+    },
+    {
+      "@type": "Service",
+      "name": "Leones Talento - Marca personal y estrategia digital",
+      "description": "Marca, redes sociales y estrategia digital para el crecimiento profesional y empresarial.",
+      "serviceType": "ProfessionalService",
+      "url": "https://www.grupoleones.com.do/filiales/talento"
+    },
+    {
+      "@type": "Service",
+      "name": "Leones Impacto - Responsabilidad social",
+      "description": "Proyectos de responsabilidad social y alianzas que transforman comunidades y el entorno.",
+      "serviceType": "CommunityService",
+      "url": "https://www.grupoleones.com.do/filiales/impacto"
+    }
+  ]
+}
+</script>
 	</head>
 	<body>
 		<slot />
@@ -21,7 +105,7 @@ const { title = "Grupo Leones", showFooter = true } = Astro.props;
 	</body>
 </html>
 
-<style is:global>
+<style>
 	@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
 	html,
@@ -32,7 +116,7 @@ const { title = "Grupo Leones", showFooter = true } = Astro.props;
 		scroll-behavior: smooth;
 		color: white;
 		background-color: #000000;
-		font-family: 'Poppins', sans-serif;
+		font-family: 'Poppins', system-ui, sans-serif;
 		overflow-x: hidden;
 		max-width: 100vw;
 	}

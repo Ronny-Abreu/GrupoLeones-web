@@ -1,0 +1,109 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { filiales } from '../../data/filiales.js';
+
+const { filial } = Astro.params;
+
+if (!filial || !(filial in filiales)) {
+  return Astro.redirect('/404');
+}
+
+const data = filiales[filial as keyof typeof filiales];
+---
+
+<Layout title={`${data.title} - Grupo Leones`} descriptionOnPage={`Información acerca de ${data.title} - Grupo Leones`}>
+  <section class="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200 px-4 md:px-6 py-16">
+    <div class="w-full max-w-7xl">
+      <div class="w-full text-start text-black mb-8 px-2">
+        <h3 class="text-2xl font-bold">Prepárate para ganar con Leones <span>{data.filial}</span></h3>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+
+        <div class="relative bg-yellow-100 rounded-xl overflow-hidden group hover:cursor-pointer col-span-1 lg:col-span-2 aspect-[4/3]">
+          <img
+            src="/images/capital-opress.webp"
+            alt="Proceso de selección"
+            class="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105 select-none"
+          />
+          <div class="absolute inset-0 bg-black/20"></div>
+          <div class="relative z-10 p-4 max-w-[222px] text-left text-yellow-700">
+            <h4 class="text-[23px] font-semibold leading-tight">Qué ofrece Leones {data.filial}?</h4>
+          </div>
+        </div>
+
+        <div class="relative bg-red-100 rounded-xl overflow-hidden flex flex-col justify-between col-span-1 lg:col-span-2 aspect-[4/3] p-4">
+          <div class="absolute left-0 bottom-0">
+
+          </div>
+          <div class="absolute inset-0 bg-black/10 z-0"></div>
+          <div class="relative z-10 h-full text-black flex flex-col justify-center items-center gap-4">
+              <div class="w-64 text-center">
+                <p class="text-3xl">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nihil voluptatum deleniti sunt ea minus numquam hic fugiat delectus cum magnam?</p>
+              </div>
+          </div>
+        </div>
+
+        <div class="relative bg-blue-100 rounded-xl p-4 flex flex-col justify-center col-span-1">
+          <div class="absolute inset-0 bg-black/10 rounded-xl"></div>
+          <div class="relative z-10 text-left">
+            <h4 class="text-blue-900 text-xl font-bold leading-tight">
+              PREFERIDO POR UN <b>{data.percentage}%</b> DE LOS ASOCIADOS
+            </h4>
+          </div>
+        </div>
+
+        <div class="relative bg-green-100 rounded-xl p-4 flex flex-col justify-between col-span-1">
+          <div class="absolute inset-0 bg-black/10 rounded-xl"></div>
+          <div class="relative z-10 text-left">
+            <h4 class="text-green-900 text-lg font-semibold leading-tight">
+              <span class="text-green-700">¿Sin experiencia?</span> Nosotros te guíamos todo el tiempo
+            </h4>
+            <a href="/#contacto" class="mt-4 inline-block bg-green-900 text-white px-4 py-2 rounded-xl hover:bg-green-800">
+              Empecemos a crecer!
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+  
+
+<section class="bg-gray-200">
+  <div class="max-w-7xl mx-auto px-4 py-8">
+    <h2 class="text-4xl font-bold text-gray-900 mb-8 text-center">Preguntas frecuentes - Leones {data.filial}</h2>
+
+    <div class="border border-gray-900 rounded-2xl overflow-hidden">
+      {data.faqs.map((item) => (
+  <details class="group border-b border-gray-900 last:border-b-0">
+    <summary class="flex items-center justify-between p-6 cursor-pointer hover:bg-gray-50 transition-colors">
+      <span class="text-lg font-medium text-gray-900">{item.question}</span>
+      <svg class="w-5 h-5 text-gray-500 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+      </svg>
+    </summary>
+    <div class="px-6 pb-6">
+      <p class="text-black">{item.answer}</p>
+    </div>
+  </details>
+))}
+
+    </div>
+  </div>
+</section>
+
+
+
+
+<style>
+  details summary::-webkit-details-marker {
+    display: none;
+  }
+  
+  details summary {
+    list-style: none;
+  }
+</style>
+
+</Layout>
