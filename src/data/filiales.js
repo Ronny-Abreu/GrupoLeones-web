@@ -5,9 +5,19 @@ export const filiales = {
     description: "Préstamos rápidos, responsables y con asesoría.",
     slogan: "Impulsa tu negocio.",
     image: "/images/leones-capital.webp",
-    color: "from-blue-500 to-blue-700",
+    color: "from-blue-100 to-blue-100",
     icon: "💰",
     percentage: 14,
+    newDescription: "Ofrecemos préstamos rápidos y responsables con asesoría experta. Impulsa tu negocio con capital flexible y apoyo financiero.",
+    beneficios: [
+      "Recibe capital <br/> de forma inmediata",
+      "Tasas justas <br/> y competitivas",
+      "Asesoría <br/> profesional experta",
+      "Proceso simple <br/> y sin trabas",
+      "Aprobación rápida <br/> y confiable",
+      "Planes flexibles <br/> según tu negocio",
+      "Impulsa tu <br/> crecimiento seguro"
+    ],
     faqs: [
       {
         question: "¿Qué tipo de préstamos ofrecen?",
@@ -41,9 +51,19 @@ export const filiales = {
     description: "Seguros accesibles para ti y tu emprendimiento.",
     slogan: "Protege lo que importa.",
     image: "/images/leones-capital.webp",
-    color: "from-green-500 to-green-700",
+    color: "from-green-100 to-green-100",
     icon: "🛡️",
     percentage: 17,
+    newDescription: "Brindamos seguros accesibles para ti y tu emprendimiento. Protege tu futuro y patrimonio con coberturas a medida.",
+    beneficios: [
+      "Protección total <br/> para tu negocio",
+      "Precios justos <br/> que se ajustan a ti",
+      "Coberturas amplias <br/> y variadas",
+      "Asesoría gratuita <br/> en cada paso",
+      "Trámites fáciles <br/> y ágiles",
+      "Respuestas rápidas <br/> y claras",
+      "Tranquilidad para <br/> lo que más valoras"
+    ],
     faqs: [
       {
         question: "¿Qué tipos de seguros ofrecen?",
@@ -73,9 +93,19 @@ export const filiales = {
     description: "Contabilidad, control de gastos y educación financiera.",
     slogan: "Domina tus números.",
     image: "/images/leones-capital.webp",
-    color: "from-purple-500 to-purple-700",
+    color: "from-purple-100 to-purple-100",
     icon: "📊",
     percentage: 24,
+    newDescription: "Ofrecemos contabilidad, control de gastos y educación financiera. Domina tus números para una gestión empresarial sólida y eficiente.",
+    beneficios: [
+      "Control total <br/> de tus finanzas",
+      "Ahorro que <br/> marca la diferencia",
+      "Claridad contable <br/> sin complicaciones",
+      "Impuestos al día <br/> sin estrés",
+      "Toma decisiones <br/> bien informadas",
+      "Educación financiera <br/> práctica y útil",
+      "Estabilidad que <br/> impulsa tu éxito"
+    ],
     faqs: [
       {
         question: "¿Qué servicios contables ofrecen?",
@@ -109,9 +139,19 @@ export const filiales = {
     description: "Cursos y mentorías para jóvenes y emprendedores.",
     slogan: "Aprende, emprende, crece.",
     image: "/images/leones-capital.webp",
-    color: "from-red-500 to-red-700",
+    color: "from-red-100 to-red-100",
     icon: "🏫",
     percentage: 8,
+    newDescription: "Brindamos cursos y mentorías para jóvenes y emprendedores. Aprende, emprende y crece con formación especializada y acompañamiento.",
+    beneficios: [
+      "Aprende habilidades <br/> prácticas y útiles",
+      "Mentoría experta <br/> en tu camino",
+      "Conecta con una <br/> red de contactos",
+      "Certificación válida <br/> y reconocida",
+      "Emprende con <br/> acompañamiento real",
+      "Desarrollo personal <br/> integral y real",
+      "Tu futuro más <br/> preparado que nunca"
+    ],
     faqs: [
       {
         question: "¿Qué tipo de cursos ofrecen?",
@@ -141,9 +181,19 @@ export const filiales = {
     description: "Marca, redes sociales y estrategia digital para crecer.",
     slogan: "Haz que te vean.",
     image: "/images/leones-capital.webp",
-    color: "from-orange-500 to-orange-700",
+    color: "from-orange-100 to-orange-100",
     icon: "📈",
     percentage: 21,
+    newDescription: "Estrategias de marketing digital para potenciar tu marca. Te ayudamos a crear una presencia online fuerte y efectiva.",
+    beneficios: [
+      "Haz crecer tu <br/> visibilidad digital",
+      "Construye una <br/> marca poderosa",
+      "Consigue más <br/> clientes potenciales",
+      "Estrategias digitales <br/> a tu medida",
+      "Contenido atractivo <br/> y efectivo",
+      "Mejor retorno de <br/> tu inversión",
+      "Posiciónate con <br/> liderazgo digital"
+    ],
     faqs: [
       {
         question: "¿Qué servicios de marketing ofrecen?",
@@ -173,9 +223,19 @@ export const filiales = {
     description: "Selección de personal y desarrollo del talento humano.",
     slogan: "Elige bien tu equipo.",
     image: "/images/leones-capital.webp",
-    color: "from-pink-500 to-pink-700",
+    color: "from-pink-100 to-pink-100",
     icon: "👥",
     percentage: 6,
+    newDescription: "Impulsamos tu marca personal y estrategia digital para crecer. Te ayudamos a seleccionar y desarrollar el talento humano clave.",
+    beneficios: [
+      "Encuentra tu <br/> equipo ideal",
+      "Mejora el <br/> desempeño laboral",
+      "Fortalece el <br/> liderazgo interno",
+      "Construye una <br/> cultura positiva",
+      "Conserva el <br/> mejor talento",
+      "Optimiza la gestión <br/> de recursos humanos",
+      "Impulsa el crecimiento <br/> del personal"
+    ],
     faqs: [
       {
         question: "¿Ayudan a contratar personal?",
@@ -205,9 +265,19 @@ export const filiales = {
     description: "Responsabilidad social y proyectos que transforman.",
     slogan: "Negocios con propósito.",
     image: "/images/leones-capital.webp",
-    color: "from-teal-500 to-teal-700",
+    color: "from-teal-100 to-teal-100",
     icon: "🌍",
     percentage: 10,
+    newDescription: "Lideramos proyectos de responsabilidad social que transforman. Negocios con propósito que generan un impacto positivo y duradero.",
+    beneficios: [
+      "Genera un impacto <br/> positivo real",
+      "Construye una <br/> reputación sólida",
+      "Promueve la <br/> conciencia social",
+      "Crea alianzas <br/> estratégicas claves",
+      "Apoya la <br/> sostenibilidad real",
+      "Fortalece la <br/> comunidad local",
+      "Deja un legado <br/> que perdure"
+    ],
     faqs: [
       {
         question: "¿Qué tipo de proyectos sociales impulsan?",
