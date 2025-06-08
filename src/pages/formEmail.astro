@@ -32,12 +32,12 @@ import Header from "../components/ui/sections/Header.astro";
             <h3 class="font-bold text-2xl mb-2 text-gray-700">Datos de interés</h3>
           </div>
 
-          <div class="grid gap-4 grid-cols-3 md:grid-cols-2">
+          <div class="grid gap-4 grid-cols-2 md:grid-cols-2">
 
             <!-- EMAILS REGISTRADOS SECT -->
             <div class="size-fit rounded-xl p-4 flex justify-between items-center bg-gray-200">
               <div class="flex flex-col">
-                <span>Emails registrados</span>
+                <span class="text-[14px]">Emails registrados</span>
                 <span class="font-bold text-[30px]" id="emailCount">0</span>
               </div>
 
@@ -51,7 +51,7 @@ import Header from "../components/ui/sections/Header.astro";
             <!-- VISITAS ESTE MES SECT -->
             <div class="size-fit rounded-xl p-4 flex justify-between items-center bg-gray-200">
               <div class="flex flex-col">
-                <span>Visitas únicas este mes</span>
+                <span class="text-[15px]">Visitas en el mes</span>
                 <span class="font-bold text-[30px]" id="visitCount">0</span>
               </div>
 
@@ -79,7 +79,7 @@ import Header from "../components/ui/sections/Header.astro";
             <!-- LOGOUT BUTTON -->
             <div class="size-fit rounded-xl p-4 flex justify-between items-center bg-red-200">
               <div class="flex flex-col">
-                <button id="logoutBtn" class=" font-bold flex justify-center items-center gap-2 text-red-600 hover:text-red-800 transition-colors">
+                <button id="logoutBtn" class="font-bold flex justify-center items-center gap-2 text-red-600 hover:text-red-800 transition-colors text-[15px]">
                   Salir del Panel
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" />
