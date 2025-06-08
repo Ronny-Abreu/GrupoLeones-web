@@ -50,6 +50,14 @@ const {
           <div class="absolute inset-0 rounded-xl bg-gradient-to-r from-red-600/10 to-red-800/10 opacity-0 transition-opacity duration-300 pointer-events-none" id="inputGlow"></div>
         </div>
 
+        <!-- Error message for email -->
+        <div id="emailError" class="hidden text-red-400 text-sm items-center gap-2">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.054 0 1.658-1.14 1.105-2.05L13.105 4.05c-.525-.91-1.685-.91-2.21 0L3.977 16.95C3.424 17.86 4.028 19 5.082 19z"/>
+          </svg>
+          <span id="emailErrorText"></span>
+        </div>
+
         <div class="flex items-center gap-3">
           <input
             type="checkbox"
@@ -64,23 +72,39 @@ const {
           </label>
         </div>
 
+        <!-- Error message for terms -->
+        <div id="termsError" class="hidden text-red-400 text-sm items-center gap-2">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.054 0 1.658-1.14 1.105-2.05L13.105 4.05c-.525-.91-1.685-.91-2.21 0L3.977 16.95C3.424 17.86 4.028 19 5.082 19z"/>
+          </svg>
+          <span>Debes aceptar los términos y condiciones</span>
+        </div>
+
         <button
           type="submit"
-          class="relative w-full bg-black border border-gray-700 rounded-xl py-3 px-6 text-white font-semibold transition-all duration-300 hover:border-red-600/50 group overflow-hidden"
+          class="relative w-full bg-black border border-gray-700 rounded-xl py-3 px-6 text-white font-semibold transition-all duration-300 hover:border-red-600/50 group overflow-hidden disabled:opacity-50 disabled:cursor-not-allowed"
           id="subscribeBtn"
         >
           <div class="absolute inset-0 bg-gradient-to-r from-red-900/0 via-red-800/0 to-red-900/0 group-hover:from-red-900/20 group-hover:via-red-800/30 group-hover:to-red-900/20 transition-all duration-500"></div>
           <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
             <div class="absolute inset-0 bg-red-800/10 blur-xl"></div>
           </div>
-          <span class="relative z-10">Suscribirse</span>
+          <span class="relative z-10" id="subscribeText">Suscribirse</span>
         </button>
+
+        <!-- Mensaje de error general debajo del botón -->
+        <div id="generalError" class="hidden bg-red-500/10 border border-red-500/30 rounded-lg p-3 text-red-400 text-sm items-center gap-2">
+          <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.054 0 1.658-1.14 1.105-2.05L13.105 4.05c-.525-.91-1.685-.91-2.21 0L3.977 16.95C3.424 17.86 4.028 19 5.082 19z"/>
+          </svg>
+          <span id="generalErrorText"></span>
+        </div>
       </form>
     </div>
 
     <div
       id="successMessage"
-      class="hidden flex flex-col items-center gap-6 text-center"
+      class="hidden flex-col items-center gap-6 text-center"
     >
       <div class="w-20 h-20 bg-gradient-to-br from-green-500 to-green-600 rounded-full flex items-center justify-center shadow-lg animate-pulse">
         <svg class="h-10 w-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -91,7 +115,7 @@ const {
         <h4 class="text-2xl font-bold text-white mb-3">¡Perfecto!</h4>
         <p class="text-gray-300 leading-relaxed">
           Te has suscrito exitosamente a nuestro boletín.<br>
-          <span class="text-green-400 text-sm">Pronto recibirás noticias increíbles</span>
+          <span class="text-green-400 text-sm">Revisa tu correo para la confirmación</span>
         </p>
       </div>
     </div>
@@ -190,128 +214,195 @@ const {
     localStorage.removeItem('userSubscribed');
     localStorage.removeItem('modalLastClosed');
     console.log('✅ Suscripción reseteada. Recarga la página para ver el modal.');
-    console.log('📊 Estado actual:');
-    console.log('- userSubscribed:', localStorage.getItem('userSubscribed'));
-    console.log('- modalLastClosed:', localStorage.getItem('modalLastClosed'));
   };
 
-  // Función global para verificar el estado actual
-window.checkSubscriptionStatus = function() {
-  const hasSubscribed = localStorage.getItem('userSubscribed');
-  const lastClosedTime = localStorage.getItem('modalLastClosed');
-  const fourHours = 4 * 60 * 60 * 1000;
+  window.checkSubscriptionStatus = function() {
+    const hasSubscribed = localStorage.getItem('userSubscribed');
+    const lastClosedTime = localStorage.getItem('modalLastClosed');
+    const fourHours = 4 * 60 * 60 * 1000;
 
-  // Si ya está suscrito, nunca mostrar el modal
-  if (hasSubscribed === 'true') return;
+    // Si ya está suscrito, nunca mostrar el modal
+    if (hasSubscribed === 'true') return;
 
-  // Si cerró el modal hace menos de 4 horas, no mostrarlo
-  if (lastClosedTime) {
-    const timeDifference = Date.now() - parseInt(lastClosedTime);
-    if (timeDifference < fourHours) return;
-  }
+    // Si cerró el modal hace menos de 4 horas, no mostrarlo
+    if (lastClosedTime) {
+      const timeDifference = Date.now() - parseInt(lastClosedTime);
+      if (timeDifference < fourHours) return;
+    }
 
-  // Mostrar el modal
-  const modalElement = document.getElementById("subscriptionModal");
-  if (modalElement) {
-    modalElement.classList.add('active');
-    modalElement.classList.remove('pointer-events-none');
-    modalElement.classList.add('pointer-events-auto');
-    modalElement.style.display = 'flex';
-    
-    // Bloquear scroll del body
-    lockBodyScroll();
+    const modalElement = document.getElementById("subscriptionModal");
+    if (modalElement) {
+      modalElement.classList.add('active');
+      modalElement.classList.remove('pointer-events-none');
+      modalElement.classList.add('pointer-events-auto');
+      modalElement.style.display = 'flex';
+      
+      lockBodyScroll();
+    }
   }
     
-    function closeModal() {
+  function closeModal() {
     const modal = document.getElementById("subscriptionModal");
     if (modal) {
       modal.classList.add('opacity-0');
       modal.classList.remove('pointer-events-auto');
       modal.classList.add('pointer-events-none');
       
-      // Desbloquear scroll del body
       unlockBodyScroll();
       
       setTimeout(() => {
         if (modal) modal.style.display = 'none';
       }, 300);
     }
-    // Guardar timestamp SOLO si el usuario NO está suscrito
+
     if (!localStorage.getItem('userSubscribed')) {
       localStorage.setItem('modalLastClosed', Date.now().toString());
     }
   }
     
-    function showSuccessMessage() {
-      const modalContent = document.getElementById('modalContent');
-      const subscriptionForm = document.getElementById('subscriptionForm');
-      const successMessage = document.getElementById('successMessage');
-      
-      if (modalContent) modalContent.style.display = 'none';
-      if (subscriptionForm) subscriptionForm.style.display = 'none';
-      if (successMessage) successMessage.classList.remove('hidden');
-      
-      setTimeout(() => {
-        closeModal();
-      }, 3000);
-    }
+  function showSuccessMessage() {
+    const modalContent = document.getElementById('modalContent');
+    const successMessage = document.getElementById('successMessage');
     
-    const closeButton = document.getElementById('closeModalBtn');
-    if (closeButton) {
-      closeButton.addEventListener('click', (e) => {
-        e.preventDefault();
-        console.log('🚫 Modal cerrado por el usuario (botón X)');
-        closeModal();
-      });
-    }
+    if (modalContent) modalContent.style.display = 'none';
+    if (successMessage) successMessage.classList.remove('hidden');
     
-    const modalElement2 = document.getElementById("subscriptionModal");
-    if (modalElement2) {
-      modalElement2.addEventListener('click', (e) => {
-        if (e.target === modalElement2) {
-          console.log('🚫 Modal cerrado por el usuario (clic fuera)');
-          closeModal();
-        }
-      });
-    }
-    
-    const form = document.getElementById('subscriptionForm');
-    if (form) {
-      form.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const emailInput = document.getElementById('email') as HTMLInputElement | null;
-        const email = emailInput ? emailInput.value : '';
-        
-        console.log('📧 Email para suscripción:', email);
-        
-        localStorage.setItem('userSubscribed', 'true');
-        localStorage.removeItem('modalLastClosed');
-        console.log('✅ Usuario suscrito exitosamente');
-        
-        showSuccessMessage();
-      });
-    }
+    setTimeout(() => {
+      closeModal();
+    }, 4000);
+  }
 
-    // Efecto de glow en el input cuando se enfoca
-    const emailInput = document.getElementById('email');
-    const inputGlow = document.getElementById('inputGlow');
+  function showError(elementId: string, message: string) {
+    const errorElement = document.getElementById(elementId);
+    const errorTextElement = document.getElementById(elementId + 'Text');
     
-    if (emailInput && inputGlow) {
-      emailInput.addEventListener('focus', () => {
-        inputGlow.style.opacity = '1';
-      });
+    if (errorElement) errorElement.classList.remove('hidden');
+    if (errorTextElement) errorTextElement.textContent = message;
+  }
+
+  function hideErrors() {
+    const emailError = document.getElementById('emailError');
+    const termsError = document.getElementById('termsError');
+    const generalError = document.getElementById('generalError');
+    
+    if (emailError) emailError.classList.add('hidden');
+    if (termsError) termsError.classList.add('hidden');
+    if (generalError) generalError.classList.add('hidden');
+  }
+
+  function showGeneralError(message: string) {
+    const generalError = document.getElementById('generalError');
+    const generalErrorText = document.getElementById('generalErrorText');
+    
+    if (generalError) generalError.classList.remove('hidden');
+    if (generalErrorText) generalErrorText.textContent = message;
+  }
+    
+  const closeButton = document.getElementById('closeModalBtn');
+  if (closeButton) {
+    closeButton.addEventListener('click', (e) => {
+      e.preventDefault();
+      console.log('🚫 Modal cerrado por el usuario (botón X)');
+      closeModal();
+    });
+  }
+    
+  const modalElement2 = document.getElementById("subscriptionModal");
+  if (modalElement2) {
+    modalElement2.addEventListener('click', (e) => {
+      if (e.target === modalElement2) {
+        console.log('🚫 Modal cerrado por el usuario (clic fuera)');
+        closeModal();
+      }
+    });
+  }
+    
+  const form = document.getElementById('subscriptionForm');
+  if (form) {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
       
-      emailInput.addEventListener('blur', () => {
-        inputGlow.style.opacity = '0';
-      });
-    }
+      hideErrors();
+      
+      const emailInput = document.getElementById('email') as HTMLInputElement | null;
+      const termsInput = document.getElementById('terms') as HTMLInputElement | null;
+      const subscribeBtn = document.getElementById('subscribeBtn') as HTMLButtonElement | null;
+      const subscribeText = document.getElementById('subscribeText');
+      
+      const email = emailInput ? emailInput.value.trim() : '';
+      const termsAccepted = termsInput ? termsInput.checked : false;
+      
+      if (!email) {
+        showError('email', 'El email es obligatorio');
+        return;
+      }
+      
+      if (!termsAccepted) {
+        showError('terms', 'Debes aceptar los términos y condiciones');
+        return;
+      }
+      
+      // Deshabilitar botón y mostrar loading
+      if (subscribeBtn) subscribeBtn.disabled = true;
+      if (subscribeText) subscribeText.textContent = 'Enviando...';
+      
+      try {
+        const response = await fetch('/api/subscriptionEmail', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email: email,
+            termsAccepted: termsAccepted
+          })
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+          console.log('✅ Usuario suscrito exitosamente');
+          localStorage.setItem('userSubscribed', 'true');
+          localStorage.removeItem('modalLastClosed');
+          showSuccessMessage();
+          
+          window.dispatchEvent(new CustomEvent('subscriptionSuccess', { 
+            detail: { totalEmails: result.totalEmails } 
+          }));
+        } else {
+          console.error('❌ Error en la suscripción:', result.message);
+
+          showGeneralError(result.message);
+        }
+      } catch (error) {
+        console.error('❌ Error de conexión:', error);
+        showGeneralError('Error de conexión. Inténtalo de nuevo.');
+      } finally {
+
+        if (subscribeBtn) subscribeBtn.disabled = false;
+        if (subscribeText) subscribeText.textContent = 'Suscribirse';
+      }
+    });
+  }
+
+  const emailInput = document.getElementById('email');
+  const inputGlow = document.getElementById('inputGlow');
+  
+  if (emailInput && inputGlow) {
+    emailInput.addEventListener('focus', () => {
+      inputGlow.style.opacity = '1';
+    });
+    
+    emailInput.addEventListener('blur', () => {
+      inputGlow.style.opacity = '0';
+    });
   }
 
   document.addEventListener('DOMContentLoaded', () => {
-      if (typeof window.checkSubscriptionStatus === 'function') {
-        window.checkSubscriptionStatus();
-      }
-    });
+    if (typeof window.checkSubscriptionStatus === 'function') {
+      window.checkSubscriptionStatus();
+    }
+  });
 
 // Manejo del modal de términos y condiciones
 const termsText = document.getElementById('termsText');
@@ -325,7 +416,7 @@ if (termsText) {
   termsText.addEventListener('click', (e) => {
     e.preventDefault();
     if (termsModal && subscriptionModal) {
-      // Ocultar modal de suscripción con animación
+
       subscriptionModal.classList.add('opacity-0');
       subscriptionModal.classList.remove('pointer-events-auto');
       subscriptionModal.classList.add('pointer-events-none');
@@ -342,14 +433,12 @@ if (termsText) {
           termsModalContent.classList.remove('scale-95');
         }
       }, 50);
-      
     }
   });
 }
 
 function closeTermsModal() {
   if (termsModal && termsModalContent) {
-
     termsModalContent.classList.remove('scale-100');
     termsModalContent.classList.add('scale-95');
     
@@ -365,7 +454,6 @@ function closeTermsModal() {
 
 function showSubscriptionModal() {
   if (subscriptionModal) {
-
     subscriptionModal.style.display = 'flex';
     setTimeout(() => {
       subscriptionModal.classList.remove('opacity-0');
@@ -404,6 +492,8 @@ if (termsModal) {
   });
 }
 </script>
+
+
 
 <style>
   #subscriptionModal {

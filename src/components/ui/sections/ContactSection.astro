@@ -202,7 +202,6 @@
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
       
-      console.log('📝 Formulario de contacto enviado');
       
       successMessage.classList.add('hidden');
       errorMessage.classList.add('hidden');
@@ -210,7 +209,6 @@
       const formData = new FormData(form);
       const data = Object.fromEntries(formData);
       
-      console.log('📝 Datos del contacto:', data);
       
       if (!data.nombre || !data.email || !data.asunto || !data.mensaje) {
         showError('Por favor, completa todos los campos obligatorios.');
@@ -251,7 +249,6 @@
 
         const result = await response.json();
         if (response.ok && result.success) {
-          console.log('🎉 ¡Éxito! Mostrando mensaje de éxito del contacto...');
           form.reset();
           showSuccess();
         } else {

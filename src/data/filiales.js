@@ -8,7 +8,7 @@ export const filiales = {
     color: "from-blue-100 to-blue-100",
     icon: "💰",
     percentage: 14,
-    newDescription: "Ofrecemos préstamos rápidos y responsables con asesoría experta. Impulsa tu negocio con capital flexible y apoyo financiero.",
+    newDescription: "creemos que el acceso al financiamiento no debe ser un obstáculo, sino un trampolín hacia el éxito. Ofrecemos préstamos rápidos, flexibles y responsables, pensados especialmente para emprendedores, pequeñas empresas y trabajadores independientes. Además del crédito, brindamos asesoría financiera personalizada, para ayudarte a usar bien el capital, invertir con inteligencia y evitar el sobreendeudamiento.",
     beneficios: [
       "Recibe capital <br/> de forma inmediata",
       "Tasas justas <br/> y competitivas",

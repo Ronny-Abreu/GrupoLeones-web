@@ -2,7 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 ---
 
-<Layout title="Login - Grupo Leones">
+<Layout title="Login Admin - Grupo Leones">
   <main class="min-h-screen bg-gradient-to-br from-red-600 via-red-500 to-red-700 flex items-center justify-center p-4">
     <!-- Back to Home Button -->
     <a 
@@ -21,88 +21,108 @@ import Layout from '../layouts/Layout.astro';
         <div class="text-center mb-6 md:mb-8">
           <div class="inline-block p-3 md:p-4 bg-white/20 rounded-full mb-4">
             <svg class="w-12 h-12 md:w-16 md:h-16 text-white" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
             </svg>
           </div>
-          <h1 class="text-2xl md:text-3xl font-bold text-white mb-2">Bienvenido Admin</h1>
-          <p class="text-white/80 text-sm md:text-base">Accede al panel de administración</p>
+          <h1 class="text-2xl md:text-3xl font-bold text-white mb-2">Panel de Administración</h1>
+          <p class="text-white/80 text-sm md:text-base">Acceso seguro con código OTP</p>
         </div>
 
-        <!-- Login Form -->
-        <form id="loginForm" class="space-y-4 md:space-y-6">
-          <!-- Email Field -->
-          <div class="relative">
-            <label for="email" class="block text-sm font-medium text-white/90 mb-2">
-              Correo Electrónico
-            </label>
-            <div class="relative">
-              <input
-                type="email"
-                id="email"
-                name="email"
-                required
-                class="w-full px-4 py-3 pl-12 bg-white/20 border border-white/30 rounded-xl text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-transparent transition-all duration-300 text-sm md:text-base"
-                placeholder="admin@grupoleones.com"
-              />
-              <svg class="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"/>
+        <!-- Step 1: Request OTP -->
+        <div id="requestOTPStep" class="space-y-4 md:space-y-6">
+          <div class="text-center mb-6">
+            <div class="inline-block p-3 bg-white/20 rounded-full mb-3">
+              <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
               </svg>
             </div>
+            <p class="text-white/90 text-sm">
+              Se enviará un código de verificación al email del administrador
+            </p>
           </div>
 
-          <!-- Password Field -->
-          <div class="relative">
-            <label for="password" class="block text-sm font-medium text-white/90 mb-2">
-              Contraseña
-            </label>
-            <div class="relative">
-              <input
-                type="password"
-                id="password"
-                name="password"
-                required
-                class="w-full px-4 py-3 pl-12 pr-12 bg-white/20 border border-white/30 rounded-xl text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-transparent transition-all duration-300 text-sm md:text-base"
-                placeholder="••••••••"
-              />
-              <svg class="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
-              </svg>
-              <button
-                type="button"
-                id="togglePassword"
-                class="absolute right-4 top-1/2 transform -translate-y-1/2 text-white/60 hover:text-white transition-colors"
-              >
-                <svg id="eyeIcon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
-                </svg>
-              </button>
-            </div>
-          </div>
-
-          <!-- Remember Me -->
-          <div class="flex items-center">
-            <label class="flex items-center">
-              <input type="checkbox" class="w-4 h-4 text-red-600 bg-white/20 border-white/30 rounded focus:ring-white/50">
-              <span class="ml-2 text-sm text-white/80">Recordarme</span>
-            </label>
-          </div>
-
-          <!-- Submit Button -->
           <button
-            type="submit"
-            class="w-full bg-white text-red-600 py-3 px-4 rounded-xl font-semibold hover:bg-white/90 focus:outline-none focus:ring-2 focus:ring-white/50 transform transition-all duration-300 hover:scale-105 active:scale-95"
+            type="button"
+            id="requestOTPBtn"
+            class="w-full bg-white text-red-600 py-3 px-4 rounded-xl font-semibold hover:bg-white/90 focus:outline-none focus:ring-2 focus:ring-white/50 transform transition-all duration-300 hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            Iniciar Sesión
+            <span id="requestOTPText">Solicitar Código de Acceso</span>
           </button>
-        </form>
+        </div>
 
-        <!-- Admin Credentials Info -->
+        <!-- Step 2: Enter OTP -->
+        <div id="enterOTPStep" class="hidden space-y-4 md:space-y-6">
+          <div class="text-center mb-6">
+            <div class="inline-block p-3 bg-green-500/20 rounded-full mb-3">
+              <svg class="w-8 h-8 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+            </div>
+            <p class="text-white/90 text-sm">
+              Código enviado exitosamente. Revisa tu email.
+            </p>
+            <p class="text-white/70 text-xs mt-2">
+              El código expira en <span id="countdown">5:00</span>
+            </p>
+          </div>
+
+          <form id="otpForm" class="space-y-4">
+            <!-- OTP Input -->
+            <div class="relative">
+              <label for="otpCode" class="block text-sm font-medium text-white/90 mb-2">
+                Código de Verificación (6 dígitos)
+              </label>
+              <div class="relative">
+                <input
+                  type="text"
+                  id="otpCode"
+                  name="otpCode"
+                  maxlength="6"
+                  pattern="[0-9]{6}"
+                  required
+                  class="w-full px-4 py-3 pl-12 bg-white/20 border border-white/30 rounded-xl text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-transparent transition-all duration-300 text-center text-2xl font-mono tracking-widest"
+                  placeholder="000000"
+                />
+                <svg class="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                </svg>
+              </div>
+            </div>
+
+            <!-- Submit Button -->
+            <button
+              type="submit"
+              id="verifyOTPBtn"
+              class="w-full bg-white text-red-600 py-3 px-4 rounded-xl font-semibold hover:bg-white/90 focus:outline-none focus:ring-2 focus:ring-white/50 transform transition-all duration-300 hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <span id="verifyOTPText">Verificar Código</span>
+            </button>
+
+            <!-- Resend Button -->
+            <button
+              type="button"
+              id="resendOTPBtn"
+              class="w-full bg-transparent border border-white/30 text-white py-2 px-4 rounded-xl font-medium hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-white/50 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              Reenviar Código
+            </button>
+          </form>
+        </div>
+
+        <!-- Error Messages -->
+        <div id="errorMessage" class="hidden mt-4 p-4 bg-red-500/20 border border-red-500/30 rounded-xl">
+          <div class="flex items-center gap-2 text-red-300 text-sm">
+            <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.054 0 1.658-1.14 1.105-2.05L13.105 4.05c-.525-.91-1.685-.91-2.21 0L3.977 16.95C3.424 17.86 4.028 19 5.082 19z"/>
+            </svg>
+            <span id="errorText"></span>
+          </div>
+        </div>
+
+        <!-- Info Box -->
         <div class="mt-6 p-4 bg-white/5 rounded-xl border border-white/20">
           <p class="text-white/70 text-xs md:text-sm text-center">
-            <strong>Credenciales de prueba:</strong><br>
-            Email: admin@grupoleones.com<br>
-            Contraseña: admin123
+            El código expirará en 5 minutos.
           </p>
         </div>
       </div>
@@ -111,70 +131,214 @@ import Layout from '../layouts/Layout.astro';
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      const togglePassword = document.getElementById('togglePassword');
-      const passwordInput = document.getElementById('password');
-      const eyeIcon = document.getElementById('eyeIcon');
-      const loginForm = document.getElementById('loginForm');
+      // Elementos del DOM
+      const requestOTPStep = document.getElementById('requestOTPStep');
+      const enterOTPStep = document.getElementById('enterOTPStep');
+      const requestOTPBtn = document.getElementById('requestOTPBtn');
+      const requestOTPText = document.getElementById('requestOTPText');
+      const otpForm = document.getElementById('otpForm');
+      const otpCodeInput = document.getElementById('otpCode') as HTMLInputElement;
+      const verifyOTPBtn = document.getElementById('verifyOTPBtn');
+      const verifyOTPText = document.getElementById('verifyOTPText');
+      const resendOTPBtn = document.getElementById('resendOTPBtn');
+      const errorMessage = document.getElementById('errorMessage');
+      const errorText = document.getElementById('errorText');
+      const countdown = document.getElementById('countdown');
 
-      //DATOS DE PRUEBA
-      // Admin credentials ()
-      const adminCredentials = {
-        email: 'admin@grupoleones.com',
-        password: 'admin123'
-      };
+      // Variables de estado
+      let sessionId: string | null = null;
+      let countdownInterval: ReturnType<typeof setInterval> | null = null;
 
-      // Toggle password visibility
-      togglePassword?.addEventListener('click', () => {
-        if (!passwordInput) return;
-        const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-        passwordInput.setAttribute('type', type);
+      function showError(message: string) {
+        if (errorText && errorMessage) {
+          errorText.textContent = message;
+          errorMessage.classList.remove('hidden');
+        }
+      }
+
+      function hideError() {
+        if (errorMessage) {
+          errorMessage.classList.add('hidden');
+        }
+      }
+
+      // Función para iniciar countdown
+      function startCountdown(seconds: number) {
+        let timeLeft = seconds;
         
-        if (eyeIcon) {
-          if (type === 'text') {
-            eyeIcon.innerHTML = `
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L3 3m6.878 6.878L21 21"/>
-            `;
+        if (countdownInterval) {
+          clearInterval(countdownInterval);
+        }
+
+        countdownInterval = setInterval(() => {
+          const minutes = Math.floor(timeLeft / 60);
+          const secs = timeLeft % 60;
+          
+          if (countdown) {
+            countdown.textContent = `${minutes}:${secs.toString().padStart(2, '0')}`;
+          }
+
+          if (timeLeft <= 0) {
+            clearInterval(countdownInterval!);
+            showError('El código ha expirado. Solicita uno nuevo.');
+            // Volver al paso 1
+            if (requestOTPStep && enterOTPStep) {
+              requestOTPStep.classList.remove('hidden');
+              enterOTPStep.classList.add('hidden');
+            }
+          }
+
+          timeLeft--;
+        }, 1000);
+      }
+
+      // Manejar solicitud de OTP
+      requestOTPBtn?.addEventListener('click', async () => {
+        hideError();
+        
+        if (requestOTPBtn instanceof HTMLButtonElement && requestOTPText) {
+          requestOTPBtn.disabled = true;
+          requestOTPText.textContent = 'Enviando código...';
+        }
+
+        try {
+          const response = await fetch('/api/generateOTP', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          });
+
+          const result = await response.json();
+
+          if (result.success) {
+            sessionId = result.sessionId;
+            
+            if (requestOTPStep && enterOTPStep) {
+              requestOTPStep.classList.add('hidden');
+              enterOTPStep.classList.remove('hidden');
+            }
+
+            startCountdown(result.expiresIn);
+
+            if (otpCodeInput) {
+              otpCodeInput.focus();
+            }
           } else {
-            eyeIcon.innerHTML = `
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
-            `;
+            showError(result.message || 'Error al enviar el código');
+          }
+        } catch (error) {
+          console.error('Error:', error);
+          showError('Error de conexión. Inténtalo de nuevo.');
+        } finally {
+          if (requestOTPBtn instanceof HTMLButtonElement && requestOTPText) {
+            requestOTPBtn.disabled = false;
+            requestOTPText.textContent = 'Solicitar Código de Acceso';
           }
         }
       });
 
-      // Handle form submission
-      loginForm?.addEventListener('submit', (e) => {
+      // Manejar verificación de OTP
+      otpForm?.addEventListener('submit', async (e) => {
         e.preventDefault();
-        
-        const emailInput = document.getElementById('email') as HTMLInputElement | null;
-        const passwordInput = document.getElementById('password') as HTMLInputElement | null;
-        const email = emailInput ? emailInput.value : '';
-        const password = passwordInput ? passwordInput.value : '';
-        
-        // Add loading state
-        const submitBtn = loginForm.querySelector('button[type="submit"]');
-        if (submitBtn && submitBtn instanceof HTMLButtonElement) {
-          const originalText = submitBtn.textContent;
-          submitBtn.textContent = 'Verificando...';
-          submitBtn.disabled = true;
-          // Simulate login process
-          setTimeout(() => {
-            if (email === adminCredentials.email && password === adminCredentials.password) {
-              // Store admin session
-              localStorage.setItem('adminLoggedIn', 'true');
-              localStorage.setItem('adminEmail', email);
-              
-              alert('¡Inicio de sesión exitoso!');
-              window.location.href = '/admin/dashboard';
-            } else {
-              alert('Credenciales incorrectas. Verifica tu email y contraseña.');
-              if (submitBtn && submitBtn instanceof HTMLButtonElement) {
-                submitBtn.textContent = originalText;
-                submitBtn.disabled = false;
-              }
+        hideError();
+
+        if (!sessionId) {
+          showError('Sesión no válida. Solicita un nuevo código.');
+          return;
+        }
+
+        const otpCode = otpCodeInput?.value.trim();
+
+        if (!otpCode || otpCode.length !== 6) {
+          showError('Ingresa un código de 6 dígitos');
+          return;
+        }
+
+        if (verifyOTPBtn instanceof HTMLButtonElement && verifyOTPText) {
+          verifyOTPBtn.disabled = true;
+          verifyOTPText.textContent = 'Verificando...';
+        }
+
+        try {
+          const response = await fetch('/api/verifyOTP', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              sessionId: sessionId,
+              otpCode: otpCode
+            })
+          });
+
+          const result = await response.json();
+
+          if (result.success) {
+
+            localStorage.setItem('adminToken', result.adminToken);
+            localStorage.setItem('adminTokenExpires', (Date.now() + result.expiresIn * 1000).toString());
+            
+            if (countdownInterval) {
+              clearInterval(countdownInterval);
             }
-          }, 1500);
+
+            if (verifyOTPText) {
+              verifyOTPText.textContent = '¡Acceso autorizado!';
+            }
+
+            setTimeout(() => {
+              window.location.href = '/formEmail';
+            }, 1000);
+          } else {
+            showError(result.message || 'Código incorrecto');
+          }
+        } catch (error) {
+          console.error('Error:', error);
+          showError('Error de conexión. Inténtalo de nuevo.');
+        } finally {
+          if (verifyOTPBtn instanceof HTMLButtonElement && verifyOTPText) {
+            verifyOTPBtn.disabled = false;
+            verifyOTPText.textContent = 'Verificar Código';
+          }
+        }
+      });
+
+      // Manejar reenvío de OTP
+      resendOTPBtn?.addEventListener('click', () => {
+        // Limpiar countdown
+        if (countdownInterval) {
+          clearInterval(countdownInterval);
+        }
+
+        // Volver al paso 1
+        if (requestOTPStep && enterOTPStep) {
+          requestOTPStep.classList.remove('hidden');
+          enterOTPStep.classList.add('hidden');
+        }
+
+        // Limpiar input
+        if (otpCodeInput) {
+          otpCodeInput.value = '';
+        }
+
+        hideError();
+      });
+
+      otpCodeInput?.addEventListener('input', (e) => {
+        const target = e.target as HTMLInputElement;
+        target.value = target.value.replace(/[^0-9]/g, '');
+      });
+
+
+      // Auto-submit cuando se completen 6 dígitos
+      otpCodeInput?.addEventListener('input', (e) => {
+        const target = e.target as HTMLInputElement;
+        if (target.value.length === 6) {
+
+          setTimeout(() => {
+            otpForm?.dispatchEvent(new Event('submit'));
+          }, 100);
         }
       });
     });
