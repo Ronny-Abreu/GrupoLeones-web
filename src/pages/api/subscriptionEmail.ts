@@ -1,8 +1,19 @@
-import path from "path"
-import fs from "fs/promises"
-import { jsPDF } from "jspdf"
+import {
+  doc,
+  query,
+  where,
+  addDoc,
+  getDoc,
+  setDoc,
+  getDocs,
+  updateDoc,
+  increment,
+  deleteDoc,
+  collection,
+} from "firebase/firestore"
 import nodemailer from "nodemailer"
 import type { APIRoute } from "astro"
+import { db } from "../../lib/firebase"
 
 interface SubscriptionData {
   email: string
@@ -13,23 +24,20 @@ interface SubscriptionData {
 interface VisitorData {
   ip: string
   userAgent: string
+  firstVisit: string
   lastVisit: string
+  visitCount: number
 }
 
 interface StatsData {
-  emails: SubscriptionData[]
-  visits: number
+  totalEmails: number
+  monthlyVisits: number
   lastVisitReset: string
-  visitors: VisitorData[]
+  currentMonth: string
 }
-
-const DATA_FILE = path.join(process.cwd(), "data", "subscriptions.json")
-const PDF_FILE = path.join(process.cwd(), "public", "emails-list.pdf")
 
 const EMAIL_USER = process.env.EMAIL_USER || import.meta.env.EMAIL_USER
 const EMAIL_PASS = process.env.EMAIL_PASS || import.meta.env.EMAIL_PASS
-
-
 
 const transporter =
   EMAIL_USER && EMAIL_PASS
@@ -47,95 +55,24 @@ function getClientIP(request: Request): string {
   const realIP = request.headers.get("x-real-ip")
   const cfConnectingIP = request.headers.get("cf-connecting-ip")
 
-  if (forwarded) {
-    return forwarded.split(",")[0].trim()
-  }
-  if (realIP) {
-    return realIP
-  }
-  if (cfConnectingIP) {
-    return cfConnectingIP
-  }
-
+  if (forwarded) return forwarded.split(",")[0].trim()
+  if (realIP) return realIP
+  if (cfConnectingIP) return cfConnectingIP
   return "unknown"
 }
 
-async function readData(): Promise<StatsData> {
-  try {
-    await fs.mkdir(path.dirname(DATA_FILE), { recursive: true })
-    const data = await fs.readFile(DATA_FILE, "utf-8")
-    const parsedData = JSON.parse(data)
-
-    if (!parsedData.visitors) {
-      parsedData.visitors = []
-    }
-
-    return parsedData
-  } catch (error) {
-    return {
-      emails: [],
-      visits: 0,
-      lastVisitReset: new Date().toISOString(),
-      visitors: [],
-    }
-  }
+function getCurrentMonth(): string {
+  const now = new Date()
+  return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`
 }
 
-async function saveData(data: StatsData): Promise<void> {
-  await fs.mkdir(path.dirname(DATA_FILE), { recursive: true })
-  await fs.writeFile(DATA_FILE, JSON.stringify(data, null, 2))
-}
-
-// Función para generar PDF
-async function generatePDF(emails: SubscriptionData[]): Promise<void> {
-  const doc = new jsPDF()
-
-  doc.setFontSize(20)
-  doc.text("Lista de Emails Suscritos - Grupo Leones", 20, 30)
-
-  doc.setFontSize(12)
-  doc.text(`Generado el: ${new Date().toLocaleDateString("es-ES")}`, 20, 45)
-  doc.text(`Total de suscriptores: ${emails.length}`, 20, 55)
-
-  doc.line(20, 65, 190, 65)
-
-  // Headers
-  doc.setFontSize(14)
-  doc.text("Email", 20, 80)
-  doc.text("Fecha de Suscripción", 120, 80)
-
-  doc.line(20, 85, 190, 85)
-
-  doc.setFontSize(10)
-  let yPosition = 95
-
-  emails.forEach((subscription, index) => {
-    if (yPosition > 270) {
-      doc.addPage()
-      yPosition = 30
-    }
-
-    doc.text(`${index + 1}. ${subscription.email}`, 20, yPosition)
-    doc.text(new Date(subscription.date).toLocaleDateString("es-ES"), 120, yPosition)
-    yPosition += 10
-  })
-
-  // Guardar PDF
-  await fs.mkdir(path.dirname(PDF_FILE), { recursive: true })
-  const pdfBuffer = doc.output("arraybuffer")
-  await fs.writeFile(PDF_FILE, Buffer.from(pdfBuffer))
-}
-
-// Función para validar email
 function isValidEmail(email: string): boolean {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
   return emailRegex.test(email)
 }
 
 async function sendConfirmationEmail(email: string): Promise<boolean> {
-
-    if (!transporter) {
-    console.error("❌ Transportador de email no configurado. Verifica las variables de entorno.")
+  if (!transporter) {
     return false
   }
 
@@ -166,7 +103,7 @@ async function sendConfirmationEmail(email: string): Promise<boolean> {
               </ul>
             </div>
             
-            <p>Nos comprometemos a enviarte contenido relevante y de calidad. Recibirás nuestros correos de forma periódica con las mejores ofertas y novedades.</p>
+            <p>Nos comprometemos a enviarte contenido relevante y de calidad.</p>
             
             <div style="text-align: center; margin: 30px 0;">
               <div style="background-color: #dc2626; color: white; padding: 15px 25px; border-radius: 5px; display: inline-block;">
@@ -175,7 +112,7 @@ async function sendConfirmationEmail(email: string): Promise<boolean> {
             </div>
             
             <p style="font-size: 14px; color: #666; border-top: 1px solid #eee; padding-top: 20px; margin-top: 30px;">
-              Si tienes alguna pregunta o necesitas ayuda, no dudes en contactarnos.<br>
+              Si tienes alguna pregunta, contáctanos.<br>
               <strong>Equipo Grupo Leones</strong>
             </p>
           </div>
@@ -185,11 +122,124 @@ async function sendConfirmationEmail(email: string): Promise<boolean> {
   }
 
   try {
-    console.log("📧 Enviando email de confirmación a:", email)
     await transporter.sendMail(mailOptions)
     return true
   } catch (error) {
+    console.error("❌ Error enviando email:", error)
     return false
+  }
+}
+
+async function updateStats(isNewSubscription = false): Promise<StatsData> {
+  const statsRef = doc(db, "stats", "general")
+
+  try {
+    const statsDoc = await getDoc(statsRef)
+    const now = new Date()
+    const currentMonth = getCurrentMonth()
+
+    if (!statsDoc.exists()) {
+
+      const initialStats: StatsData = {
+        totalEmails: isNewSubscription ? 1 : 0,
+        monthlyVisits: 0,
+        lastVisitReset: now.toISOString(),
+        currentMonth: currentMonth,
+      }
+      await setDoc(statsRef, initialStats)
+      return initialStats
+    }
+
+    const currentStats = statsDoc.data() as StatsData
+    const updates: any = {}
+
+    if (isNewSubscription) {
+      updates.totalEmails = increment(1)
+    }
+
+    // Resetear visitas si es un nuevo mes
+    if (currentStats.currentMonth !== currentMonth) {
+      console.log(`🗓️ Nuevo mes detectado: ${currentMonth}. Reseteando contadores de visitas.`)
+      updates.monthlyVisits = 0
+      updates.lastVisitReset = now.toISOString()
+      updates.currentMonth = currentMonth
+
+      await cleanupOldVisitors(currentStats.currentMonth)
+    }
+
+    if (Object.keys(updates).length > 0) {
+      await updateDoc(statsRef, updates)
+    }
+
+    // Obtener datos actualizados
+    const updatedDoc = await getDoc(statsRef)
+    return updatedDoc.data() as StatsData
+  } catch (error) {
+    console.error("❌ Error actualizando estadísticas:", error)
+    throw error
+  }
+}
+
+async function trackVisitor(clientIP: string, userAgent: string): Promise<boolean> {
+  const currentMonth = getCurrentMonth()
+  const visitorId = `${clientIP}-${currentMonth}`
+  const visitorRef = doc(db, "visitors", visitorId)
+
+  try {
+    const visitorDoc = await getDoc(visitorRef)
+    const now = new Date().toISOString()
+
+    if (!visitorDoc.exists()) {
+      // Nuevo visitante único este mes
+      const newVisitor: VisitorData = {
+        ip: clientIP,
+        userAgent: userAgent,
+        firstVisit: now,
+        lastVisit: now,
+        visitCount: 1,
+      }
+
+      await setDoc(visitorRef, newVisitor)
+
+      // Incrementar contador de visitas mensuales
+      const statsRef = doc(db, "stats", "general")
+      await updateDoc(statsRef, {
+        monthlyVisits: increment(1),
+      })
+
+      return true
+    } else {
+
+      await updateDoc(visitorRef, {
+        lastVisit: now,
+        visitCount: increment(1),
+      })
+
+      return false
+    }
+  } catch (error) {
+    return false
+  }
+}
+
+async function cleanupOldVisitors(oldMonth: string): Promise<void> {
+  try {
+
+    const visitorsRef = collection(db, "visitors")
+    const snapshot = await getDocs(visitorsRef)
+
+    const deletePromises: Promise<void>[] = []
+
+    snapshot.forEach((docSnapshot) => {
+      const visitorId = docSnapshot.id
+      if (visitorId.endsWith(`-${oldMonth}`)) {
+        deletePromises.push(deleteDoc(docSnapshot.ref))
+      }
+    })
+
+    await Promise.all(deletePromises)
+  } catch (error) {
+    console.error("❌ Error limpiando visitantes:", error)
   }
 }
 
@@ -237,11 +287,12 @@ export const POST: APIRoute = async ({ request }) => {
       )
     }
 
-    const data = await readData()
+    // Verificar si el email ya existe en Firestore
+    const subscriptionsRef = collection(db, "subscriptions")
+    const emailQuery = query(subscriptionsRef, where("email", "==", email.toLowerCase()))
+    const existingEmails = await getDocs(emailQuery)
 
-    // Verificar si el email ya existe
-    const emailExists = data.emails.some((sub) => sub.email.toLowerCase() === email.toLowerCase())
-    if (emailExists) {
+    if (!existingEmails.empty) {
       return new Response(
         JSON.stringify({
           success: false,
@@ -254,6 +305,7 @@ export const POST: APIRoute = async ({ request }) => {
       )
     }
 
+    // Enviar email de confirmación
     const emailSent = await sendConfirmationEmail(email)
     if (!emailSent) {
       return new Response(
@@ -268,27 +320,24 @@ export const POST: APIRoute = async ({ request }) => {
       )
     }
 
-    // Agregar nueva suscripción
+    // Agregar nueva suscripción a Firestore
     const newSubscription: SubscriptionData = {
       email: email.toLowerCase(),
       date: new Date().toISOString(),
       id: Date.now().toString(),
     }
 
-    data.emails.push(newSubscription)
+    await addDoc(subscriptionsRef, newSubscription)
 
-    // Guardar datos
-    await saveData(data)
-
-    // Generar PDF actualizado
-    await generatePDF(data.emails)
+    // Actualizar estadísticas
+    const updatedStats = await updateStats(true)
 
 
     return new Response(
       JSON.stringify({
         success: true,
         message: "Suscripción exitosa",
-        totalEmails: data.emails.length,
+        totalEmails: updatedStats.totalEmails,
       }),
       {
         status: 200,
@@ -312,53 +361,19 @@ export const POST: APIRoute = async ({ request }) => {
 
 export const GET: APIRoute = async ({ request }) => {
   try {
-    const data = await readData()
 
     const clientIP = getClientIP(request)
     const userAgent = request.headers.get("user-agent") || "unknown"
-    const now = new Date()
-    const currentMonth = `${now.getFullYear()}-${now.getMonth()}`
 
-    const lastReset = new Date(data.lastVisitReset)
-    const lastResetMonth = `${lastReset.getFullYear()}-${lastReset.getMonth()}`
-    const isNewMonth = currentMonth !== lastResetMonth
+    await trackVisitor(clientIP, userAgent)
 
-    if (isNewMonth) {
-      // Resetear contadores para el nuevo mes
-      data.visits = 0
-      data.visitors = []
-      data.lastVisitReset = now.toISOString()
-    }
-
-    // Verificar si este visitante ya fue contado este mes
-    const visitorKey = `${clientIP}-${userAgent}`
-    const existingVisitor = data.visitors.find((v) => `${v.ip}-${v.userAgent}` === visitorKey)
-
-    if (!existingVisitor) {
-      // Nuevo visitante único este mes
-      data.visits += 1
-      data.visitors.push({
-        ip: clientIP,
-        userAgent: userAgent,
-        lastVisit: now.toISOString(),
-      })
-
-      if (data.visitors.length > 1000) {
-        data.visitors = data.visitors.slice(-1000)
-      }
-
-      await saveData(data)
-    } else {
-      // Actualizar la última visita del visitante existente
-      existingVisitor.lastVisit = now.toISOString()
-      await saveData(data)
-    }
+    const updatedStats = await updateStats(false)
 
     return new Response(
       JSON.stringify({
         success: true,
-        totalEmails: data.emails.length,
-        monthlyVisits: data.visits,
+        totalEmails: updatedStats.totalEmails,
+        monthlyVisits: updatedStats.monthlyVisits,
       }),
       {
         status: 200,
@@ -366,7 +381,6 @@ export const GET: APIRoute = async ({ request }) => {
       },
     )
   } catch (error) {
-    console.error("❌ Error obteniendo estadísticas:", error)
     return new Response(
       JSON.stringify({
         success: false,

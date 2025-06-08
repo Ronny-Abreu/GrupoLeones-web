@@ -68,11 +68,9 @@ import Header from "../components/ui/sections/Header.astro";
                 <span class="font-bold">PDF Emails</span>
                 <span class="font-medium text-[15px]">
                   Descargue el PDF con la <br class="hidden md:block"> lista de Email registrados<br class="hidden md:block"> <br class="hidden md:block">
-                  <a href="/emails-list.pdf" download="emails-list-grupo-leones.pdf" class="underline font-bold flex justify-center items-center gap-2" id="downloadPdfBtn">
-                    Descargar PDF
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M9 8.25H7.5a2.25 2.25 0 0 0-2.25 2.25v9a2.25 2.25 0 0 0 2.25 2.25h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25H15M9 12l3 3m0 0 3-3m-3 3V2.25" />
-                    </svg>
+                  <a href="/api/generatePDF" download="emails-list-grupo-leones.pdf" class="underline font-bold flex justify-center items-center gap-2" id="downloadPdfBtn">
+                      Descargar PDF
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-download"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
                   </a> 
                 </span>
               </div>
@@ -81,8 +79,7 @@ import Header from "../components/ui/sections/Header.astro";
             <!-- LOGOUT BUTTON -->
             <div class="size-fit rounded-xl p-4 flex justify-between items-center bg-red-200">
               <div class="flex flex-col">
-                <span class="font-bold text-red-700">Cerrar Sesión</span>
-                <button id="logoutBtn" class="underline font-bold flex justify-center items-center gap-2 text-red-600 hover:text-red-800 transition-colors">
+                <button id="logoutBtn" class=" font-bold flex justify-center items-center gap-2 text-red-600 hover:text-red-800 transition-colors">
                   Salir del Panel
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" />
@@ -239,7 +236,7 @@ import Header from "../components/ui/sections/Header.astro";
     const mainContent = document.getElementById('mainContent');
 
     try {
-      // Verificar si hay token en localStorage
+
       const adminToken = localStorage.getItem('adminToken');
       const tokenExpires = localStorage.getItem('adminTokenExpires');
 
@@ -254,7 +251,6 @@ import Header from "../components/ui/sections/Header.astro";
         throw new Error('Sesión expirada');
       }
 
-      // Verificar token con el servidor
       const response = await fetch(`/api/verifyOTP?token=${adminToken}`);
       const result = await response.json();
 
@@ -270,7 +266,6 @@ import Header from "../components/ui/sections/Header.astro";
 
     } catch (error) {
       console.error('Error de autenticación:', error);
-      // Redirigir a 404
       window.location.href = '/404';
     }
   });
@@ -354,7 +349,6 @@ import Header from "../components/ui/sections/Header.astro";
     });
   }
 
-  // Manejar logout
   const logoutBtn = document.getElementById('logoutBtn');
   if (logoutBtn) {
     logoutBtn.addEventListener('click', () => {
@@ -366,7 +360,6 @@ import Header from "../components/ui/sections/Header.astro";
     });
   }
 
-  // Escuchar evento de nueva suscripción
   window.addEventListener('subscriptionSuccess', (event) => {
     const emailCountElement = document.getElementById('emailCount');
     if (emailCountElement && event.detail.totalEmails) {
@@ -422,7 +415,6 @@ import Header from "../components/ui/sections/Header.astro";
     }
   });
 
-  // Contador de caracteres
   cuerpoInput?.addEventListener('input', () => {
     if (charCount) {
       charCount.textContent = cuerpoInput.value.length;
@@ -432,7 +424,6 @@ import Header from "../components/ui/sections/Header.astro";
   form?.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    // Limpiar errores previos
     errorEmail?.classList.add('hidden');
     errorTitulo?.classList.add('hidden');
     errorCuerpo?.classList.add('hidden');

@@ -1,7 +1,7 @@
-import path from "path"
-import fs from "fs/promises"
 import nodemailer from "nodemailer"
 import type { APIRoute } from "astro"
+import { db } from "../../lib/firebase"
+import { collection, getDocs } from "firebase/firestore"
 
 interface SubscriptionData {
   email: string
@@ -9,38 +9,8 @@ interface SubscriptionData {
   id: string
 }
 
-interface StatsData {
-  emails: SubscriptionData[]
-  visits: number
-  lastVisitReset: string
-  visitors?: any[]
-}
-
-const DATA_FILE = path.join(process.cwd(), "data", "subscriptions.json")
-
 const EMAIL_USER = process.env.EMAIL_USER || import.meta.env.EMAIL_USER
 const EMAIL_PASS = process.env.EMAIL_PASS || import.meta.env.EMAIL_PASS
-
-async function readData(): Promise<StatsData> {
-  try {
-    await fs.mkdir(path.dirname(DATA_FILE), { recursive: true })
-    const data = await fs.readFile(DATA_FILE, "utf-8")
-    const parsedData = JSON.parse(data)
-
-    if (!parsedData.visitors) {
-      parsedData.visitors = []
-    }
-
-    return parsedData
-  } catch (error) {
-    return {
-      emails: [],
-      visits: 0,
-      lastVisitReset: new Date().toISOString(),
-      visitors: [],
-    }
-  }
-}
 
 const transporter =
   EMAIL_USER && EMAIL_PASS
@@ -284,12 +254,20 @@ function createEmailTemplate(subject: string, body: string): string {
 
 export const GET: APIRoute = async () => {
   try {
-    const data = await readData()
+    // Obtener emails desde Firebase en lugar del archivo JSON
+    const subscriptionsRef = collection(db, "subscriptions")
+    const snapshot = await getDocs(subscriptionsRef)
+
+    const emails: string[] = []
+    snapshot.forEach((doc) => {
+      const data = doc.data() as SubscriptionData
+      emails.push(data.email)
+    })
 
     return new Response(
       JSON.stringify({
         success: true,
-        emails: data.emails.map((sub) => sub.email),
+        emails: emails,
       }),
       {
         status: 200,
@@ -350,11 +328,18 @@ export const POST: APIRoute = async ({ request }) => {
       )
     }
 
-    const data = await readData()
     let recipients: string[] = []
 
     if (email === "todos-los-suscriptores") {
-      recipients = data.emails.map((sub) => sub.email)
+      // Obtener todos los emails de Firebase
+      const subscriptionsRef = collection(db, "subscriptions")
+      const snapshot = await getDocs(subscriptionsRef)
+
+      snapshot.forEach((doc) => {
+        const data = doc.data() as SubscriptionData
+        recipients.push(data.email)
+      })
+
       console.log(`📮 Enviando a todos los suscriptores: ${recipients.length} destinatarios`)
 
       if (recipients.length === 0) {
@@ -370,10 +355,19 @@ export const POST: APIRoute = async ({ request }) => {
         )
       }
     } else {
+      // Verificar que el email existe en Firebase
+      const subscriptionsRef = collection(db, "subscriptions")
+      const snapshot = await getDocs(subscriptionsRef)
 
-        const emailExists = data.emails.some((sub) => sub.email === email)
+      let emailExists = false
+      snapshot.forEach((doc) => {
+        const data = doc.data() as SubscriptionData
+        if (data.email === email) {
+          emailExists = true
+        }
+      })
+
       if (!emailExists) {
-
         return new Response(
           JSON.stringify({
             success: false,
