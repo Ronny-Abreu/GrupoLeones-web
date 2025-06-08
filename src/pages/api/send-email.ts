@@ -3,13 +3,12 @@ import type { APIRoute } from "astro"
 
 export const prerender = false
 
-// Acceder a las variables de entorno de manera segura
 const RESEND_API_KEY = process.env.RESEND_API_KEY || import.meta.env.RESEND_API_KEY
 
 const resend = new Resend(RESEND_API_KEY)
 
 export const POST: APIRoute = async ({ request }) => {
-  // Agregar headers CORS
+
   const headers = {
     "Content-Type": "application/json",
     "Access-Control-Allow-Origin": "*",
@@ -18,7 +17,7 @@ export const POST: APIRoute = async ({ request }) => {
   }
 
   try {
-    // Verificar que la API key existe
+
     if (!RESEND_API_KEY) {
       console.error("❌ RESEND_API_KEY no está configurada")
       return new Response(
@@ -68,7 +67,6 @@ export const POST: APIRoute = async ({ request }) => {
 
     console.log("📝 Datos recibidos:", { nombre, email, telefono, asunto, mensaje })
 
-    // Validación básica
     if (!nombre || !email || !asunto || !mensaje) {
       return new Response(
         JSON.stringify({
@@ -232,7 +230,6 @@ export const POST: APIRoute = async ({ request }) => {
   }
 }
 
-// Manejar OPTIONS para CORS
 export const OPTIONS: APIRoute = async () => {
   return new Response(null, {
     status: 200,

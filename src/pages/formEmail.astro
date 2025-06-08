@@ -1,126 +1,390 @@
 ---
-import Layout from '../layouts/Layout.astro'
+import Layout from '../layouts/Layout.astro';
 import Header from "../components/ui/sections/Header.astro";
 ---
 
-<Layout title="Grupo Leones | Tu aliado estratégico para emprender y escalar">
-		<Header />
-
-<div class="min-h-screen bg-gray-50 p-4 text-gray-600">
-  <div class="mx-auto max-w-2xl flex justify-around">
-    <div>
-      //left dashboard info
-    </div>
-   <div>
-     <div class="mb-8 text-center">
-      <div class="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-blue-100">
-        <!-- Mail Icon -->
-        <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" stroke-width="2"
-             viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path stroke-linecap="round" stroke-linejoin="round"
-                d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8m-18 8h18a2 2 0 002-2V6a2 2 0 00-2-2H3a2 2 0 00-2 2v8a2 2 0 002 2z"/>
-        </svg>
-      </div>
-      <h1 class="text-3xl font-bold text-gray-900">Panel de Envío de Correos | Grupo Leones</h1>
-      <p class="mt-2 text-gray-600">Envíar correos electrónicos a los usuarios de forma rápida y sencilla</p>
-    </div>
-
-    <div class="rounded-lg border bg-white p-6 shadow-lg">
-      <div class="mb-6">
-        <h2 class="flex items-center gap-2 text-xl font-semibold">
-          <!-- Send Icon -->
-          <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" stroke-width="2"
-               viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path stroke-linecap="round" stroke-linejoin="round"
-                  d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/>
-          </svg>
-          Nuevo Correo Electrónico
-        </h2>
-        <p class="text-sm text-gray-500">Completa todos los campos para enviar un correo electrónico</p>
-      </div>
-
-      <form id="emailForm" class="space-y-6">
-        <div class="space-y-2">
-          <label for="email" class="text-sm font-medium">Correo Electrónico del Destinatario</label>
-          <input id="email" type="email" placeholder="usuario@ejemplo.com" class="w-full rounded border p-2" />
-          <div id="errorEmail" class="hidden items-center gap-1 text-sm text-red-600">
-            <!-- Alert Icon -->
-            <svg class="w-4 h-4 text-red-600" fill="none" stroke="currentColor" stroke-width="2"
-                 viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path stroke-linecap="round" stroke-linejoin="round"
-                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.054 0 1.658-1.14 1.105-2.05L13.105 4.05c-.525-.91-1.685-.91-2.21 0L3.977 16.95C3.424 17.86 4.028 19 5.082 19z"/>
-            </svg>
-            <span id="errorEmailText"></span>
-          </div>
-        </div>
-
-        <div class="space-y-2">
-          <label for="titulo" class="text-sm font-medium">Título del Correo</label>
-          <input id="titulo" type="text" placeholder="Asunto del mensaje..." class="w-full rounded border p-2" />
-          <div id="errorTitulo" class="hidden items-center gap-1 text-sm text-red-600">
-            <!-- Alert Icon -->
-            <svg class="w-4 h-4 text-red-600" fill="none" stroke="currentColor" stroke-width="2"
-                 viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path stroke-linecap="round" stroke-linejoin="round"
-                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.054 0 1.658-1.14 1.105-2.05L13.105 4.05c-.525-.91-1.685-.91-2.21 0L3.977 16.95C3.424 17.86 4.028 19 5.082 19z"/>
-            </svg>
-            <span id="errorTituloText"></span>
-          </div>
-        </div>
-
-        <div class="space-y-2">
-          <label for="cuerpo" class="text-sm font-medium">Cuerpo del Mensaje</label>
-          <textarea id="cuerpo" rows="6" placeholder="Escribe aquí el contenido de tu mensaje..." class="w-full rounded border p-2"></textarea>
-          <div id="errorCuerpo" class="hidden items-center gap-1 text-sm text-red-600">
-            <!-- Alert Icon -->
-            <svg class="w-4 h-4 text-red-600" fill="none" stroke="currentColor" stroke-width="2"
-                 viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path stroke-linecap="round" stroke-linejoin="round"
-                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.054 0 1.658-1.14 1.105-2.05L13.105 4.05c-.525-.91-1.685-.91-2.21 0L3.977 16.95C3.424 17.86 4.028 19 5.082 19z"/>
-            </svg>
-            <span id="errorCuerpoText"></span>
-          </div>
-          <p class="text-xs text-gray-500">Caracteres: <span id="charCount">0</span></p>
-        </div>
-
-        <button type="submit" class="flex w-full items-center justify-center rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700 disabled:opacity-50" id="submitBtn">
-          <!-- Send Icon -->
-          <svg class="mr-2 w-4 h-4 text-white" fill="none" stroke="currentColor" stroke-width="2"
-               viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path stroke-linecap="round" stroke-linejoin="round"
-                  d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/>
-          </svg>
-          <span>Enviar Correo</span>
-        </button>
-      </form>
-
-      <div id="successAlert" class="mt-6 hidden rounded border border-green-200 bg-green-50 p-4">
-        <div class="flex items-center gap-2 text-green-800">
-          <!-- CheckCircle Icon -->
-          <svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" stroke-width="2"
-               viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path stroke-linecap="round" stroke-linejoin="round"
-                  d="M9 12l2 2 4-4M12 22C6.48 22 2 17.52 2 12S6.48 2 12 2s10 4.48 10 10-4.48 10-10 10z"/>
-          </svg>
-          ¡Correo enviado exitosamente! El usuario recibirá tu mensaje pronto.
-        </div>
+<Layout title="Dashboard | Grupo Leones" showFooter={false}>
+  <!-- Verificación de autenticación -->
+  <div id="authCheck" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-[9999] flex items-center justify-center">
+    <div class="bg-white rounded-lg p-6 max-w-sm mx-4">
+      <div class="text-center">
+        <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-red-600 mx-auto mb-4"></div>
+        <p class="text-gray-600">Verificando acceso...</p>
       </div>
     </div>
-
-    <div class="mt-8 text-center text-sm text-gray-500">
-      <p>Los correos se envían de forma segura y encriptada</p>
-    </div>
-   </div>
   </div>
-</div>
+
+  <!-- Contenido principal (se mostrará solo si está autenticado) -->
+  <div id="mainContent" class="hidden">
+    <Header />
+
+    <section class="min-h-screen bg-[#ebe8e3] p-4 text-gray-600">
+      <div class="mt-36 max-w-6xl mx-auto flex flex-col gap-10 md:flex-row-reverse md:justify-between">
+
+        <!-- VIEW DATA SECT  -->
+        <div class="h-fit flex flex-col bg-gray-300 rounded-xl p-4">
+          <div class="">
+            <div class="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-green-100">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8 text-green-600">
+                <path stroke-linecap="round" stroke-linejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
+              </svg>
+            </div>
+            <h3 class="font-bold text-2xl mb-2 text-gray-700">Datos de interés</h3>
+          </div>
+
+          <div class="grid gap-4 grid-cols-3 md:grid-cols-2">
+
+            <!-- EMAILS REGISTRADOS SECT -->
+            <div class="size-fit rounded-xl p-4 flex justify-between items-center bg-gray-200">
+              <div class="flex flex-col">
+                <span>Emails registrados</span>
+                <span class="font-bold text-[30px]" id="emailCount">0</span>
+              </div>
+
+              <div>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-12">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                </svg>
+              </div>
+            </div>
+
+            <!-- VISITAS ESTE MES SECT -->
+            <div class="size-fit rounded-xl p-4 flex justify-between items-center bg-gray-200">
+              <div class="flex flex-col">
+                <span>Visitas únicas este mes</span>
+                <span class="font-bold text-[30px]" id="visitCount">0</span>
+              </div>
+
+              <div>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-12">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 0 1 3 19.875v-6.75ZM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V8.625ZM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V4.125Z" />
+                </svg>
+              </div>
+            </div>
+
+            <!-- PDF EMAILS SECT -->
+            <div class="size-fit rounded-xl p-4 flex justify-between items-center bg-gray-200">
+              <div class="flex flex-col">
+                <span class="font-bold">PDF Emails</span>
+                <span class="font-medium text-[15px]">
+                  Descargue el PDF con la <br class="hidden md:block"> lista de Email registrados<br class="hidden md:block"> <br class="hidden md:block">
+                  <a href="/emails-list.pdf" download="emails-list-grupo-leones.pdf" class="underline font-bold flex justify-center items-center gap-2" id="downloadPdfBtn">
+                    Descargar PDF
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M9 8.25H7.5a2.25 2.25 0 0 0-2.25 2.25v9a2.25 2.25 0 0 0 2.25 2.25h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25H15M9 12l3 3m0 0 3-3m-3 3V2.25" />
+                    </svg>
+                  </a> 
+                </span>
+              </div>
+            </div>
+
+            <!-- LOGOUT BUTTON -->
+            <div class="size-fit rounded-xl p-4 flex justify-between items-center bg-red-200">
+              <div class="flex flex-col">
+                <span class="font-bold text-red-700">Cerrar Sesión</span>
+                <button id="logoutBtn" class="underline font-bold flex justify-center items-center gap-2 text-red-600 hover:text-red-800 transition-colors">
+                  Salir del Panel
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- NEW EMAIL SECTION -->
+        <div class="mx-auto max-w-2xl flex flex-col bg-gray-300 rounded-xl p-4">
+
+          <div class="mb-8 text-center">
+            <div class="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-blue-100">
+              <!-- Mail Icon -->
+              <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" stroke-width="2"
+                  viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                      d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8m-18 8h18a2 2 0 002-2V6a2 2 0 00-2-2H3a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+              </svg>
+            </div>
+            <h1 class="text-3xl font-bold text-gray-900">Panel de Envío de Correos | Grupo Leones</h1>
+            <p class="mt-2 text-gray-600">Envíar correos electrónicos a los usuarios de forma rápida y sencilla</p>
+          </div>
+
+          <div class="rounded-lg border bg-gray-200 p-6 shadow-lg">
+            <div class="mb-6">
+              <h2 class="flex items-center gap-2 text-xl font-semibold">
+                <!-- Send Icon -->
+                <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" stroke-width="2"
+                    viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/>
+                </svg>
+                Nuevo Correo Electrónico
+              </h2>
+              <p class="text-sm text-gray-500">Completa todos los campos para enviar un correo electrónico</p>
+            </div>
+
+            <form id="emailForm" class="space-y-6">
+              <div class="space-y-2 relative">
+                <label for="email" class="text-sm font-medium">Correo Electrónico del Destinatario</label>
+                <div class="relative">
+                  <input 
+                    id="email" 
+                    type="text" 
+                    placeholder="Selecciona un destinatario..." 
+                    class="w-full rounded border p-2 cursor-pointer" 
+                    readonly
+                  />
+                  <svg class="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                  </svg>
+                </div>
+                
+                <!-- Dropdown -->
+                <div id="emailDropdown" class="absolute z-10 w-full bg-white border border-gray-300 rounded-md shadow-lg hidden max-h-60 overflow-y-auto">
+                  <div class="p-2">
+                    <div class="email-option p-2 hover:bg-blue-50 cursor-pointer rounded border-b border-gray-100" data-email="todos-los-suscriptores">
+                      <div class="flex items-center gap-2">
+                        <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                        </svg>
+                        <div>
+                          <div class="font-medium text-blue-600">Todos los suscriptores</div>
+                          <div class="text-xs text-gray-500">Enviar a todos los usuarios registrados</div>
+                        </div>
+                      </div>
+                    </div>
+                    <div id="emailList">
+                      <!-- Los emails se cargarán aquí dinámicamente -->
+                    </div>
+                  </div>
+                </div>
+                
+                <div id="errorEmail" class="hidden items-center gap-1 text-sm text-red-600">
+                  <!-- Alert Icon -->
+                  <svg class="w-4 h-4 text-red-600" fill="none" stroke="currentColor" stroke-width="2"
+                      viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                          d="M12 9v2m0 4h.01m-6.938 4h13.856c1.054 0 1.658-1.14 1.105-2.05L13.105 4.05c-.525-.91-1.685-.91-2.21 0L3.977 16.95C3.424 17.86 4.028 19 5.082 19z"/>
+                  </svg>
+                  <span id="errorEmailText"></span>
+                </div>
+              </div>
+
+              <div class="space-y-2">
+                <label for="titulo" class="text-sm font-medium">Título del Correo</label>
+                <input id="titulo" type="text" placeholder="Asunto del mensaje..." class="w-full rounded border p-2" />
+                <div id="errorTitulo" class="hidden items-center gap-1 text-sm text-red-600">
+                  <!-- Alert Icon -->
+                  <svg class="w-4 h-4 text-red-600" fill="none" stroke="currentColor" stroke-width="2"
+                      viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                          d="M12 9v2m0 4h.01m-6.938 4h13.856c1.054 0 1.658-1.14 1.105-2.05L13.105 4.05c-.525-.91-1.685-.91-2.21 0L3.977 16.95C3.424 17.86 4.028 19 5.082 19z"/>
+                  </svg>
+                  <span id="errorTituloText"></span>
+                </div>
+              </div>
+
+              <div class="space-y-2">
+                <label for="cuerpo" class="text-sm font-medium">Cuerpo del Mensaje</label>
+                <textarea id="cuerpo" rows="6" placeholder="Escribe aquí el contenido de tu mensaje..." class="w-full rounded border p-2"></textarea>
+                <div id="errorCuerpo" class="hidden items-center gap-1 text-sm text-red-600">
+                  <!-- Alert Icon -->
+                  <svg class="w-4 h-4 text-red-600" fill="none" stroke="currentColor" stroke-width="2"
+                      viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                          d="M12 9v2m0 4h.01m-6.938 4h13.856c1.054 0 1.658-1.14 1.105-2.05L13.105 4.05c-.525-.91-1.685-.91-2.21 0L3.977 16.95C3.424 17.86 4.028 19 5.082 19z"/>
+                  </svg>
+                  <span id="errorCuerpoText"></span>
+                </div>
+                <p class="text-xs text-gray-500">Caracteres: <span id="charCount">0</span></p>
+              </div>
+
+              <button type="submit" class="flex w-full items-center justify-center rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700 disabled:opacity-50" id="submitBtn">
+                <!-- Send Icon -->
+                <svg class="mr-2 w-4 h-4 text-white" fill="none" stroke="currentColor" stroke-width="2"
+                    viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/>
+                </svg>
+                <span>Enviar Correo</span>
+              </button>
+            </form>
+
+            <div id="successAlert" class="mt-6 hidden rounded border border-green-200 bg-green-50 p-4">
+              <div class="flex items-center gap-2 text-green-800">
+                <!-- CheckCircle Icon -->
+                <svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" stroke-width="2"
+                    viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M9 12l2 2 4-4M12 22C6.48 22 2 17.52 2 12S6.48 2 12 2s10 4.48 10 10-4.48 10-10 10z"/>
+                </svg>
+                <span id="successMessage">¡Correo enviado exitosamente!</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-8 text-center text-sm text-gray-500">
+            <p>Los correos se envían de forma segura y encriptada.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
 
 <script is:inline>
+  // Verificar autenticación al cargar la página
+  document.addEventListener('DOMContentLoaded', async () => {
+    const authCheck = document.getElementById('authCheck');
+    const mainContent = document.getElementById('mainContent');
+
+    try {
+      // Verificar si hay token en localStorage
+      const adminToken = localStorage.getItem('adminToken');
+      const tokenExpires = localStorage.getItem('adminTokenExpires');
+
+      if (!adminToken || !tokenExpires) {
+        throw new Error('No hay sesión de admin');
+      }
+
+      // Verificar si el token ha expirado
+      if (Date.now() > parseInt(tokenExpires)) {
+        localStorage.removeItem('adminToken');
+        localStorage.removeItem('adminTokenExpires');
+        throw new Error('Sesión expirada');
+      }
+
+      // Verificar token con el servidor
+      const response = await fetch(`/api/verifyOTP?token=${adminToken}`);
+      const result = await response.json();
+
+      if (!result.success || !result.isAdmin) {
+        throw new Error('Token inválido');
+      }
+
+      if (authCheck) authCheck.style.display = 'none';
+      if (mainContent) mainContent.classList.remove('hidden');
+
+      loadStats();
+      loadAvailableEmails();
+
+    } catch (error) {
+      console.error('Error de autenticación:', error);
+      // Redirigir a 404
+      window.location.href = '/404';
+    }
+  });
+
+  let availableEmails = [];
+  let selectedEmail = '';
+
+  // Función para animar contadores
+  function animateCounter(element, targetValue, duration = 2000) {
+    const startValue = 0;
+    const increment = targetValue / (duration / 16);
+    let currentValue = startValue;
+    
+    const timer = setInterval(() => {
+      currentValue += increment;
+      if (currentValue >= targetValue) {
+        currentValue = targetValue;
+        clearInterval(timer);
+      }
+      element.textContent = Math.floor(currentValue);
+    }, 16);
+  }
+
+  // Función para cargar estadísticas
+  async function loadStats() {
+    try {
+      const response = await fetch('/api/subscriptionEmail');
+      const data = await response.json();
+      
+      if (data.success) {
+        const emailCountElement = document.getElementById('emailCount');
+        const visitCountElement = document.getElementById('visitCount');
+        
+        if (emailCountElement) {
+          animateCounter(emailCountElement, data.totalEmails);
+        }
+        
+        if (visitCountElement) {
+          animateCounter(visitCountElement, data.monthlyVisits);
+        }
+      }
+    } catch (error) {
+      console.error('Error cargando estadísticas:', error);
+    }
+  }
+
+  // Función para cargar emails disponibles
+  async function loadAvailableEmails() {
+    try {
+      const response = await fetch('/api/sendAdminEmail');
+      const data = await response.json();
+      
+      if (data.success) {
+        availableEmails = data.emails;
+        renderEmailList();
+      }
+    } catch (error) {
+      console.error('Error cargando emails:', error);
+    }
+  }
+
+  function renderEmailList() {
+    const emailList = document.getElementById('emailList');
+    if (!emailList) return;
+
+    emailList.innerHTML = '';
+    
+    availableEmails.forEach(email => {
+      const emailOption = document.createElement('div');
+      emailOption.className = 'email-option p-2 hover:bg-gray-50 cursor-pointer rounded';
+      emailOption.setAttribute('data-email', email);
+      emailOption.innerHTML = `
+        <div class="flex items-center gap-2">
+          <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+          </svg>
+          <span class="text-sm">${email}</span>
+        </div>
+      `;
+      emailList.appendChild(emailOption);
+    });
+  }
+
+  // Manejar logout
+  const logoutBtn = document.getElementById('logoutBtn');
+  if (logoutBtn) {
+    logoutBtn.addEventListener('click', () => {
+
+      localStorage.removeItem('adminToken');
+      localStorage.removeItem('adminTokenExpires');
+      
+      window.location.href = '/login';
+    });
+  }
+
+  // Escuchar evento de nueva suscripción
+  window.addEventListener('subscriptionSuccess', (event) => {
+    const emailCountElement = document.getElementById('emailCount');
+    if (emailCountElement && event.detail.totalEmails) {
+      animateCounter(emailCountElement, event.detail.totalEmails);
+    }
+    // Recargar la lista de emails
+    loadAvailableEmails();
+  });
+
+  // Elementos del formulario
   const emailInput = document.getElementById('email');
+  const emailDropdown = document.getElementById('emailDropdown');
   const tituloInput = document.getElementById('titulo');
   const cuerpoInput = document.getElementById('cuerpo');
   const form = document.getElementById('emailForm');
   const submitBtn = document.getElementById('submitBtn');
   const successAlert = document.getElementById('successAlert');
+  const successMessage = document.getElementById('successMessage');
 
   const errorEmail = document.getElementById('errorEmail');
   const errorEmailText = document.getElementById('errorEmailText');
@@ -130,68 +394,128 @@ import Header from "../components/ui/sections/Header.astro";
   const errorCuerpoText = document.getElementById('errorCuerpoText');
   const charCount = document.getElementById('charCount');
 
-  const validateEmail = (email) => /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email);
-
-  cuerpoInput.addEventListener('input', () => {
-    charCount.textContent = cuerpoInput.value.length;
+  // Manejo del dropdown
+  emailInput?.addEventListener('click', () => {
+    emailDropdown?.classList.toggle('hidden');
   });
 
-  form.addEventListener('submit', async (e) => {
+  document.addEventListener('click', (e) => {
+    if (!emailInput?.contains(e.target) && !emailDropdown?.contains(e.target)) {
+      emailDropdown?.classList.add('hidden');
+    }
+  });
+
+  emailDropdown?.addEventListener('click', (e) => {
+    const emailOption = e.target.closest('.email-option');
+    if (emailOption) {
+      const email = emailOption.getAttribute('data-email');
+      selectedEmail = email;
+      
+      if (email === 'todos-los-suscriptores') {
+        emailInput.value = 'Todos los suscriptores';
+      } else {
+        emailInput.value = email;
+      }
+      
+      emailDropdown.classList.add('hidden');
+      errorEmail?.classList.add('hidden');
+    }
+  });
+
+  // Contador de caracteres
+  cuerpoInput?.addEventListener('input', () => {
+    if (charCount) {
+      charCount.textContent = cuerpoInput.value.length;
+    }
+  });
+
+  form?.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    errorEmail.classList.add('hidden');
-    errorTitulo.classList.add('hidden');
-    errorCuerpo.classList.add('hidden');
-    successAlert.classList.add('hidden');
+    // Limpiar errores previos
+    errorEmail?.classList.add('hidden');
+    errorTitulo?.classList.add('hidden');
+    errorCuerpo?.classList.add('hidden');
+    successAlert?.classList.add('hidden');
 
     let valid = true;
 
-    if (!emailInput.value.trim()) {
-      errorEmailText.textContent = 'El email es obligatorio';
-      errorEmail.classList.remove('hidden');
-      valid = false;
-    } else if (!validateEmail(emailInput.value.trim())) {
-      errorEmailText.textContent = 'Por favor, introduce un email válido';
-      errorEmail.classList.remove('hidden');
+    // Validaciones
+    if (!selectedEmail) {
+      if (errorEmailText) errorEmailText.textContent = 'Debes seleccionar un destinatario';
+      errorEmail?.classList.remove('hidden');
       valid = false;
     }
 
-    if (!tituloInput.value.trim()) {
-      errorTituloText.textContent = 'El título es obligatorio';
-      errorTitulo.classList.remove('hidden');
+    if (!tituloInput?.value.trim()) {
+      if (errorTituloText) errorTituloText.textContent = 'El título es obligatorio';
+      errorTitulo?.classList.remove('hidden');
       valid = false;
     } else if (tituloInput.value.trim().length < 3) {
-      errorTituloText.textContent = 'El título debe tener al menos 3 caracteres';
-      errorTitulo.classList.remove('hidden');
+      if (errorTituloText) errorTituloText.textContent = 'El título debe tener al menos 3 caracteres';
+      errorTitulo?.classList.remove('hidden');
       valid = false;
     }
 
-    if (!cuerpoInput.value.trim()) {
-      errorCuerpoText.textContent = 'El cuerpo del mensaje es obligatorio';
-      errorCuerpo.classList.remove('hidden');
+    if (!cuerpoInput?.value.trim()) {
+      if (errorCuerpoText) errorCuerpoText.textContent = 'El cuerpo del mensaje es obligatorio';
+      errorCuerpo?.classList.remove('hidden');
       valid = false;
     } else if (cuerpoInput.value.trim().length < 10) {
-      errorCuerpoText.textContent = 'El cuerpo debe tener al menos 10 caracteres';
-      errorCuerpo.classList.remove('hidden');
+      if (errorCuerpoText) errorCuerpoText.textContent = 'El cuerpo debe tener al menos 10 caracteres';
+      errorCuerpo?.classList.remove('hidden');
       valid = false;
     }
 
     if (!valid) return;
 
-    submitBtn.disabled = true;
-    submitBtn.querySelector('span').textContent = 'Enviando...';
+    // Deshabilitar botón y mostrar loading
+    if (submitBtn) submitBtn.disabled = true;
+    const submitSpan = submitBtn?.querySelector('span');
+    if (submitSpan) submitSpan.textContent = 'Enviando...';
 
-    await new Promise((r) => setTimeout(r, 2000));
+    try {
+      const response = await fetch('/api/sendAdminEmail', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: selectedEmail,
+          subject: tituloInput?.value.trim(),
+          body: cuerpoInput?.value.trim()
+        })
+      });
 
-    emailInput.value = '';
-    tituloInput.value = '';
-    cuerpoInput.value = '';
-    charCount.textContent = '0';
+      const result = await response.json();
 
-    submitBtn.disabled = false;
-    submitBtn.querySelector('span').textContent = 'Enviar Correo';
+      if (result.success) {
 
-    successAlert.classList.remove('hidden');
+        if (emailInput) emailInput.value = '';
+        selectedEmail = '';
+        if (tituloInput) tituloInput.value = '';
+        if (cuerpoInput) cuerpoInput.value = '';
+        if (charCount) charCount.textContent = '0';
+
+        if (successMessage) successMessage.textContent = result.message;
+        successAlert?.classList.remove('hidden');
+
+        setTimeout(() => {
+          successAlert?.classList.add('hidden');
+        }, 5000);
+      } else {
+        if (errorEmailText) errorEmailText.textContent = result.message;
+        errorEmail?.classList.remove('hidden');
+      }
+    } catch (error) {
+      console.error('Error enviando email:', error);
+      if (errorEmailText) errorEmailText.textContent = 'Error de conexión. Inténtalo de nuevo.';
+      errorEmail?.classList.remove('hidden');
+    } finally {
+
+      if (submitBtn) submitBtn.disabled = false;
+      if (submitSpan) submitSpan.textContent = 'Enviar Correo';
+    }
   });
 </script>
 
