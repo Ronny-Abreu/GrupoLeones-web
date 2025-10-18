@@ -71,7 +71,7 @@
       ].map((card, index) => (
         <div class="w-full max-w-sm group">
           <a href={`/filiales/${card.id}`} class="block">
-            <div class="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden border border-gray-100 hover:border-gray-200 hover:-translate-y-2">
+            <div class="bg-white rounded-2xl shadow-lg transition-all duration-500 overflow-hidden border border-gray-100 hover:border-gray-200 hover:-translate-y-2">
               <div class="relative h-48 overflow-hidden">
                 <img 
                   src={card.image || "/placeholder.svg?height=200&width=400"} 
@@ -166,7 +166,7 @@
         ].map((card, index) => (
           <div class="carousel-item w-80 flex-shrink-0 group my-4">
             <a href={`/filiales/${card.id}`} class="block">
-              <div class="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden border border-gray-100 hover:border-gray-200 hover:-translate-y-2">
+              <div class="bg-white rounded-2xl shadow-lg transition-all duration-500 overflow-hidden border border-gray-100 hover:border-gray-200 hover:-translate-y-2">
                 <div class="relative h-48 overflow-hidden">
                   <img 
                     src={card.image || "/placeholder.svg?height=200&width=400"} 
@@ -256,34 +256,34 @@
         ].map((card, index) => (
           <div class="carousel-item w-80 flex-shrink-0 group my-4">
             <a href={`/filiales/${card.id}`} class="block">
-              <div class="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden border border-gray-100 hover:border-gray-200 hover:-translate-y-2">
-                <div class="relative h-48 overflow-hidden">
-                  <img 
-                    src={card.image || "/placeholder.svg?height=200&width=400"} 
-                    alt={card.title}
-                    class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                  />
-                  <div class={`absolute inset-0 bg-gradient-to-t ${card.color} opacity-80 group-hover:opacity-90 transition-opacity duration-300`}></div>
-                  <div class="absolute inset-0 flex items-center justify-center">
-                    <div class="text-center">
-                      <div class="text-4xl mb-2">{card.icon}</div>
-                      <h3 class="text-white text-xl font-bold px-4">{card.title}</h3>
-                    </div>
-                  </div>
-                </div>
-                <div class="p-6">
-                  <p class="text-gray-600 text-sm leading-relaxed mb-4">{card.description}</p>
-                  <div class="flex items-center text-red-600 font-semibold group-hover:text-red-700 transition-colors">
-                    <span>Conocer más</span>
-                    <svg class="w-4 h-4 ml-2 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-                    </svg>
+              <div class="bg-white rounded-2xl shadow-lg transition-all duration-500 overflow-hidden border border-gray-100 hover:border-gray-200 hover:-translate-y-2">
+              <div class="relative h-48 overflow-hidden">
+                <img 
+                  src={card.image || "/placeholder.svg?height=200&width=400"} 
+                  alt={card.title}
+                  class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                />
+                <div class={`absolute inset-0 bg-gradient-to-t ${card.color} opacity-80 group-hover:opacity-90 transition-opacity duration-300`}></div>
+                <div class="absolute inset-0 flex items-center justify-center">
+                  <div class="text-center">
+                    <div class="text-4xl mb-2">{card.icon}</div>
+                    <h3 class="text-white text-xl font-bold px-4">{card.title}</h3>
                   </div>
                 </div>
               </div>
-            </a>
-          </div>
-        ))}
+              <div class="p-6">
+                <p class="text-gray-600 text-sm leading-relaxed mb-4">{card.description}</p>
+                <div class="flex items-center text-red-600 font-semibold group-hover:text-red-700 transition-colors">
+                  <span>Conocer más</span>
+                  <svg class="w-4 h-4 ml-2 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </a>
+        </div>
+      ))}
       </div>
     </div>
   </div>
