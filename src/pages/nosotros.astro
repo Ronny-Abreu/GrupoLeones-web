@@ -86,7 +86,8 @@ import Header from '../components/ui/sections/Header.astro'
                 Nuestros valores no son solo palabras; son la fuerza motriz que nos impulsa a ir más allá, forjando una cultura donde cada acción y decisión busca la distinción y el impacto positivo en el éxito de nuestros clientes.
             </p>
             
-            <div class="grid grid-cols-2 md:grid-cols-5 gap-6 mb-12">                
+            <!-- Grid para móvil y tablet -->
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:hidden gap-6 mb-12">                
                 <div class="bg-white bg-opacity-60 rounded-2xl p-8 text-center">
                     <div class="w-12 h-12 mx-auto mb-4 text-purple-medium">
                         <svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full">
@@ -132,6 +133,123 @@ import Header from '../components/ui/sections/Header.astro'
                     <h3 class="text-gray-700 font-semibold text-lg">Colaboración</h3>
                 </div>
             </div>
+
+            <!-- Carrusel Infinito para desktop (lg y superiores) -->
+            <div class="carousel-container relative hidden lg:block py-4 mb-12">
+                <div class="carousel-track" id="valuesCarouselTrack">
+                    <!-- Primera serie de valores -->
+                    <div class="carousel-item w-80 flex-shrink-0 group my-4">
+                        <div class="bg-white bg-opacity-60 rounded-2xl p-8 text-center shadow-lg transition-all duration-500 hover:-translate-y-2">
+                            <div class="w-12 h-12 mx-auto mb-4 text-purple-medium">
+                                <svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full">
+                                    <path d="M16 4c0-1.11.89-2 2-2s2 .89 2 2-.89 2-2 2-2-.89-2-2zm4 18v-6h2.5l-2.54-7.63A1.5 1.5 0 0 0 18.54 8H16c-.8 0-1.54.37-2.01 1l-2.99 4v7h2v7h4zm-7.5-10.5c.83 0 1.5-.67 1.5-1.5s-.67-1.5-1.5-1.5S11 9.17 11 10s.67 1.5 1.5 1.5zM5.5 6c1.11 0 2-.89 2-2s-.89-2-2-2-2 .89-2 2 .89 2 2 2zm2 16v-7H9V9.5c0-.28-.22-.5-.5-.5s-.5.22-.5.5V15H6v7h1.5z"/>
+                                </svg>
+                            </div>
+                            <h3 class="text-gray-700 font-semibold text-lg">Integridad</h3>
+                        </div>
+                    </div>
+                    
+                    <div class="carousel-item w-80 flex-shrink-0 group my-4">
+                        <div class="bg-white bg-opacity-60 rounded-2xl p-8 text-center shadow-lg transition-all duration-500 hover:-translate-y-2">
+                            <div class="w-12 h-12 mx-auto mb-4 text-purple-medium">
+                                <svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full">
+                                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                </svg>
+                            </div>
+                            <h3 class="text-gray-700 font-semibold text-lg">Compromiso</h3>
+                        </div>
+                    </div>
+
+                    <div class="carousel-item w-80 flex-shrink-0 group my-4">
+                        <div class="bg-white bg-opacity-60 rounded-2xl p-8 text-center shadow-lg transition-all duration-500 hover:-translate-y-2">
+                            <div class="w-12 h-12 mx-auto mb-4 text-purple-medium">
+                                <svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full">
+                                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                                </svg>
+                            </div>
+                            <h3 class="text-gray-700 font-semibold text-lg">Innovación</h3>
+                        </div>
+                    </div>
+                    
+                    <div class="carousel-item w-80 flex-shrink-0 group my-4">
+                        <div class="bg-white bg-opacity-60 rounded-2xl p-8 text-center shadow-lg transition-all duration-500 hover:-translate-y-2">
+                            <div class="w-12 h-12 mx-auto mb-4 text-purple-medium">
+                                <svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full">
+                                    <path d="M5 9.2h3V19H5zM10.6 5h2.8v14h-2.8zm5.6 8H19v6h-2.8z"/>
+                                </svg>
+                            </div>
+                            <h3 class="text-gray-700 font-semibold text-lg">Eficiencia</h3>
+                        </div>
+                    </div>
+                    
+                    <div class="carousel-item w-80 flex-shrink-0 group my-4">
+                        <div class="bg-white bg-opacity-60 rounded-2xl p-8 text-center shadow-lg transition-all duration-500 hover:-translate-y-2">
+                            <div class="w-12 h-12 mx-auto mb-4 text-purple-medium">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-full w-full">
+                                  <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                                </svg>
+                            </div>
+                            <h3 class="text-gray-700 font-semibold text-lg">Colaboración</h3>
+                        </div>
+                    </div>
+
+                    <!-- Segunda serie de valores (duplicada para efecto infinito) -->
+                    <div class="carousel-item w-80 flex-shrink-0 group my-4">
+                        <div class="bg-white bg-opacity-60 rounded-2xl p-8 text-center shadow-lg transition-all duration-500 hover:-translate-y-2">
+                            <div class="w-12 h-12 mx-auto mb-4 text-purple-medium">
+                                <svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full">
+                                    <path d="M16 4c0-1.11.89-2 2-2s2 .89 2 2-.89 2-2 2-2-.89-2-2zm4 18v-6h2.5l-2.54-7.63A1.5 1.5 0 0 0 18.54 8H16c-.8 0-1.54.37-2.01 1l-2.99 4v7h2v7h4zm-7.5-10.5c.83 0 1.5-.67 1.5-1.5s-.67-1.5-1.5-1.5S11 9.17 11 10s.67 1.5 1.5 1.5zM5.5 6c1.11 0 2-.89 2-2s-.89-2-2-2-2 .89-2 2 .89 2 2 2zm2 16v-7H9V9.5c0-.28-.22-.5-.5-.5s-.5.22-.5.5V15H6v7h1.5z"/>
+                                </svg>
+                            </div>
+                            <h3 class="text-gray-700 font-semibold text-lg">Integridad</h3>
+                        </div>
+                    </div>
+                    
+                    <div class="carousel-item w-80 flex-shrink-0 group my-4">
+                        <div class="bg-white bg-opacity-60 rounded-2xl p-8 text-center shadow-lg transition-all duration-500 hover:-translate-y-2">
+                            <div class="w-12 h-12 mx-auto mb-4 text-purple-medium">
+                                <svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full">
+                                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                </svg>
+                            </div>
+                            <h3 class="text-gray-700 font-semibold text-lg">Compromiso</h3>
+                        </div>
+                    </div>
+
+                    <div class="carousel-item w-80 flex-shrink-0 group my-4">
+                        <div class="bg-white bg-opacity-60 rounded-2xl p-8 text-center shadow-lg transition-all duration-500 hover:-translate-y-2">
+                            <div class="w-12 h-12 mx-auto mb-4 text-purple-medium">
+                                <svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full">
+                                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                                </svg>
+                            </div>
+                            <h3 class="text-gray-700 font-semibold text-lg">Innovación</h3>
+                        </div>
+                    </div>
+                    
+                    <div class="carousel-item w-80 flex-shrink-0 group my-4">
+                        <div class="bg-white bg-opacity-60 rounded-2xl p-8 text-center shadow-lg transition-all duration-500 hover:-translate-y-2">
+                            <div class="w-12 h-12 mx-auto mb-4 text-purple-medium">
+                                <svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full">
+                                    <path d="M5 9.2h3V19H5zM10.6 5h2.8v14h-2.8zm5.6 8H19v6h-2.8z"/>
+                                </svg>
+                            </div>
+                            <h3 class="text-gray-700 font-semibold text-lg">Eficiencia</h3>
+                        </div>
+                    </div>
+                    
+                    <div class="carousel-item w-80 flex-shrink-0 group my-4">
+                        <div class="bg-white bg-opacity-60 rounded-2xl p-8 text-center shadow-lg transition-all duration-500 hover:-translate-y-2">
+                            <div class="w-12 h-12 mx-auto mb-4 text-purple-medium">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-full w-full">
+                                  <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                                </svg>
+                            </div>
+                            <h3 class="text-gray-700 font-semibold text-lg">Colaboración</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
             
             <button class="bg-gradient-to-r from-blue-300 to-purple-300 text-gray-700 font-semibold px-8 py-3 rounded-full border border-black/20 hover:from-blue-400/80 hover:to-purple-400/80 transition-all duration-300">
                 <a href="/#contacto">
@@ -140,5 +258,90 @@ import Header from '../components/ui/sections/Header.astro'
         </div>
     </section>
 
+    <style>
+        /* Estilos del carrusel infinito para valores */
+        .carousel-container {
+            overflow: hidden;
+            position: relative;
+        }
+
+        .carousel-track {
+            display: flex;
+            gap: 2rem;
+            animation: scrollValues 30s linear infinite;
+            width: fit-content;
+        }
+
+        .carousel-track.paused {
+            animation-play-state: paused;
+        }
+
+        @keyframes scrollValues {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+
+        .carousel-item {
+            transition: transform 0.3s ease;
+        }
+
+        @media (max-width: 1023px) {
+            .carousel-container {
+                display: none !important;
+            }
+        }
+    </style>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            function initValuesCarousel() {
+                const carouselTrack = document.getElementById('valuesCarouselTrack');
+                const carouselItems = document.querySelectorAll('#valuesCarouselTrack .carousel-item');
+                
+                if (!carouselTrack) return;
+
+                // Pausar animación con hover
+                carouselItems.forEach(item => {
+                    item.addEventListener('mouseenter', () => {
+                        carouselTrack.classList.add('paused');
+                    });
+                    
+                    item.addEventListener('mouseleave', () => {
+                        carouselTrack.classList.remove('paused');
+                    });
+                });
+
+                // Pausar animación al hacer hover sobre el contenedor del carrusel
+                carouselTrack.addEventListener('mouseenter', () => {
+                    carouselTrack.classList.add('paused');
+                });
+                
+                carouselTrack.addEventListener('mouseleave', () => {
+                    carouselTrack.classList.remove('paused');
+                });
+            }
+
+            function checkScreenSize() {
+                if (window.innerWidth >= 1024) { // lg breakpoint
+                    initValuesCarousel();
+                }
+            }
+
+            checkScreenSize();
+
+            let resizeTimeout: ReturnType<typeof setTimeout>;
+            window.addEventListener('resize', () => {
+                clearTimeout(resizeTimeout);
+                resizeTimeout = setTimeout(() => {
+                    checkScreenSize();
+                }, 250);
+            });
+        });
+    </script>
     
 </Layout>
